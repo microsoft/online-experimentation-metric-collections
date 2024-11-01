@@ -1,57 +1,86 @@
-# Project Name
+# Online Experimentation Metric Collections
 
-(short, 1-3 sentenced, description of the project)
+> [!CAUTION]
+> Contents in this repository are actively updated during private preview. 
+
+Sample configuration of metrics for Online Experimentation. 
+Summary rules for data transformation on common GenAI instrumentation logs. Documentation for usage. 
+
+Metric samples are expected to be ada
+
+
 
 ## Features
 
-This project framework provides the following features:
+1. Pre-built GenAI metric collections for supported GenAI instrumentation providers under [genai](./genai/README.md). Contents include configuration for GenAI metrics such as token usage and response latency. 
 
-* Feature 1
-* Feature 2
-* ...
+   Each collection also has a `summaryrules.json` file. When added to a repository with Online Experimentation enabled, this will be used to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation. This summary rule is customized to the insturmentation provider and is required for metric computation. Details are in each collection's `README.md` file.
+
+2. Samples for custom metric definitions off of custom Azure AppConfig's event tracking, along with corresponding sample telemetry implementation. See [custom](./custom/README.md)
 
 ## Getting Started
 
 ### Prerequisites
 
-(ideally very short, if any)
+To generate metrics with Online Experimentation, you must:
 
-- OS
-- Library version
-- ...
+* Provision an online experimentation workspace.
+* Integrate Azure AppConfig and instrument key events for metrics using AppConfig's track event.
+* [For custom metrics] set up the [online experimentation metric deployment Github Action](https://github.com/Azure/online-experimentation-deploy-metrics/blob/main/README.md) as part of your CI/CD.
+* [For GenAI metrics] utilize a supported OpenTelemetry GenAI instrumentation provider. Enrich with custom attributes to ensure AppConfig `TargetingId`, `InstrumentationProvider` and `InstrumentationProvider.version` are contained in the log. 
 
-### Installation
-
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
-
-### Quickstart
-(Add steps to get up and running quickly)
-
-1. git clone [repository clone url]
-2. cd [repository name]
-3. ...
+>[!Tip]
+> If you do not have an existing GenAI instrumentation provider: [Traceloop with OpenLLMetry](https://www.traceloop.com/openllmetry) is recommended as a provider which is vetted for ease of use, alignment with online experimentation requirements and for consistency of following OpenTelemetry semantic conventions.
 
 
 ## Demo
 
-A demo app is included to show how to use the project.
+The sample application [`Open AI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for evaluation and Online Experimentation provides a contextualized example of how metrics, summary rules and event tracking fit into an application. We reference these to provide the contextualized demo.
 
-To run the demo, follow these steps:
+* [Add (your customized) metrics to a json file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/tree/main/.config). Edit your [metric deployment GHA](https://github.com/Azure/online-experimentation-deploy-metrics/blob/main/README.md) configured file path to ensure the file is discoverable.
+* Add the summary rule(s) necessary for your instrumentation provider to your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.json) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./infra) folder of this samples repo.
 
-(Add steps to start up the demo)
 
-1.
-2.
-3.
+In the [`./infra/main.bicep`](./infra/main.bicep) file of your target, add in the summary rule module:
+
+```yaml
+targetScope = 'subscription'
+
+@description('Log Analytics Workspace name, location, and resource group')
+param logAnalyticsWorkspaceName string = 'YOUR_WORKSPACE_NAMWE'
+param logAnalyticsWorkspaceLocation string = 'YOUR_WORKSPACE_REGION'
+param logAnalyticsWorkspaceResourceGroupName string = 'YOUR_WORKSPACE_RG'
+resource logAnalyticsWorkspaceResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: logAnalyticsWorkspaceResourceGroupName
+}
+
+
+// summary rule module
+var ruleDefinitions = loadJsonContent('./monitor/summaryrules.json')
+module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefinitions: if (!empty(logAnalyticsWorkspaceName) && !empty(logAnalyticsWorkspaceLocation)) {
+  name: 'loganalytics-summaryrule-${i}'
+  scope: logAnalyticsWorkspaceResourceGroup
+  params: {
+    location: logAnalyticsWorkspaceLocation  
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+    summaryRuleName: rule.name
+    description: rule.description
+    query: rule.query
+    binSize: 20 
+    destinationTable: 'AppEvents_CL'
+  }
+} ]
+```
+
+This module requires two dependent files:
+- [`summaryrule.bicep`](./infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
+- [`summaryrules.json`](./infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update, which should be customized based on the GenAI instrumentation provider(s) used: supported providers' summary rules are found under the [`genai`](./genai) metric collections.
 
 ## Resources
 
 (Any additional resources or related projects)
 
-- Link to supporting information
-- Link to similar sample
-- ...
+- [Online Experimentation documentation](https://github.com/MicrosoftDocs/online-experimentation-docs)
+- [Sample Online Experimentation enabled OpenAI app](https://github.com/Azure-Samples/openai-chat-app-eval-ab)
+- [Github Action to deploy metrics](https://github.com/Azure/online-experimentation-deploy-metrics)
+

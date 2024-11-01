@@ -1,0 +1,7 @@
+[
+    {
+        "name": "SUMMARY_RULE_NAME",
+        "description": "SUMMARY_RULE_DESCRIPTION",
+        "query": "LOG_ANALYTICS_QUERY"
+    }
+]
