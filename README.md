@@ -17,7 +17,7 @@ Sample metric collections are organized into 2 directories:
 
    Each collection also has a `summaryrules.json` file. When added to a repository with Online Experimentation enabled, this will be used to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation. This summary rule is customized to the insturmentation provider and is required for metric computation. Details are in each collection's `README.md` file.
 
-2. Samples for custom metric definitions off of custom Azure AppConfig's event tracking, along with corresponding sample telemetry implementation. See [custom](./custom/README.md)
+2. **[custom](./custom):** Sample metric collections based on Azure Monitor custom events (with corresponding instrumentation samples). These samples demonstrate how to instrument custom events and then use them in metric definitions. They can also be used directly in your application.
 
 ## Getting Started
 
