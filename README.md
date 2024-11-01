@@ -11,7 +11,9 @@ Summary rules for data transformation on common GenAI instrumentation logs. Docu
 
 ## Features
 
-1. Pre-built GenAI metric collections for supported GenAI instrumentation providers under [genai](./genai/README.md). Contents include configuration for GenAI metrics such as token usage and response latency. 
+Sample metric collections are organized into 2 directories:
+
+1. **[genai](./genai):** Pre-built GenAI metric collections for supported GenAI instrumentation providers. Contents include configuration for GenAI metrics such as token usage and response latency. 
 
    Each collection also has a `summaryrules.json` file. When added to a repository with Online Experimentation enabled, this will be used to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation. This summary rule is customized to the insturmentation provider and is required for metric computation. Details are in each collection's `README.md` file.
 
