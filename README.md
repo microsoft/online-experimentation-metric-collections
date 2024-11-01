@@ -78,8 +78,6 @@ This module requires two dependent files:
 
 ## Resources
 
-(Any additional resources or related projects)
-
 - [Online Experimentation documentation](https://github.com/MicrosoftDocs/online-experimentation-docs)
 - [Sample Online Experimentation enabled OpenAI app](https://github.com/Azure-Samples/openai-chat-app-eval-ab)
 - [Github Action to deploy metrics](https://github.com/Azure/online-experimentation-deploy-metrics)
