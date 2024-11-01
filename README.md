@@ -6,7 +6,6 @@
 Sample configuration of metrics for Online Experimentation. 
 Summary rules for data transformation on common GenAI instrumentation logs. Documentation for usage. 
 
-Metric samples are expected to be ada
 
 
 
