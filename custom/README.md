@@ -25,22 +25,13 @@ Metrics in this collection will not work out-of-box. Event logging must be added
 
 
 ## User sentiment metrics
-[Metric file](./metrics/user-sentiment.json) 
+[Metric file](./metrics-user-sentiment.json) 
 
 Metrics in this collection measure user sentiment. User sentiment can be inferred or collected directly via user feedback.
 
 <details open>
 <summary>User feedback</summary>
-
-User feedback should be logged as a numeric score from -1(negative) to +1(positive). Common implementation is thumbs-up/thumbs-down which translate to +1/-1 scores.
-
-Sample (AppConfig, via python) implementation of telemetry for user feedback metrics defined in this folder:
-
-```
-track_event("UserFeedback", chat_id, {"Score": score})
-```
-
-This event tracking is triggered after user hits a thumbs up/down feedback button on a chat response.
+This set of metrics measures user thumbs up/down feedback button on a chat response.
 
 | Display name| Metric kind | Description |
 | ----- | -----| ----------------|
@@ -50,23 +41,42 @@ This event tracking is triggered after user hits a thumbs up/down feedback butto
 | Negative feedback rate | EventRate | The percentage of feedback which is negative (thumbs-down).|
 </details>
 
+<details open>
+<summary>User feedback logging> </summary> 
+User feedback should be logged as a numeric score from -1(negative) to +1(positive). Common implementation is thumbs-up/thumbs-down which translate to +1/-1 scores.
+
+| Event Name | Properties | Sample (python)
+| -------- | -------- | 
+|`UserFeedback` | `Score` (numeric) | `track_event("UserFeedback", chat_id, {"Score": score})` |
+</details>
 
 ## Errors
 
-[Metric file](./metrics/errors.json)
+[Metric file](./metrics-errors.json)
 
 Metrics in this collection illustrate metrics for tracking errors and related events as guardrails to limit unintended degradation in system performance. Metrics in this category require customized AppConfig event tracking for error handling.
 
 <details open>
 <summary>Error metrics</summary>
 
-A sample `ErrorLLM` event is referenced in all error metrics, which has properties `Code` (str) and `StatusCode` (int). A generic error event (not specific to LLM calls) is a good alternative if adding instrumentation for all error handling.
+| Display name| Metric kind | Description | Event |
+| ----- | -----| ----------------|------|
+| LLM error count | EventCount | The total number of errors resulting from LLM calls. | `ErrorLLM` |
+| LLM 400 error count | EventCount | The number of LLM requests that resulted in a 400 error. | `ErrorLLM` |
+| Users with LLM 400 error | UserCount | The number of users with at least one LLM request that resulted in a 400 error. | `ErrorLLM` |
+| LLM error count -- content filter | EventCount | The total number of errors with code indicating content filtering blocked LLM response. | `ErrorLLM` |
 
-| Display name| Metric kind | Description |
-| ----- | -----| ----------------|
-| LLM error count | EventCount | The total number of errors resulting from LLM calls. |
-| LLM 400 error count | EventCount | The number of LLM requests that resulted in a 400 error. |
-| Users with LLM 400 error | UserCount | The number of users with at least one LLM request that resulted in a 400 error. |
-| LLM error count -- content filter | EventCount | The total number of errors with code indicating content filtering blocked LLM response. |
+</details>
 
+<details open>
+<summary>Error logging</summary>
+Although errors may be logged by default in AppDependencies, Online Experimentation default consumes only the `AppEvents` table from Log Analytics Workspace.
+
+Therefore, we recommend enriching with custom event logging for key error handling. Use AppConfig event tracking in order to attach the `TargetingId` by default.
+
+| Event Name | Properties |
+| -------- | -------- | 
+`ErrorLLM` | `Code` (str), `StatusCode` (int) | 
+
+A generic error event (not specific to LLM calls) is a good alternative if adding instrumentation for all error handling.
 </details>
