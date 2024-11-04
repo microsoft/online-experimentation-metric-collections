@@ -2,7 +2,7 @@
 
 Metrics contained in the GenAI metric collections are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with provided [Log Analytics summary rules](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) directly out-of-box with zero/minimal edits and consume logs created automatically by select instrumentation providers.
 
-## If you use a provider that is supported in an existing GenAI metric collection:
+## GenAI metrics
 
 The following metrics are provided for all supported GenAI instrumentation providers:
 
@@ -15,6 +15,7 @@ The following metrics are provided for all supported GenAI instrumentation provi
 | Total chat usage tokens| Sum | The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per event: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant. |
 | Average chat call duration (ms) | Average | The average duration in milliseconds per GenAI chat operation. Duration is measured by the DurationMS property of the span capturing chat call completion. |
 
+Some GenAI instrumentation providers have richer telemetry and so supplemental metrics are included in their collection. Percentile metrics (incur higher compute costs) and metrics that require optional logging are marked as `lifecycle: Inactive` by default and require update to `Active` for computation.
 
 ## Usage
 
@@ -30,5 +31,5 @@ The following metrics are provided for all supported GenAI instrumentation provi
 > While the summary rule and metrics in a GenAI collection are meant to be used directly with corresponding instrumentation providers on GenAI, non-standard integrations may omit or modify logging.
 
 
-## If your instrumentation provider is not covered: 
-It is possible to adapt the metric configurations and the summary rule query for other providers. The Online Experimentation team also regularly adds support for addtional instrumentation providers as we become aware of customer usage.
+## Use with unsupported GenAI instrumentation providers:
+It is possible to adapt the metric configurations and the summary rule query for other providers. The Online Experimentation team also regularly adds support for addtional instrumentation providers as we become aware of customer usage. Open an Issue on this repository in order to file a request to add support.
