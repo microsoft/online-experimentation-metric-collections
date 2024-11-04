@@ -6,9 +6,9 @@ Custom metric collections are organized by metric topic. It is recommended for m
 
 ## Prerequisites
 
-Custom metrics rely on event logs that are instrumented via AppConfig's `TrackEvent`. This instrumentation through AppConfig guarantees the `TargetingId` will be attached to events: otherwise attributing to assigned feature flags is not possible.
+Custom metrics rely on event logs that are instrumented via AppConfig's `TrackEvent` (or `track_event` in Python). This instrumentation through AppConfig is a wrapper of Azure Monitoring event tracking and guarantees the `TargetingId` will be attached to events. This attachment of `TargetingId` is required in order to attribute events to each user's assigned feature flags.
 
-Metrics in this collection will not work out-of-box. Event logging may need to be added, and event name and property references in the metric definition should be checked and edited to match.
+Metrics in this collection will not work out-of-box. Event logging must be added. Event name and property references are stated in each section and should be implemented in telemetry; or the metric itself should be edited to match existing instrumentation.
 
 
 ## Use
