@@ -27,7 +27,7 @@ To generate metrics with Online Experimentation, you must:
 
 * Provision an online experimentation workspace.
 * Integrate Azure AppConfig and instrument key events for metrics using AppConfig's track event.
-* [For custom metrics] set up the [online experimentation metric deployment Github Action](https://github.com/Azure/online-experimentation-deploy-metrics/blob/main/README.md) as part of your CI/CD.
+* Use the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
 * [For GenAI metrics] utilize a supported OpenTelemetry GenAI instrumentation provider. Enrich with custom attributes to ensure AppConfig `TargetingId`, `InstrumentationProvider` and `InstrumentationProvider.version` are contained in the log. 
 
 >[!Tip]
