@@ -2,6 +2,9 @@
 
 Metrics contained in the GenAI metric collections are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with provided [Log Analytics summary rules](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) directly out-of-box with zero/minimal edits and consume logs created automatically by select instrumentation providers.
 
+>[!Tip]
+> If you do not have a pre-existing GenAI instrumentation provider, Traceloop with OpenLLMetry is an early adopter of the OpenTelemetry semantic conventions and has been vetted for use with Online Experimentation.
+
 ## GenAI metrics
 
 The following metrics are provided for all supported GenAI instrumentation providers:
@@ -20,8 +23,6 @@ Some GenAI instrumentation providers have richer telemetry and so supplemental m
 ## Usage
 
 1. Navigate to the Metric Collections folder for your instrumentation provider. 
-     >[!Tip]
-      > Traceloop with OpenLLMetry is recommended
 1. Review the `README.md`, which may provide critical versioning.
 1. Append the contents of `metrics.json` and `summaryrules.json` to corresponding files in your experimentation-enabled repository.
 1. If this is your first time adding summary rules for Online experimentation, see [root `README.md`](../README.md) to overview metric synchronization and summary rule update.
