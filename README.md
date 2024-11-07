@@ -28,7 +28,7 @@ To generate metrics with Online Experimentation, you must:
 * Provision an online experimentation workspace.
 * Integrate Azure AppConfig and instrument key events for metrics using AppConfig's track event.
 * Use the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
-* [For GenAI metrics] utilize a supported OpenTelemetry GenAI instrumentation provider. Enrich with custom attributes `TargetingId` (required). AppConfig's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation.
+* [For GenAI metrics] utilize a supported OpenTelemetry GenAI instrumentation provider. Enrich with custom attribute `TargetingId` (required). AppConfig's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation.
 
 
 >[!Tip]
@@ -40,10 +40,10 @@ To generate metrics with Online Experimentation, you must:
 The sample application [`Open AI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for evaluation and Online Experimentation provides a contextualized example of how metrics, summary rules and event tracking fit into an application. We reference these to provide the contextualized demo.
 
 * [Add (your customized) metrics to a json file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/tree/main/.config). Edit your [GitHub Actions workflow file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/.github/workflows/azure-dev.yml) configured file path to ensure metrics in the file are deployed.
-* Add the summary rule(s) necessary for your instrumentation provider to your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.json) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./infra) folder of this samples repo.
+* Add the summary rule(s) necessary for your instrumentation provider to your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.json) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./genai/infra) folder of this samples repo.
 
 
-In the [`./infra/main.bicep`](./infra/main.bicep) file of your target, add in the summary rule module:
+In the [`./genai/infra/main.bicep`](./genai/infra/main.bicep) file of your target, add in the summary rule module:
 
 ```yaml
 targetScope = 'subscription'
@@ -75,8 +75,8 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
 ```
 
 This module requires two dependent files:
-- [`summaryrule.bicep`](./infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
-- [`summaryrules.json`](./infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update, which should be customized based on the GenAI instrumentation provider(s) used: supported providers' summary rules are found under the [`genai`](./genai) metric collections.
+- [`summaryrule.bicep`](./genai/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
+- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update, which should be customized based on the GenAI instrumentation provider(s) used: supported providers' summary rules are found under the [`genai`](./genai) metric collections.
 
 ## Resources
 
