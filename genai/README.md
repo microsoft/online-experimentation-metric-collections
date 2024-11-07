@@ -12,7 +12,13 @@ Azure AI Tracing and OpenLLMetry Traceloop both have high alignment with the sem
 
 ## Prerequisites
 
-`TargetingId` must be added to the GenAI spans. Traceloop supports this by [association entity](https://www.traceloop.com/docs/openllmetry/tracing/association) onto Traceloop logs. 
+`TargetingId` must be added to the GenAI spans. Traceloop supports this by [association entity](https://www.traceloop.com/docs/openllmetry/tracing/association) onto Traceloop logs. The naming convention of the attribute must be one of:
+* `TargetingId`
+* `targeting_id`
+* `targetingid`
+* `targetingId`
+
+or `traceloop.association.properties.{one of the list above}`
 
 > [!IMPORTANT]
 > Summary rule provisioning is required to use metrics in this collection. If this is your first time adding a [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for Online Experimentation, see [root `README`](../README.md) for overall guidance.
@@ -20,7 +26,6 @@ Azure AI Tracing and OpenLLMetry Traceloop both have high alignment with the sem
 To update an _existing_ summary rule:
 1. Update the query in the corresponding summary rule object in `summaryrules.json` file in your experimentation-enabled workspace under the `infra` folder. Upon deployment, the bicep template will initiate summary rule provisioning. 
 1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs and increasing your data processing costs.
-1. If necessary, add a 
 
 
 ## GenAI metrics
@@ -62,13 +67,13 @@ let otel_genai_semantic_convention_keys = dynamic(['gen_ai.operation.name','gen_
 let otel_genai_deprecated_keys = dynamic(['gen_ai.usage.completion_tokens','gen_ai.usage.prompt_tokens']);
 let other_supported_keys = dynamic(['gen_ai.response.model','gen_ai.openai.api_version']);
 let supported_keys = set_union(otel_genai_semantic_convention_keys, otel_genai_deprecated_keys, other_supported_keys);
-let targetingid_keys = dynamic(['traceloop.association.properties.TargetingId', 'traceloop.association.properties.targetingid', 'TargetingId','targetingid','targeting_id']);
+let targetingid_keys = dynamic(['traceloop.association.properties.TargetingId', 'traceloop.association.properties.targetingid', traceloop.association.properties.targeting_id' 'TargetingId','targetingid','targeting_id','targetingId']);
 AppDependencies
 | where Properties has "gen_ai.system"
 | where Properties has "targetingid" or Properties has "targeting_id"
 | extend  keys = bag_keys(Properties)
 | extend newProperties = bag_remove_keys(Properties, set_difference(keys,supported_keys))
-| extend TargetingId = max_of(tostring(Properties['TargetingId']),tostring(Properties['targetingid']),tostring(Properties['targeting_id']),tostring(Properties['traceloop.association.properties.TargetingId']),tostring(Properties['traceloop.association.properties.targetingid']),tostring(Properties['traceloop.association.properties.targeting_id']))
+| extend TargetingId = max_of(tostring(Properties['TargetingId']),tostring(Properties['targetingid']),tostring(Properties['targeting_id']),tostring(Properties['traceloop.association.properties.TargetingId']),tostring(Properties['traceloop.association.properties.targetingid']),tostring(Properties['traceloop.association.properties.targeting_id']),tostring(Properties['traceloop.association.properties.targetingId']),tostring(Properties['targetingId']))
 | extend OTELVersion = extract("otel([0-9.]+[0-9])",1,SDKVersion)
 | extend newProperties = bag_merge(newProperties, bag_pack('SDKVersion',SDKVersion,'OTELVersion',OTELVersion, 'TargetingId',TargetingId, 'DurationMs',DurationMs, 'Success',Success,'Name',Name, 'ResutCode',ResultCode,'PerformanceBucket',PerformanceBucket, 'gen_ai.usage.tokens',max_of(toint(Properties['gen_ai.usage.input_tokens']),toint(Properties['gen_ai.usage.prompt_tokens']))+ max_of(toint(Properties['gen_ai.usage.output_tokens']),toint(Properties['gen_ai.usage.completion_tokens'])), 
 'gen_ai.finish_reason.has.stop', Properties['gen_ai.response.finish_reasons'] has 'stop' , 
