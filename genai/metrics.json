@@ -233,7 +233,7 @@
             "filter": "['gen_ai.finish_reason.has.length'] == true"
           }
         }
-      }
+      },
       {
         "id": "count_genai_with_tool_calls",
         "displayName": "Number of GenAI calls with tool call finish reason",
