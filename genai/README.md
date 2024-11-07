@@ -64,10 +64,14 @@ To preview the output of this summary rule, run the query below on your applicat
 
 ```sql
 let otel_genai_semantic_convention_keys = dynamic(['gen_ai.operation.name','gen_ai.request.model', 'gen_ai.system','error.type','server.port','gen_ai.request.frequency_penalty', 'gen_ai.request.max_tokens','gen_ai.request.presence_penalty','gen_ai.request.stop_sequences','gen_ai.request.temperature','gen_ai.request.top_k','gen_ai.request.top_p','gen_ai.response.finish_reasons','gen_ai.response.id','gen_ai.response.model','gen_ai.usage.input_tokens','gen_ai.usage.output_tokens','server.address','gen_ai.openai.request.response_format','gen_ai.openai.request.seed','gen_ai.openai.request.service_tier','gen_ai.openai.response.service_tier']);
+
 let otel_genai_deprecated_keys = dynamic(['gen_ai.usage.completion_tokens','gen_ai.usage.prompt_tokens']);
+
 let other_supported_keys = dynamic(['gen_ai.response.model','gen_ai.openai.api_version']);
 let supported_keys = set_union(otel_genai_semantic_convention_keys, otel_genai_deprecated_keys, other_supported_keys);
-let targetingid_keys = dynamic(['traceloop.association.properties.TargetingId', 'traceloop.association.properties.targetingid', traceloop.association.properties.targeting_id' 'TargetingId','targetingid','targeting_id','targetingId']);
+
+let targetingid_keys = dynamic(['traceloop.association.properties.TargetingId', 'traceloop.association.properties.targetingid','traceloop.association.properties.targetingId', 'traceloop.association.properties.targeting_id', 'TargetingId','targetingid','targetingId','targeting_id']);
+
 AppDependencies
 | where Properties has "gen_ai.system"
 | where Properties has "targetingid" or Properties has "targeting_id"
@@ -86,4 +90,4 @@ AppDependencies
 ```
 
 ## Extensions beyond semantic conventions:
-For advanced use cases, it is possible to adapt the metric definitions and the summary rule query for use with instrumentation libraries that do not follow the current OpenTelemetry semantic conventions, or to push other types of spans into the custom `AppEvents_CL` table.
+For advanced use cases, it is possible to adapt the `other_supported_keys` array and filter conditions to create a summary rule query for use with instrumentation libraries that do not follow the current OpenTelemetry semantic conventions, or to push other types of spans into the custom `AppEvents_CL` table.
