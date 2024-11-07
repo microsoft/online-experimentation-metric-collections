@@ -1,21 +1,16 @@
 # Online Experimentation Metric Collections
 
+This repository provides versioned samples of online experimentation metrics, sample support files for integrating with CI/CD, and documentation for online experimentation metrics.
+
 > [!CAUTION]
 > Contents in this repository are actively updated during private preview. 
-
-Sample configuration of metrics for Online Experimentation. 
-Summary rules for data transformation on common GenAI instrumentation logs. Documentation for usage. 
-
-
-
 
 ## Features
 
 Sample metric collections are organized into 2 directories:
 
-1. **[genai](./genai):** Pre-built GenAI metric collections for supported GenAI instrumentation providers. Contents include configuration for GenAI metrics such as token usage and response latency. 
-
-   Each collection also has a `summaryrules.json` file. When added to a repository with Online Experimentation enabled, this will be used to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation. This summary rule is customized to the instrumentation provider and is required for metric computation. Details are in each collection's `README.md` file.
+1. **[genai](./genai):** Pre-built GenAI metric collection compatible with instrumentation libraries that adhere to [OpenTelemetry semantic conventions for GenAI spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/). Contents include configuration for GenAI metrics such as usage frequency, token usage and response latency. 
+The `summaryrules.json` file is necessary to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation on GenAI spans. Details are in the GenAI collection's `README.md` file.
 
 2. **[custom](./custom):** Sample metric collections based on Azure Monitor custom events (with corresponding instrumentation samples). These samples demonstrate how to instrument custom events and then use them in metric definitions. They can also be used directly in your application.
 
@@ -73,7 +68,7 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
 
 This module requires two dependent files:
 - [`summaryrule.bicep`](./genai/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
-- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update, which should be customized based on the GenAI instrumentation provider(s) used: supported providers' summary rules are found under the [`genai`](./genai) metric collections.
+- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update, as in [`genai`](./genai/summaryrules.json) metric collections.
 
 ## Resources
 
