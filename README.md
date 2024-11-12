@@ -12,7 +12,7 @@ Sample metric collections are organized into 2 directories:
 1. **[genai](./genai):** Pre-built GenAI metric collection compatible with instrumentation libraries that adhere to [OpenTelemetry semantic conventions for GenAI spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/). Contents include configuration for GenAI metrics such as usage frequency, token usage and response latency. 
 The `summaryrules.json` file is necessary to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation on GenAI spans. Details are in the GenAI collection's `README.md` file.
 
-2. **[custom](./custom):** Sample metric collections based on Azure Monitor custom events (with corresponding instrumentation samples). These samples demonstrate how to instrument custom events and then use them in metric definitions. They can also be used directly in your application.
+2. **[custom](./custom):** Sample metric collections based on Azure Monitor custom events (with corresponding sample code for instrumentation). These samples demonstrate how to instrument custom events and then use them in metric definitions. They can also be used directly in your application.
 
 ## Getting Started
 
