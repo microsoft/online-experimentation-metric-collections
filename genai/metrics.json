@@ -219,7 +219,7 @@
       },
       {
         "id": "count_genai_with_length_restriction",
-        "displayName": "Number of GenAI calls with ;ength restriction finish reason",
+        "displayName": "Number of GenAI calls with length restriction finish reason",
         "description": "The number of GenAI calls that listed 'length' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
         "lifecycle": "Inactive",
         "tags": [
