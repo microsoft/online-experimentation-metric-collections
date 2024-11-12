@@ -21,7 +21,7 @@ The `summaryrules.json` file is necessary to provision a corresponding [Log Anal
 To generate metrics with Online Experimentation, you must:
 
 * Provision an online experimentation workspace.
-* Integrate Azure AppConfig and instrument key events for metrics using AppConfig's track event.
+* Integrate with Azure App Configuration SDK to evaluate feature flags and instrument key events for metrics using track event.
 * Use the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
 * [For GenAI metrics] utilize a OpenTelemetry GenAI instrumentation library which follows the [OpenTelemetry semantic convents](https://opentelemetry.io/docs/specs/semconv/gen-ai/). Enrich with custom attribute `TargetingId` (required): AppConfig's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation.
 
