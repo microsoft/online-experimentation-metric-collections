@@ -29,7 +29,7 @@ To generate metrics with Online Experimentation, you must:
 
 ## Demo
 
-The sample application [`Open AI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for evaluation and Online Experimentation provides a contextualized example of how metrics, summary rules and event tracking fit into an application. We reference these to provide the contextualized demo.
+The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for evaluation and Online Experimentation provides a contextualized example of how metrics, summary rules and event tracking fit into an application. We reference these to provide the contextualized demo.
 
 * [Add (your customized) metrics to a json file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/tree/main/.config). Edit your [GitHub Actions workflow file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/.github/workflows/azure-dev.yml) configured file path to ensure metrics in the file are deployed.
 * Add the summary rule(s) necessary for consuming OTEL-based GenAI spans into your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.json) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./genai/infra) folder of this samples repo.
