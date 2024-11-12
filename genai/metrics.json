@@ -55,7 +55,7 @@
       },
       {
         "id": "count_genai_chat_users",
-        "displayName": "Number of GenAI chat users with a GenAI",
+        "displayName": "Number of GenAI chat users",
         "description": "The number of users with at least one GenAI span with gen_ai.operation.name =='chat'.",
         "lifecycle": "Active",
         "tags": [
@@ -74,7 +74,7 @@
       {
         "id": "avg_genai_tokens",
         "displayName": "Average GenAI usage tokens",
-        "description": "The average usage tokens (both input and output) per GenAI call of any type.",
+        "description": "The average usage tokens (both input and output) per GenAI call of any type. Default desiredDirection is 'Decrease', appropriate for cases where cost reduction is a priority. If you are optimizing for user engagement regardless of cost, you may want to change this to 'Neutral'.",
         "lifecycle": "Active",
         "tags": [
           "GenAI",
@@ -147,7 +147,7 @@
       {
         "id": "sum_genai_tokens",
         "displayName": "Total GenAI usage tokens",
-        "description": "While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per event: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+        "description": "While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
         "lifecycle": "Active",
         "tags": [
           "GenAI",
@@ -165,7 +165,7 @@
       {
         "id": "sum_genai_chat_tokens",
         "displayName": "Total GenAI chat usage tokens",
-        "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per event: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+        "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
         "lifecycle": "Active",
         "tags": [
           "GenAI",

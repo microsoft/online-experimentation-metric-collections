@@ -26,7 +26,7 @@ In particular, you must:
 * Integrate with Azure App Configuration SDK to evaluate feature flags and instrument key events for metrics using track event.
 * Use the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
 * [For GenAI metrics] utilize an OpenTelemetry GenAI instrumentation library which follows the [OpenTelemetry semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
-      - The current summary rule works with GenAI spans adhering to OpenTelemetry semantic version <= v1.28. As new (breaking) changes are released, this repository will be updated, summary rules for older semantic convention versions will be available in an [archive](./genai/infra/archive).
+      - The current summary rule works with GenAI spans adhering to OpenTelemetry semantic version <= v1.28. As new (breaking) changes are released, this repository will be updated, summary rules for older semantic convention versions will be available in an [archive of summary rules for previous OTEL versions](./genai/archive-summary-rules/).
       - Enrich with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
      
 

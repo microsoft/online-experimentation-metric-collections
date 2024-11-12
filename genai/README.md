@@ -2,13 +2,12 @@
 
 Metrics contained in the GenAI metric collection are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the associated [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
 
->[!Warning]
-> While any instrumentation provider that follows the Open Telemetry GenAI semantic conventions will generate some value from this metric collection, not every instrumentation library strictly adheres to the semantic conventions. Therefore, some of the metrics in this collection may require editing or marking as 'Inactive' for your application. 
+While any instrumentation provider that follows the OpenTelemetry GenAI semantic conventions will benefit from this metric collection, not every instrumentation library strictly adheres to the semantic conventions. Therefore, some of the metrics in this collection may require editing or marking as 'Inactive' for your application. 
 
-Azure AI Tracing and OpenLLMetry Traceloop both have high alignment with the semantic conventions
+Azure AI Tracing and OpenLLMetry Traceloop both have high alignment with the semantic conventions.
 
 >[!Warning]
-> The semantic conventions for GenAI are still in active development and are marked as experimental. Therefore, there is risk in breaking changes to this metric collection due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions.
+> This repository currently aligns with OTEL semantic convention `v1.28`. The semantic conventions for GenAI are in active development and are marked as experimental. Therefore, there is risk in breaking changes to this metric collection due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. Summary rules for deprecated OpenTelemetry semantic convention versions will be made available in the [`archive-summary-rules`](./archive-summary-rules/) directory.
 
 ## Prerequisites
 
@@ -26,6 +25,7 @@ or `traceloop.association.properties.{one of the list above}`
 To update an _existing_ summary rule:
 1. Update the query in the corresponding summary rule object in `summaryrules.json` file in your experimentation-enabled workspace under the `infra` folder. Upon deployment, the bicep template will initiate summary rule provisioning. 
 1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs and increasing your data processing costs.
+
 
 
 ## GenAI metrics
