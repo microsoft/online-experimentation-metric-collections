@@ -25,10 +25,14 @@ In particular, you must:
 * Provision an online experimentation workspace. Follow  to set up your Online Experimentation.
 * Integrate with Azure App Configuration SDK to evaluate feature flags and instrument key events for metrics using track event.
 * Use the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
-* [For GenAI metrics] utilize an OpenTelemetry GenAI instrumentation library which follows the [OpenTelemetry semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
-      - The current summary rule works with GenAI spans adhering to OpenTelemetry semantic version <= v1.28. As new (breaking) changes are released, this repository will be updated, summary rules for older semantic convention versions will be available in an [archive of summary rules for previous OTEL versions](./genai/archive-summary-rules/).
-      - Enrich with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
-     
+* [For GenAI metrics] utilize an GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
+  - Enrich spans with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
+* [For GenAI metrics] create a summary rule. 
+  - This summary rule **must** write to table `AppEvents_CL` in order for output events to be consumed in metric computation. 
+  - Except in advanced usage, we strongly recommend directly using the summary rule configuration in[`summaryrules.json`](./genai/summaryrules.json) which corresponds to the latest semantic conventions -- currently `v1.28`.
+  - As new (breaking) changes are released, summary rules for older semantic convention versions will be available in the [archive of summary rules for previous OTEL versions](./genai/archive-summary-rules/).
+
+
 
 ## Demo
 
@@ -40,7 +44,7 @@ The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/open
 
 In the [`./genai/infra/main.bicep`](./genai/infra/main.bicep) file of your target, add in the summary rule module:
 
-```yaml
+```
 targetScope = 'subscription'
 
 @description('Log Analytics Workspace name, location, and resource group')
@@ -68,6 +72,9 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
   }
 } ]
 ```
+
+> [!Important]
+> Ensure destinationTable matches AppEvents_CL. To control costs, no other custom log tables are used for Online Experimentation metric computation.
 
 This module requires two dependent files:
 - [`summaryrule.bicep`](./genai/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)

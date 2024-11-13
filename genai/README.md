@@ -25,7 +25,7 @@ or `traceloop.association.properties.{one of the list above}`
 To update an _existing_ summary rule:
 1. Update the query in the corresponding summary rule object in `summaryrules.json` file in your experimentation-enabled workspace under the `infra` folder. Upon deployment, the bicep template will initiate summary rule provisioning. 
 1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs and increasing your data processing costs.
-
+1. Confirm the summary rule destination table (configured in bicep file) is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
 
 
 ## GenAI metrics
