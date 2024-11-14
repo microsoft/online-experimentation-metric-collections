@@ -213,7 +213,7 @@
           "kind": "EventCount",
           "event": {
             "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.finish_reason.has.content_filter'] == true"
+            "filter": "['gen_ai.finish_reason.content_filter'] == true"
           }
         }
       },
@@ -230,7 +230,7 @@
           "kind": "EventCount",
           "event": {
             "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.finish_reason.has.length'] == true"
+            "filter": "['gen_ai.finish_reason.length'] == true"
           }
         }
       },
@@ -247,7 +247,7 @@
           "kind": "EventCount",
           "event": {
             "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.finish_reason.has.tool_calls'] == true"
+            "filter": "['gen_ai.finish_reason.tool_calls'] == true"
           }
         }
       }
