@@ -71,7 +71,7 @@ Therefore, we recommend enriching with custom event logging for key error handli
 
 | Event Name | Properties |
 | -------- | -------- | 
-`ErrorLLM` | `Code` (str), `StatusCode` (int) | 
+| `ErrorLLM` | `Code` (str), `StatusCode` (int) | 
 
 A generic error event (not specific to LLM calls) is a good alternative if adding instrumentation for all error handling.
 
