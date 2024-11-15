@@ -33,7 +33,7 @@ To update an _existing_ summary rule:
 
 ## GenAI metrics
 
-The following metrics are provided:
+The following metrics are defined in [`metrics.json`](./metrics.json):
 
 | Display name | Metric kind | Description | Default lifecycle |
 | ------- | ------- | ------ | ------ | 
@@ -42,22 +42,28 @@ The following metrics are provided:
 | Number of GenAI chat calls | EventCount | Though there are additional GenAI operation types, chat is a common operation and so this metric is provided as an example of how to filter general GenAI metrics to a particular operation name. Filtered to GenAI spans with gen_ai.operation.name =='chat' | Active | 
 | Number of GenAI chat users | UserCount | The number of users with at least one GenAI span with gen_ai.operation.name =='chat'. | Active | 
 | Average GenAI usage tokens | Average | The average usage tokens (both input and output) per GenAI call of any type. | Active | 
-| 95th percentile GenAI usage tokens | Percentile | The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. | Inactive [\[1\]](#genai-metric-footnotes)  | 
+| 95th percentile GenAI usage tokens | Percentile | The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. | Inactive [\[1\]](#genai-metric-footnotes-1)  | 
 | Average GenAI usage input tokens | Average | The average tokens used on input (prompt) per GenAI call of any type. |  Active | 
 | Average GenAI usage output tokens | Average | The average tokens used on output (response) per GenAI call of any type. |  Active | 
 | Total GenAI usage tokens| Sum | While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per TargetingId, thereby accounting for unequal traffic allocation across variants.| Active | 
 | Total chat usage tokens| Sum | The same as previous, but restricted to 'chat' GenAI operations only.| Active | 
 | Average chat call duration (ms) | Average | The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMS property of the span capturing GenAI call completion. | Active | 
-| Number of GenAI calls with content filter finish reason | EventCount | The number of GenAI calls that listed 'content_filter' among their finish reason. |  Inactive [\[2\]](#genai-metric-footnotes) |
-| Number of GenAI calls with length restriction finish reason | EventCount | The number of GenAI calls that listed 'length' among their finish reason. |  Inactive [\[2\]](#genai-metric-footnotes) |
-| Number of GenAI calls with tool call finish reason | EventCount | The number of GenAI calls that listed 'tool_calls' among their finish reason. |  Inactive[\[2\]](#genai-metric-footnotes) |
+| Number of GenAI operations that end in an error | EventCount | The number of GenAI calls that have a non-empty 'error.type' attribute. | Active |
+| Number of GenAI operations that end in a timeout error | EventCount | The number of GenAI calls that have 'error.type' equal to 'timeout'. This is an example metric for how to customize GenAI error type metrics to particular error classes. | Inactive [\[2\]](#genai-metric-footnotes-2) | 
+| Number of GenAI calls with content filter finish reason | EventCount | The number of GenAI calls that listed 'content_filter' among their finish reason. |  Inactive [\[2,3\]](#genai-metric-footnotes-2) |
+| Number of GenAI calls with length restriction finish reason | EventCount | The number of GenAI calls that listed 'length' among their finish reason. |  Inactive [\[2,3\]](#genai-metric-footnotes-2) |
+| Number of GenAI calls with tool call finish reason | EventCount | The number of GenAI calls that listed 'tool_calls' among their finish reason. |  Inactive[\[2,3\]](#genai-metric-footnotes-2) |
 
 
-<a name="genai-metric-footnotes"></a>
 
-\[1\] Percentile metrics are set as `Inactive` by default as they are less statistically sensitive than average metrics on the same signal, and can be less efficient to compute. 
+<a id="genai-metric-footnotes-1"></a>
+\[1\] Percentile metrics are set as `Inactive` by default as they are less statistically sensitive than average metrics on the same signal, and can be less efficient to compute.
 
-\[2\] Metrics which use less universally adopted attributes are set as `Inactive` by default. This metric is supported for Azure AI Inference but not Traceloop OpenLLMetry. For other providers, check your application's GenAI spans to verify logging of attributes referenced in the metric definition before setting to `Active`.
+<a id="genai-metric-footnotes-2"></a>
+\[2\] Although some attributes are standardized by semantic conventions, the values they take may not be. Metrics which use attribute values that are not covered by the semantic conventions are set as `Inactive` by default and should be treated as examples of how to customize the metric definition rather than used directly.
+
+<a id="genai-metric-footnotes-3"></a>
+\[3\] These metrics are supported for Azure AI Inference but not Traceloop OpenLLMetry. For other providers, check your application's GenAI spans to verify logging of attributes referenced in the metric definition before setting to `Active`.
 
 
 ## Usage
@@ -71,7 +77,7 @@ The following metrics are provided:
 
 The provided GenAI summary rule transforms all GenAI spans meeting OpenTelemetry semantic conventions into event-like logs consumable for Online Experimentation metrics.
 
-To preview the output of this summary rule, run the query below on your application's Log Analytics workspace.
+To preview the output of this summary rule and review which standardized attributes will be available for GenAI metrics, run the query below on your application's Log Analytics workspace.
 
 ```kusto
 let otel_genai_semantic_convention_keys = dynamic(["gen_ai.operation.name","gen_ai.request.model", "gen_ai.system","error.type","server.port","gen_ai.request.frequency_penalty", "gen_ai.request.max_tokens","gen_ai.request.presence_penalty","gen_ai.request.stop_sequences","gen_ai.request.temperature","gen_ai.request.top_k","gen_ai.request.top_p","gen_ai.response.finish_reasons","gen_ai.response.id","gen_ai.response.model","gen_ai.usage.input_tokens","gen_ai.usage.output_tokens","server.address","gen_ai.openai.request.response_format","gen_ai.openai.request.seed","gen_ai.openai.request.service_tier","gen_ai.openai.response.service_tier"]);

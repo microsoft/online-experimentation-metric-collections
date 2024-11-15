@@ -201,6 +201,40 @@
         }
       },
       {
+        "id": "count_genai_with_error",
+        "displayName": "Number of GenAI operations that end in an error",
+        "description": "The number of GenAI calls that have a non-empty 'error.type' attribute.",
+        "lifecycle": "Active",
+        "tags": [
+          "GenAI"
+        ],
+        "desiredDirection": "Decrease",
+        "definition": {
+          "kind": "EventCount",
+          "event": {
+            "eventName": "gen_ai.otel.span",
+            "filter": "['error.type'] != ''"
+          }
+        }
+      },
+      {
+        "id": "count_genai_with_timeout_error",
+        "displayName": "Number of GenAI operations that end in a timeout error",
+        "description": "The number of GenAI calls that have 'error.type' equal to 'timeout'. This is an example metric for how to customize GenAI error type metrics to particular error classes. It is set by default to 'Inactive' since different isntrumentation libraries may use different error class descriptions.",
+        "lifecycle": "Inactive",
+        "tags": [
+          "GenAI"
+        ],
+        "desiredDirection": "Decrease",
+        "definition": {
+          "kind": "EventCount",
+          "event": {
+            "eventName": "gen_ai.otel.span",
+            "filter": "['error.type'] == 'timeout'"
+          }
+        }
+      },
+      {
         "id": "count_genai_with_content_filter",
         "displayName": "Number of GenAI calls with content filter finish reason",
         "description": "The number of GenAI calls that listed 'content_filter' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
