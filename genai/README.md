@@ -30,7 +30,12 @@ To update an _existing_ summary rule:
 1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs which can skew metrics.
 1. Confirm the summary rule destination table (configured in bicep file) is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
 
+## Usage
 
+1. Add the contents of `metrics.json` and `summaryrules.json` to corresponding files in your experimentation-enabled repository.
+1. Optionally: modify metrics. Rename or update description of metrics. Set `Inactive` metrics as `Active`. Caution should be exercised when customizing the metric definition field. The definition is dependent on summary rule output format.
+1. If this is your first time adding summary rules for Online Experimentation, see [root `README.md`](../README.md) to overview metric and summary rule deployment, with more details in [Online Experimentation documentation](https://aka.ms/exp/public/docs).
+   
 ## GenAI metrics
 
 The following metrics are defined in [`metrics.json`](./metrics.json):
@@ -66,11 +71,7 @@ The following metrics are defined in [`metrics.json`](./metrics.json):
 \[3\]  Due to availability of recommended GenAI span attributes, these metrics are supported for Azure AI Inference but not Traceloop OpenLLMetry. If you are using Azure AI Inference, you can set these as `Active`. For other providers: check your application's GenAI spans to verify whether they include attributes referenced in the metric definition.
 
 
-## Usage
 
-1. Append the contents of `metrics.json` and `summaryrules.json` to corresponding files in your experimentation-enabled repository.
-1. Rename or update description of metrics. Caution should be exercised when editing the metric definition itself, as the definition is dependent on summary rule output format.
-1. If this is your first time adding summary rules for Online Experimentation, see [root `README.md`](../README.md) to overview metric deployment and summary rule update, with more details in [Online Experimentation documentation](https://aka.ms/exp/public/docs).
 
 
 ## GenAI summary rule
