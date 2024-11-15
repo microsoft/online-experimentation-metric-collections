@@ -55,12 +55,12 @@ The following metrics are defined in [`metrics.json`](./metrics.json):
 | Number of GenAI calls with tool call finish reason | EventCount | The number of GenAI calls that listed 'tool_calls' among their finish reason. |  Inactive[\[2,3\]](#genai-metric-footnotes-2) |
 
 
-
+### Reasons for `Inactive` metrics
 <a id="genai-metric-footnotes-1"></a>
-\[1\] Percentile metrics are set as `Inactive` by default as they are less statistically sensitive than average metrics on the same signal, and can be less efficient to compute.
+\[1\] Percentile metrics are set as `Inactive` by default as they are less statistically sensitive than average metrics on the same signal and can be less efficient to compute.
 
 <a id="genai-metric-footnotes-2"></a>
-\[2\] Although some attributes are standardized by semantic conventions, the values they take may not be. Metrics which use attribute values that are not covered by the semantic conventions are set as `Inactive` by default and should be treated as examples of how to customize the metric definition rather than used directly.
+\[2\] Although attributes are standardized by semantic conventions, the values they take may not be. Metrics which directly reference such attribute values are set as `Inactive` by default. Edit attribute values in the metric definition to match your application GenAI spans.
 
 <a id="genai-metric-footnotes-3"></a>
 \[3\] These metrics are supported for Azure AI Inference but not Traceloop OpenLLMetry. For other providers, check your application's GenAI spans to verify logging of attributes referenced in the metric definition before setting to `Active`.
