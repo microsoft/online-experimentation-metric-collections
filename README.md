@@ -74,15 +74,16 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
 ```
 
 > [!Important]
-> Ensure destinationTable matches AppEvents_CL. To control costs, no other custom log tables are used for Online Experimentation metric computation.
+> Ensure destinationTable matches 'AppEvents_CL'. No other custom log tables are used for Online Experimentation metric computation.
 
 This module requires two dependent files:
 - [`summaryrule.bicep`](./genai/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
-- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update, as in [`genai`](./genai/summaryrules.json) metric collections.
+- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update. For example, [`genai`](./genai/summaryrules.json).
 
 ## Resources
 
 - [Online Experimentation documentation](https://aka.ms/exp/public/docs)
 - [Sample Online Experimentation enabled OpenAI app](https://github.com/Azure-Samples/openai-chat-app-eval-ab)
-- [Github Action to deploy metrics](https://github.com/Azure/online-experimentation-deploy-metrics)
+- [GitHub Action to deploy metrics](https://github.com/Azure/online-experimentation-deploy-metrics)
+- Contact <a href="mailto:exp-preview-fb\@microsoft.com">exp-preview-fb\@microsoft.com</a> for assistance during private preview.
 

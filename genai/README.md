@@ -4,14 +4,15 @@ Metrics contained in the GenAI metric collection are common GenAI-related measur
 
 While any instrumentation provider that follows the OpenTelemetry GenAI semantic conventions will benefit from this metric collection, not every instrumentation library strictly adheres to the semantic conventions. Therefore, some of the metrics in this collection may require editing or marking as 'Inactive' for your application. 
 
-Azure AI Tracing and OpenLLMetry Traceloop both have high alignment with the semantic conventions.
+[Azure AI Inference](https://learn.microsoft.com/en-us/azure/ai-studio/reference/reference-model-inference-api?tabs=python#inference-sdk-support) with [tracing via OpenTelemetry](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-inference/README.md) and [Traceloop OpenLLMetry](https://www.traceloop.com/openllmetry) both have high alignment with the OpenTelemetry semantic conventions.
 
 >[!Warning]
-> This repository currently aligns with OTEL semantic convention `v1.28`. The semantic conventions for GenAI are in active development and are marked as experimental. Therefore, there is risk in breaking changes to this metric collection due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. Summary rules for deprecated OpenTelemetry semantic convention versions will be made available in the [`archive-summary-rules`](./archive-summary-rules/) directory.
+> This repository currently aligns with OTEL semantic convention `v1.27+`. The semantic conventions for GenAI are in active development and are marked as experimental. Therefore, there is risk in breaking changes to this metric collection due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. Summary rules for deprecated OpenTelemetry semantic convention versions will be made available in the [`archive-summary-rules`](./archive-summary-rules/) directory.
 
 ## Prerequisites
 
-`TargetingId` must be added to the GenAI spans. Traceloop supports this by [association entity](https://www.traceloop.com/docs/openllmetry/tracing/association) onto Traceloop logs. The naming convention of the attribute must be one of:
+`TargetingId` must be added to the GenAI spans. Traceloop supports this by [association entity](https://www.traceloop.com/docs/openllmetry/tracing/association) onto Traceloop logs.
+Azure AI Inference supports this by [adding custom properties to spans](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-add-modify?tabs=aspnetcore#add-a-custom-property-to-a-span) which may require a custom span processor. The naming convention of the attribute must be one of:
 * `TargetingId`
 * `targeting_id`
 * `targetingid`
@@ -19,12 +20,14 @@ Azure AI Tracing and OpenLLMetry Traceloop both have high alignment with the sem
 
 or `traceloop.association.properties.{one of the list above}`
 
+The summary rule query _can_ be customized to accept an alternative naming convention, but this is not recommended.
+
 > [!IMPORTANT]
 > Summary rule provisioning is required to use metrics in this collection. If this is your first time adding a [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for Online Experimentation, see [root `README`](../README.md) for overall guidance.
 
 To update an _existing_ summary rule:
 1. Update the query in the corresponding summary rule object in `summaryrules.json` file in your experimentation-enabled workspace under the `infra` folder. Upon deployment, the bicep template will initiate summary rule provisioning. 
-1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs and increasing your data processing costs.
+1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs which can skew metrics.
 1. Confirm the summary rule destination table (configured in bicep file) is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
 
 
@@ -32,37 +35,45 @@ To update an _existing_ summary rule:
 
 The following metrics are provided:
 
-| Display name | Metric kind | Description |
-| ------- | ------- | ------ | 
-| Number of GenAI spans | EventCount | The number of GenAI spans. This is an approximation of the number of total GenAI requests made, as a single span _may_ incorporate multiple related GenAI calls depending on the instrumentation.  |
-| Number of GenAI users | UserCount | The number of users producing at least one GenAI span. This metric measures discovery/adoption of your GenAI features.  |
-| Number of GenAI chat calls | EventCount | Though there are additional GenAI operation types, chat is a common operation and so this metric is provided as an example of how to filter general GenAI metrics to a particular operation name. Filtered to GenAI spans with gen_ai.operation.name =='chat' |
-| Number of GenAI chat users | UserCount | The number of users with at least one GenAI span with gen_ai.operation.name =='chat'. |
-| Average GenAI usage tokens | Average | The average usage tokens (both input and output) per GenAI call of any type. |
-| 95th percentile GenAI usage tokens | Percentile | The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. Because percentile metrics can be less sensitive and more costly to compute, we mark this metric as 'Inactive' by default. |
-| Average GenAI usage input tokens | Average | The average tokens used on input (prompt) per GenAI call of any type. | 
-| Average GenAI usage output tokens | Average | The average tokens used on output (response) per GenAI call of any type. | 
-| Total GenAI usage tokens| Sum | While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per event: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.|
-| Total chat usage tokens| Sum | The same as previous, but restricted to 'chat' GenAI operations only.|
-| Average chat call duration (ms) | Average | The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMS property of the span capturing GenAI call completion. |
-| Number of GenAI calls with content filter finish reason | EventCount | The number of GenAI calls that listed 'content_filter' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly. | 
-| Number of GenAI calls with length restriction finish reason | EventCount | The number of GenAI calls that listed 'length' among their finish reason. Similar to previous, this is marked as 'Inactive' by default. | 
-| Number of GenAI calls with tool call finish reason | EventCount | The number of GenAI calls that listed 'tool_calls' among their finish reason. Similar to previous, this is marked as 'Inactive' by default. |
+| Display name | Metric kind | Description | Default lifecycle |
+| ------- | ------- | ------ | ------ | 
+| Number of GenAI spans | EventCount | The number of GenAI spans. This is an approximation of the number of total GenAI requests made, as a single span _may_ incorporate multiple related GenAI calls depending on the instrumentation. | Active | 
+| Number of GenAI users | UserCount | The number of users producing at least one GenAI span. This metric measures discovery/adoption of your GenAI features.  | Active | 
+| Number of GenAI chat calls | EventCount | Though there are additional GenAI operation types, chat is a common operation and so this metric is provided as an example of how to filter general GenAI metrics to a particular operation name. Filtered to GenAI spans with gen_ai.operation.name =='chat' | Active | 
+| Number of GenAI chat users | UserCount | The number of users with at least one GenAI span with gen_ai.operation.name =='chat'. | Active | 
+| Average GenAI usage tokens | Average | The average usage tokens (both input and output) per GenAI call of any type. | Active | 
+| 95th percentile GenAI usage tokens | Percentile | The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. | Inactive [\[1\]](#genai-metric-footnotes)  | 
+| Average GenAI usage input tokens | Average | The average tokens used on input (prompt) per GenAI call of any type. |  Active | 
+| Average GenAI usage output tokens | Average | The average tokens used on output (response) per GenAI call of any type. |  Active | 
+| Total GenAI usage tokens| Sum | While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per TargetingId, thereby accounting for unequal traffic allocation across variants.| Active | 
+| Total chat usage tokens| Sum | The same as previous, but restricted to 'chat' GenAI operations only.| Active | 
+| Average chat call duration (ms) | Average | The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMS property of the span capturing GenAI call completion. | Active | 
+| Number of GenAI calls with content filter finish reason | EventCount | The number of GenAI calls that listed 'content_filter' among their finish reason. |  Inactive [\[2\]](#genai-metric-footnotes) |
+| Number of GenAI calls with length restriction finish reason | EventCount | The number of GenAI calls that listed 'length' among their finish reason. |  Inactive [\[2\]](#genai-metric-footnotes) |
+| Number of GenAI calls with tool call finish reason | EventCount | The number of GenAI calls that listed 'tool_calls' among their finish reason. |  Inactive[\[2\]](#genai-metric-footnotes) |
+
+
+<a name="genai-metric-footnotes"></a>
+
+\[1\] Percentile metrics are set as `Inactive` by default as they are less statistically sensitive than average metrics on the same signal, and can be less efficient to compute. 
+
+\[2\] Metrics which use less universally adopted attributes are set as `Inactive` by default. This metric is supported for Azure AI Inference but not Traceloop OpenLLMetry. For other providers, check your application's GenAI spans to verify logging of attributes referenced in the metric definition before setting to `Active`.
+
 
 ## Usage
 
 1. Append the contents of `metrics.json` and `summaryrules.json` to corresponding files in your experimentation-enabled repository.
 1. Rename or update description of metrics. Caution should be exercised when editing the metric definition itself, as the definition is dependent on summary rule output format.
-1. If this is your first time adding summary rules for Online experimentation, see [root `README.md`](../README.md) to overview metric synchronization and summary rule update.
+1. If this is your first time adding summary rules for Online Experimentation, see [root `README.md`](../README.md) to overview metric deployment and summary rule update, with more details in [Online Experimentation documentation](https://aka.ms/exp/public/docs).
 
 
 ## GenAI summary rule
 
 The provided GenAI summary rule transforms all GenAI spans meeting OpenTelemetry semantic conventions into event-like logs consumable for Online Experimentation metrics.
 
-To preview the output of this summary rule, run the query below on your application's log analytics workspace.
+To preview the output of this summary rule, run the query below on your application's Log Analytics workspace.
 
-```sql
+```kusto
 let otel_genai_semantic_convention_keys = dynamic(["gen_ai.operation.name","gen_ai.request.model", "gen_ai.system","error.type","server.port","gen_ai.request.frequency_penalty", "gen_ai.request.max_tokens","gen_ai.request.presence_penalty","gen_ai.request.stop_sequences","gen_ai.request.temperature","gen_ai.request.top_k","gen_ai.request.top_p","gen_ai.response.finish_reasons","gen_ai.response.id","gen_ai.response.model","gen_ai.usage.input_tokens","gen_ai.usage.output_tokens","server.address","gen_ai.openai.request.response_format","gen_ai.openai.request.seed","gen_ai.openai.request.service_tier","gen_ai.openai.response.service_tier"]);
 let otel_genai_deprecated_keys = dynamic(["gen_ai.usage.completion_tokens","gen_ai.usage.prompt_tokens"]);
 let other_supported_keys = dynamic(["gen_ai.response.model","gen_ai.openai.api_version"]);
@@ -83,5 +94,5 @@ AppDependencies
 | project Name, TimeGenerated, ItemCount, Properties
 ```
 
-## Extensions beyond semantic conventions:
-For advanced use cases, it is possible to adapt the `other_supported_keys` array and filter conditions to create a summary rule query for use with instrumentation libraries that do not follow the current OpenTelemetry semantic conventions, or to push other types of spans into the custom `AppEvents_CL` table.
+## Help
+For questions or issues with GenAI metrics, contact <a href="mailto:exp-preview-fb\@microsoft.com">exp-preview-fb\@microsoft.com</a>.
