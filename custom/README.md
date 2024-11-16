@@ -50,7 +50,7 @@ User feedback should be logged as a numeric score from -1(negative) to +1(positi
 
 [Metric file](./metrics-errors.json)
 
-Metrics in this collection illustrate metrics for tracking errors and related events as guardrails to limit unintended degradation in system performance. Metrics in this category require customized App Configuration event tracking for error handling.
+Metrics in this collection illustrate metrics for tracking custom error events as guardrails to limit unintended degradation in system performance.
 
 ### Errors: metrics
 
