@@ -1,8 +1,5 @@
 # Custom metric collections
 
-> [!Note]
-> Metric samples in this folder are evolving, based on both experimenter input and OpenTelemetry semantic conventions. 
-
 Custom metric collections are organized by metric topic. It is recommended for most products to adopt at least one metric from each topic in order to broaden measurement coverage.
 
 ## Prerequisites
