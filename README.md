@@ -78,7 +78,7 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
 
 This module requires two dependent files:
 - [`summaryrule.bicep`](./genai/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
-- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update. For example, [`genai`](./genai/summaryrules.json).
+- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json) -- a list of parameterized summary rules to create or update. For example, [`genai`](./genai/summaryrules.json).
 
 ## Resources
 
