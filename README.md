@@ -1,9 +1,9 @@
 # Online Experimentation Metric Collections
 
-This repository provides versioned samples of online experimentation metrics, sample support files for integrating with CI/CD, and documentation for online experimentation metrics.
+> [!IMPORTANT]
+> This repository is under active development and is subject to the [Azure AI Private Preview Terms - Online Experimentation](private-preview-terms.md).
 
-> [!CAUTION]
-> Contents in this repository are actively updated during private preview. 
+This repository provides versioned samples of online experimentation metrics, sample support files for integrating with CI/CD, and documentation for online experimentation metrics.
 
 ## Features
 
