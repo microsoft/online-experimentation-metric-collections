@@ -18,7 +18,7 @@ The `summaryrules.json` file is necessary to provision a corresponding [Log Anal
 
 ### Prerequisites
 
-To generate metrics with Online Experimentation you must integrate Online Experimentation offering. See [Online Experimentation documentation](aka.ms/exp/public/docs) for the full setup documentation.
+To generate metrics with Online Experimentation you must integrate Online Experimentation offering. See [Online Experimentation documentation](https://aka.ms/exp/public/docs) for the full setup documentation.
 
 In particular, you must:
 
