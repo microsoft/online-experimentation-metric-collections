@@ -1,9 +1,9 @@
 # Online Experimentation Metric Collections
 
-This repository provides versioned samples of online experimentation metrics, sample support files for integrating with CI/CD, and documentation for online experimentation metrics.
+> [!IMPORTANT]
+> This repository is under active development and is subject to the [Azure AI Private Preview Terms - Online Experimentation](private-preview-terms.md).
 
-> [!CAUTION]
-> Contents in this repository are actively updated during private preview. 
+This repository provides versioned samples of online experimentation metrics, sample support files for integrating with CI/CD, and documentation for online experimentation metrics.
 
 ## Features
 
@@ -18,7 +18,7 @@ The `summaryrules.json` file is necessary to provision a corresponding [Log Anal
 
 ### Prerequisites
 
-To generate metrics with Online Experimentation you must integrate Online Experimentation offering. See [Online Experimentation documentation](aka.ms/exp/public/docs) for the full setup documentation.
+To generate metrics with Online Experimentation you must integrate Online Experimentation offering. See [Online Experimentation documentation](https://aka.ms/exp/public/docs) for the full setup documentation.
 
 In particular, you must:
 
@@ -78,7 +78,7 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
 
 This module requires two dependent files:
 - [`summaryrule.bicep`](./genai/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
-- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json`) -- a list of parameterized summary rules to create or update. For example, [`genai`](./genai/summaryrules.json).
+- [`summaryrules.json`](./genai/infra/monitor/summaryrules.json) -- a list of parameterized summary rules to create or update. For example, [`genai`](./genai/summaryrules.json).
 
 ## Resources
 

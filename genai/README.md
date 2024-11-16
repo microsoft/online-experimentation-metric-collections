@@ -1,13 +1,13 @@
 # GenAI metric collection
 
-Metrics contained in the GenAI metric collection are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the associated [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
+Metrics contained in the GenAI [metric collection](./metrics.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules.json) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
 
 While any instrumentation provider that follows the OpenTelemetry GenAI semantic conventions will benefit from this metric collection, not every instrumentation library strictly adheres to the semantic conventions. Therefore, some of the metrics in this collection may require editing or marking as 'Inactive' for your application. 
 
 [Azure AI Inference](https://learn.microsoft.com/en-us/azure/ai-studio/reference/reference-model-inference-api?tabs=python#inference-sdk-support) with [tracing via OpenTelemetry](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-inference/README.md) and [Traceloop OpenLLMetry](https://www.traceloop.com/openllmetry) both have high alignment with the OpenTelemetry semantic conventions.
 
 >[!Warning]
-> This repository currently aligns with OTEL semantic convention `v1.27+`. The semantic conventions for GenAI are in active development and are marked as experimental. Therefore, there is risk in breaking changes to this metric collection due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. Summary rules for deprecated OpenTelemetry semantic convention versions will be made available in the [`archive-summary-rules`](./archive-summary-rules/) directory.
+> This repository currently aligns with OTEL semantic convention `v1.27+`. The semantic conventions for GenAI are in active development and are marked as experimental. For experimental semantic conventions there is risk in breaking changes due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. Summary rules for deprecated OpenTelemetry semantic convention versions will be made available in the [`archive-summary-rules`](./archive-summary-rules/) directory.
 
 ## Prerequisites
 
@@ -30,7 +30,12 @@ To update an _existing_ summary rule:
 1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs which can skew metrics.
 1. Confirm the summary rule destination table (configured in bicep file) is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
 
+## Usage
 
+1. Add the contents of `metrics.json` and `summaryrules.json` to corresponding files in your experimentation-enabled repository.
+1. Optionally: modify metrics. Rename or update description of metrics. Set `Inactive` metrics as `Active`. Caution should be exercised when customizing the metric definition field. The definition is dependent on summary rule output format.
+1. If this is your first time adding summary rules for Online Experimentation, see [root `README.md`](../README.md) to overview metric and summary rule deployment, with more details in [Online Experimentation documentation](https://aka.ms/exp/public/docs).
+   
 ## GenAI metrics
 
 The following metrics are defined in [`metrics.json`](./metrics.json):
@@ -63,14 +68,10 @@ The following metrics are defined in [`metrics.json`](./metrics.json):
 \[2\] Although attributes are standardized by semantic conventions, the values they take may not be. Metrics which directly reference such attribute values are set as `Inactive` by default. Edit attribute values in the metric definition to match your application GenAI spans.
 
 <a id="genai-metric-footnotes-3"></a>
-\[3\] These metrics are supported for Azure AI Inference but not Traceloop OpenLLMetry. For other providers, check your application's GenAI spans to verify logging of attributes referenced in the metric definition before setting to `Active`.
+\[3\]  Due to availability of recommended GenAI span attributes, these metrics are supported for Azure AI Inference but not Traceloop OpenLLMetry. If you are using Azure AI Inference, you can set these as `Active`. For other providers: check your application's GenAI spans to verify whether they include attributes referenced in the metric definition.
 
 
-## Usage
 
-1. Append the contents of `metrics.json` and `summaryrules.json` to corresponding files in your experimentation-enabled repository.
-1. Rename or update description of metrics. Caution should be exercised when editing the metric definition itself, as the definition is dependent on summary rule output format.
-1. If this is your first time adding summary rules for Online Experimentation, see [root `README.md`](../README.md) to overview metric deployment and summary rule update, with more details in [Online Experimentation documentation](https://aka.ms/exp/public/docs).
 
 
 ## GenAI summary rule
