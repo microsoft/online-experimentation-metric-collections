@@ -15,7 +15,7 @@ Metrics in this collection will not work out-of-box. Event logging must be added
 1. Review the `eventName(s)` and attributes referenced in `condition` and `filter` expressions.
     - [If necessary] add instrumentation in your app using [custom event tracking for App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/run-experiments-aspnet-core). A sample for Python is available [here](https://github.com/Azure-Samples/quote-of-the-day-python/blob/main/src/quoteoftheday/routes.py). 
 1. Copy the desired metric configurations into your metric configuration file(s) under your experimentation-enabled repository. Edit with the following in mind:
-    - Metrics depend on the `Name` (encoded as `EventName`) to identify the relevant event types. 
+    - Metrics depend on the event name (specified in the `eventName` field) to identify the relevant event types. 
     - Most metrics also depend on selected attributes from the `Properties` property bag as filters or numeric values. `StatusCode == 400` is equivalent to `Properties['StatusCode'] == 400`
     - Ensure the `"lifecycle"` is set to `"Active"` in order to enable the metric computation.
 1. Upon the next run of your GitHub Action Workflow, the metrics will be deployed for computation in all subsequent scorecards. Metrics can be disabled later through deletion or by setting the `"lifecycle"` to `"Inactive"`.
