@@ -165,7 +165,7 @@
       {
         "id": "sum_genai_chat_tokens",
         "displayName": "Total GenAI chat usage tokens",
-        "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+        "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user, thereby accounting for unequal traffic allocations across variants.",
         "lifecycle": "Active",
         "tags": [
           "GenAI",
