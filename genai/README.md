@@ -17,10 +17,10 @@ If your GenAI spans do not strictly follow semantic conventions, you may need to
 
 1. `TargetingId` must be added to the GenAI spans. Traceloop supports this by [association entity](https://www.traceloop.com/docs/openllmetry/tracing/association) onto Traceloop logs.
 Azure AI Inference supports this by [adding custom properties to spans](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-add-modify?tabs=aspnetcore#add-a-custom-property-to-a-span) which may require a custom span processor. The naming convention of the attribute must be one of:
-* `TargetingId`
-* `targeting_id`
-* `targetingid`
-* `targetingId`
+    * `TargetingId`
+    * `targeting_id`
+    * `targetingid`
+    * `targetingId`
 
     or `traceloop.association.properties.{one of the list above}`
 
