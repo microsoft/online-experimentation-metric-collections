@@ -20,17 +20,16 @@ The `summaryrules.json` file is necessary to provision a corresponding [Log Anal
 
 To generate metrics with Online Experimentation you must integrate Online Experimentation offering. See [Online Experimentation documentation](https://aka.ms/exp/public/docs) for the full setup documentation.
 
-In particular, you must:
+You must have:
 
-* Provision an online experimentation workspace. Follow  to set up your Online Experimentation.
-* Integrate with Azure App Configuration SDK to evaluate feature flags and instrument key events for metrics using track event.
-* Use the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
-* [For GenAI metrics] utilize an GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
-  - Enrich spans with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
-* [For GenAI metrics] create a summary rule. 
-  - This summary rule **must** write to table `AppEvents_CL` in order for output events to be consumed in metric computation. 
-  - Except in advanced usage, we strongly recommend directly using the summary rule configuration in[`summaryrules.json`](./genai/summaryrules.json) which corresponds to the latest semantic conventions -- currently `v1.28`.
-  - As new (breaking) changes are released, summary rules for older semantic convention versions will be available in the [archive of summary rules for previous OTEL versions](./genai/archive-summary-rules/).
+* Provisioned an online experimentation workspace. Follow documentation at[Online Experimentation documentation](https://aka.ms/exp/public/docs).
+* Integrated with Azure App Configuration SDK to evaluate feature flags and instrument key events for metrics using track event.
+* Set up the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
+* [For GenAI metrics] integrated a GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
+  - Enriched spans with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
+* [For GenAI metrics] created a summary rule which ouputs transformed GenAI spans into `AppEvents_CL` table. 
+  - The summary rule configuration in [`summaryrules.json`](./genai/summaryrules.json) corresponds to the latest semantic conventions.
+  - As new (breaking) changes are released, summary rules and GenAI metrics for older semantic convention versions will be available in the [archive](./genai/archive).
 
 
 
