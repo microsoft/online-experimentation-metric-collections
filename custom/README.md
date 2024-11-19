@@ -9,12 +9,8 @@ Custom metrics rely on custom event logs that are instrumented via App Configura
 
 Required event name and property references for each metric collection are stated in each section. If events use alternative naming conventions, the metric definition field should be edited to match existing instrumentation.
 
-The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) contains examples for custom event tracking in python applications.
-
-The [supplemental tutorial](.instrumentation-tutorial-from-app-configuration.md) demonstrates instrumentation in context for a .NET application. 
-
-For this reason, App Configuration event tracking Instrumentation through App Configuration is a wrapper of  and guarantees the `TargetingId` will be attached to events. Attachment of `TargetingId` is required in order to attribute events to randomly assigned feature flags. TargetingTelemetryInitializer
-  
+* The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) contains examples for custom event tracking in python applications.
+* The [supplemental tutorial](.instrumentation-tutorial-from-app-configuration.md) demonstrates instrumentation in context for a .NET application. 
 
 
 ### GitHub action for metric deployment
