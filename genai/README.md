@@ -3,7 +3,7 @@
 Metrics contained in the GenAI [metric collection](./metrics.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules.json) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
 
 
->[!Warning]
+>[!Note]
 > This repository currently aligns with OTEL semantic conventions `v1.27` and above. The semantic conventions for GenAI are in active development and are marked as experimental. For experimental semantic conventions there is risk in breaking changes due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. Summary rules and GenAI metrics for deprecated OpenTelemetry semantic convention versions will be made available in the [`archive`](./archive/) directory.
 
 ## Prerequisites
