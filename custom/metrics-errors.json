@@ -67,6 +67,23 @@
           "filter": "Code == 'content_filter'"
         }
       }
+    },
+    {
+      "id": "assignment_event_count",
+      "lifecycle": "Inactive",
+      "displayName": "Number of assignment events",
+      "description": "The total number of App Configuration assignment events.",
+      "tags": [
+        "_DUMMY_"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "FeatureEvaluation",
+          "filter": "VariantAssignmentReason == 'Percentile'"
+        }
+      }
     }
   ]
 }

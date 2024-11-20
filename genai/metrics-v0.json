@@ -25,7 +25,8 @@
         "lifecycle": "Active",
         "tags": [
           "GenAI",
-          "Usage"
+          "Usage",
+          "Important"
         ],
         "desiredDirection": "Increase",
         "definition": {
@@ -78,7 +79,8 @@
         "lifecycle": "Active",
         "tags": [
           "GenAI",
-          "Cost"
+          "Cost",
+          "Important"
         ],
         "desiredDirection": "Decrease",
         "definition": {

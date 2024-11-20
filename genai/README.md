@@ -1,22 +1,27 @@
 # GenAI metric collection
 
-Metrics contained in the GenAI [metric collection](./metrics.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules.json) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
+Metrics contained in the GenAI [metric collection](./metrics-v0.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules-v0.json) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
 
 
->[!Note]
-> This repository currently aligns with OTEL semantic conventions `v1.27` and above. The semantic conventions for GenAI are in active development and are marked as experimental. For experimental semantic conventions there is risk in breaking changes due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. Summary rules and GenAI metrics for deprecated OpenTelemetry semantic convention versions will be made available in the [`archive`](./archive/) directory.
+The semantic conventions for GenAI are in active development and are marked as experimental. For experimental semantic conventions there is risk in breaking changes due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. 
+
+| GenAI metric collection version | OTEL semantic convention version | Creation date | Metric collection | Summary rule |
+| --------| ---------------------------------| --------------| -------- | ------- |
+| v0 | Version 1.27+ | November 2024 | [metrics-v0](./metrics-v0.json) | [summaryrules-v0](./summaryrules-v0.json)
 
 ## Prerequisites
 
 ### Instrumentation 
 
-1. You must use a GenAI instrumentation library which adheres to OpenTelemtry semantic conventions.
-If your GenAI spans do not strictly follow semantic conventions, you may need to customize the summary rule and/or metrics in this collection.
+1. To use these metrics and summary rule without edits you must use a GenAI instrumentation library which adheres to OpenTelemtry semantic conventions.
 
     [Azure AI Inference](https://learn.microsoft.com/en-us/azure/ai-studio/reference/reference-model-inference-api?tabs=python#inference-sdk-support) with [tracing via OpenTelemetry](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-inference/README.md) and [Traceloop OpenLLMetry](https://www.traceloop.com/openllmetry) both have high alignment with the OpenTelemetry semantic conventions.
 
-1. `TargetingId` must be added to the GenAI spans. Traceloop supports this by [association entity](https://www.traceloop.com/docs/openllmetry/tracing/association) onto Traceloop logs.
-Azure AI Inference supports this by [adding custom properties to spans](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-add-modify?tabs=aspnetcore#add-a-custom-property-to-a-span) which may require a custom span processor. The naming convention of the attribute must be one of:
+1. `TargetingId` must be added to the GenAI spans. 
+    
+    Traceloop supports this by [association entity](https://www.traceloop.com/docs/openllmetry/tracing/association) onto Traceloop logs.
+    
+    Azure AI Inference supports this by [adding custom properties to spans](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-add-modify?tabs=aspnetcore#add-a-custom-property-to-a-span) which may require a custom span processor. The naming convention of the attribute must be one of:
     * `TargetingId`
     * `targeting_id`
     * `targetingid`
@@ -24,6 +29,26 @@ Azure AI Inference supports this by [adding custom properties to spans](https://
 
     or `traceloop.association.properties.{one of the list above}`
 
+1. GenAI spans must be sent to Azure Monitor, and be accessible in the Log Analytics Workspace configured for use with Online Experimentation. Confirm this by running a query like the one below in your Log Analytics Workspace:
+
+    ```kusto
+    AppDependencies
+    | where TimeGenerated > ago(3d)
+    | where Properties has "gen_ai.system"
+    | take 10
+    ```
+
+    Results should be non-empty and the `Properties` column should contain attributes like:
+
+    ```json
+    { 
+        gen_ai.operation.name: "chat",
+        gen_ai.request.model: "gpt-4",
+        gen_ai.system: "openai",
+        gen_ai.usage.input_tokens: 100,
+        gen_ai.usage.output_tokens: 180
+    }
+    ```
 ### GitHub action for metric deployment
 
 Deployment of online experimentation metrics is managed by configuring the [Deploy Metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your experimentation-enabled repository.
@@ -31,28 +56,19 @@ Deployment of online experimentation metrics is managed by configuring the [Depl
 
 ### Log Analytics summary rule
 
-To confirm if you have an active summary rule for Online Experimentation, look for the `AppEvents_CL` table in your Log Analytics workspace. If this table is not present, you have not configured the necessary summary rule.
-
-If this is your first time adding a [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for Online Experimentation, see  [root `README`](../README.md). An example of setting up the configured bicep template can be found in the Online Experimentation [sample application code](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep).
-
-To update an _existing_ summary rule that is managed by GitHub Action:
-1. Update the query in the corresponding summary rule object in `summaryrules.json` file in your experimentation-enabled repository under the `infra` folder. 
-1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs which can skew metrics.
-1. Confirm the summary rule destination table (configured in bicep file) is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
-
-    Upon deployment, the bicep template will initiate summary rule provisioning, which will edit the existing summary rule of the same name; or if none exists, will provision a new summary rule.
-
-To delete summary rules created by accident or to stop summary rules to avoid costs during periods with no experimentation, see [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api).
+A summary rule is used to preprocess GenAI spans for metric computation. To confirm if you have an active summary rule for Online Experimentation, look for the `AppEvents_CL` table in your Log Analytics workspace. If this table is not present, you have not configured the necessary summary rule. See the section [Summary rule for GenAI spans](#summary-rule-for-genai-spans) for more information.
 
 ### Deploy metrics
 
-1. Add the contents of `metrics.json` to corresponding files in your experimentation-enabled repository.
-1. Optionally: modify metrics. Rename or update description of metrics. Set `Inactive` metrics as `Active`. Caution should be exercised when customizing the metric definition field. The definition is dependent on summary rule output format.
+1. Add the contents of `metrics-{version}.json` to corresponding files in your experimentation-enabled repository.
+1. Optionally: modify metrics. Rename or update description of metrics. Set desired `Inactive` metrics as `Active`. 
+    
+    Caution should be exercised when customizing the metric definition field. The definition is dependent on summary rule output format.
 1. If this is your first time adding summary rules for Online Experimentation, see [root `README.md`](../README.md) to overview metric and summary rule deployment, with more details in [Online Experimentation documentation](https://aka.ms/exp/public/docs).
    
 ## GenAI metrics
 
-The following metrics are defined in [`metrics.json`](./metrics.json):
+The following metrics are defined in `metrics-{version}.json`:
 
 | Display name | Metric kind | Description | Default lifecycle |
 | ------- | ------- | ------ | ------ | 
@@ -88,11 +104,22 @@ The following metrics are defined in [`metrics.json`](./metrics.json):
 
 
 
-## GenAI summary rule
+## Summary rule for GenAI spans
 
-The provided GenAI summary rule transforms all GenAI spans meeting OpenTelemetry semantic conventions into event-like logs consumable for Online Experimentation metrics.
+If this is your first time adding a Log Analytics summary rule for Online Experimentation, see  [root `README`](../README.md). An example of setting up the configured bicep template can be found in the Online Experimentation [sample application code](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep).
 
-To preview the output of this summary rule and review which standardized attributes will be available for GenAI metrics, run the query below on your application's Log Analytics workspace.
+If you have changed or updated instrumentation libraries, you may need to update an _existing_ summary rule.
+
+For summary rules that are managed by GitHub Action:
+1. Update the query in the corresponding summary rule object in `summaryrules.json` file in your experimentation-enabled repository under the `infra` folder. 
+1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs which can skew metrics.
+1. Confirm the summary rule destination table (configured in bicep file) is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
+
+    Upon deployment, the bicep template will create/update the summary rule: if a summary rule of the same name exists it will be updated. 
+
+To update summary rules directly through Log Analytics API, or to manage or delete summary rules, see [Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) documentation.
+
+To preview the output of the summary rule you'd set up using [`summaryrules-v0.json`](./summaryrules-v0.json), run the query below on your application's Log Analytics workspace.
 
 ```kusto
 let otel_genai_semantic_convention_keys = dynamic(["gen_ai.operation.name","gen_ai.request.model", "gen_ai.system","error.type","server.port","gen_ai.request.frequency_penalty", "gen_ai.request.max_tokens","gen_ai.request.presence_penalty","gen_ai.request.stop_sequences","gen_ai.request.temperature","gen_ai.request.top_k","gen_ai.request.top_p","gen_ai.response.finish_reasons","gen_ai.response.id","gen_ai.response.model","gen_ai.usage.input_tokens","gen_ai.usage.output_tokens","server.address","gen_ai.openai.request.response_format","gen_ai.openai.request.seed","gen_ai.openai.request.service_tier","gen_ai.openai.response.service_tier"]);

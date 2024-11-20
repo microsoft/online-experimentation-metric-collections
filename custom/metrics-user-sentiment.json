@@ -39,7 +39,8 @@
       "description": "The percentage of feedback which is positive (thumbs-up).",
       "lifecycle": "Active",
       "tags": [
-        "Feedback"
+        "Feedback",
+        "Important"
       ],
       "desiredDirection": "Increase",
       "definition": {
