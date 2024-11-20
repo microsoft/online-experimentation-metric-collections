@@ -10,7 +10,7 @@ Custom metrics rely on custom event logs that are instrumented via App Configura
 Required event name and property references for each metric collection are stated in each section. If events use alternative naming conventions, the metric definition field should be edited to match existing instrumentation.
 
 * The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) contains examples for custom event tracking in python applications.
-* The [supplemental tutorial](.instrumentation-tutorial-from-app-configuration.md) demonstrates instrumentation in context for a .NET application. 
+* The [supplemental tutorial](.instrumentation-tutorial-from-app-configuration.md) demonstrates setup and use of App Configuration event tracking in context for a .NET application. 
 * Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
 
 
