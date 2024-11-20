@@ -5,12 +5,13 @@ Custom metric collections are organized by metric topic. It is recommended for m
 ## Prerequisites
 
 ### Instrumentation
-Custom metrics rely on custom event logs that are instrumented via App Configuration's `TrackEvent` (or `track_event` in Python). App Configuration's extension on [Azure Monitor custom event tracking](https://learn.microsoft.com/en-us/dotnet/api/microsoft.applicationinsights.telemetryclient.trackevent) accepts an event name (string) and an optional string dictionary of key:value properties and automatically attaches `TargetingId` as a property for each event. Events without `TargetingId` cannot be used for online experimentation metrics. 
+Custom metrics rely on custom event logs that are instrumented via App Configuration's `TrackEvent` (or `track_event` in Python) and sent to Azure Monitor Analytics Logs. App Configuration's extension on [Azure Monitor custom event tracking](https://learn.microsoft.com/en-us/dotnet/api/microsoft.applicationinsights.telemetryclient.trackevent) accepts an event name (string) and an optional string dictionary of key:value properties and automatically attaches `TargetingId` as a property for each event. Events without `TargetingId` cannot be used for online experimentation metrics. 
 
 Required event name and property references for each metric collection are stated in each section. If events use alternative naming conventions, the metric definition field should be edited to match existing instrumentation.
 
 * The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) contains examples for custom event tracking in python applications.
 * The [supplemental tutorial](.instrumentation-tutorial-from-app-configuration.md) demonstrates instrumentation in context for a .NET application. 
+* Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
 
 
 ### GitHub action for metric deployment
