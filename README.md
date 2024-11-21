@@ -24,11 +24,11 @@ To generate metrics with Online Experimentation you must integrate Online Experi
 
 
 
-* Provision an online experimentation workspace. Follow documentation at [Online Experimentation documentation](https://aka.ms/exp/public/docs).
-* Integrate with [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/manage-feature-flags?tabs=azure-portal) to manage feature flags. 
-* Configure [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
-* Instrument your application and send tracked events to Azure Monitor.
+* App Configuration with Online Experimentation and Azure Monitor resources - See this quickstart guide for details. 
+* GitHub Action [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) in your CI/CD workflow.
+* Instrument your application. 
     * App Configuration provides a [custom event logger](https://github.com/microsoft/FeatureManagement-Python/blob/2982253c865208f49a8e9cd18f4bc5004376cd8e/featuremanagement/azuremonitor/_send_telemetry.py#L31) that automatically adds the App Configuration targeting id to each event. Targeting id is required for any event used in Online Experimentation metrics.
+* Send tracked events to Azure Monitor.
     * Azure Monitor [OpenTelemetry Distro](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable) enables collection of OpenTelemtry-based logs.
     * Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
 * [For GenAI metrics] integrate a GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
@@ -42,7 +42,7 @@ The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/open
 To modify the metrics in this sample application:
 
 * [Add (your customized) metrics to a json file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/tree/main/.config). Check your [GitHub Actions workflow file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/.github/workflows/azure-dev.yml) configured file path to ensure the file is processed by that GHA.
-* Add the summary rule(s) necessary for consuming OTEL-based GenAI spans into your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.json) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./genai/infra) folder of this samples repo.
+* Add the summary rule(s) necessary for consuming OTeL-based GenAI spans into your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.json) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./genai/infra) folder of this samples repo.
 
 Sample bicep module for summary rule deployment:
 
