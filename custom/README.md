@@ -4,13 +4,11 @@ Custom metric collections are organized by metric topic. It is recommended for m
 
 ## Prerequisites
 
-1. Instrumentation. See sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for example custom event tracking and configuring Azure Monitor OpenTelemetry to ensure events are sent to Log Analytics.
+1. Instrumentation. See sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for example custom event tracking with App Configuration and Azure Monitor OpenTelemetry Distro to ensure events are sent to Log Analytics.
    
-    * Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
-    * If you use alternative instrumentation, ensure events are sent to Log Analytics `AppEvents` table, and ensure that App Configuration's `TargetingId` is provided as a property for each event. Events without this attribute cannot be used for online experimentation metrics. App Configuration's `TrackEvent` (`track_event` in Python) automatically adds this TargetingId.
-
-       
-
+    * If you use alternative instrumentation, it must send events to Log Analytics `AppEvents` table. And you must add App Configuration's `TargetingId` as a property for each event, as only events with this attribute are attributable to a Feature Flag variant.
+    * App Configuration's `TrackEvent` (`track_event` in Python) automatically adds the TargetingId.
+      
 
 1. GitHub action for metric deployment. See [Deploy Metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GHA.
 
