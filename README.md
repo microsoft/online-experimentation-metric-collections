@@ -24,7 +24,7 @@ To generate metrics with Online Experimentation you must integrate Online Experi
 
 
 
-* Provision an online experimentation workspace. Follow documentation at[Online Experimentation documentation](https://aka.ms/exp/public/docs).
+* Provision an online experimentation workspace. Follow documentation at [Online Experimentation documentation](https://aka.ms/exp/public/docs).
 * Integrate with [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/manage-feature-flags?tabs=azure-portal) to manage feature flags. 
 * Configure [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
 * Instrument your application and send tracked events to Azure Monitor.
