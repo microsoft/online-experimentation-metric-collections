@@ -46,11 +46,11 @@ The semantic conventions for GenAI are in active development and are marked as e
 
     ```json
     { 
-        gen_ai.operation.name: "chat",
-        gen_ai.request.model: "gpt-4",
-        gen_ai.system: "openai",
-        gen_ai.usage.input_tokens: 100,
-        gen_ai.usage.output_tokens: 180
+        "gen_ai.operation.name": "chat",
+        "gen_ai.request.model": "gpt-4",
+        "gen_ai.system": "openai",
+        "gen_ai.usage.input_tokens": 100,
+        "gen_ai.usage.output_tokens": 180
     }
     ```
 
