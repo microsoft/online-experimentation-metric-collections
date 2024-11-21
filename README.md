@@ -22,19 +22,18 @@ The `summaryrules.json` file is necessary to provision a corresponding [Log Anal
 
 To generate metrics with Online Experimentation you must integrate Online Experimentation offering. See [Online Experimentation documentation](https://aka.ms/exp/public/docs) for the full setup documentation.
 
-You must have:
 
-* Provisioned an online experimentation workspace. Follow documentation at[Online Experimentation documentation](https://aka.ms/exp/public/docs).
-* Integrated with Azure App Configuration SDK to evaluate feature flags and instrument key events for metrics using track event.
-* Set up the [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
-* Instrumentation which adds App Configuration's `TargetingId` to each event and sends tracked events to Azure Monitor.
-    * App Configuration provides a [custom event logger](https://github.com/microsoft/FeatureManagement-Python/blob/2982253c865208f49a8e9cd18f4bc5004376cd8e/featuremanagement/azuremonitor/_send_telemetry.py#L31) that automatically adds targeting id to the event.
+
+* Provision an online experimentation workspace. Follow documentation at[Online Experimentation documentation](https://aka.ms/exp/public/docs).
+* Integrate with [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/manage-feature-flags?tabs=azure-portal) to manage feature flags. 
+* Configure [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your CI/CD workflows.
+* Instrument your application and send tracked events to Azure Monitor.
+    * App Configuration provides a [custom event logger](https://github.com/microsoft/FeatureManagement-Python/blob/2982253c865208f49a8e9cd18f4bc5004376cd8e/featuremanagement/azuremonitor/_send_telemetry.py#L31) that automatically adds the App Configuration targeting id to each event. Targeting id is required for any event used in Online Experimentation metrics.
     * Azure Monitor [OpenTelemetry Distro](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable) enables collection of OpenTelemtry-based logs.
     * Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
-* [For GenAI metrics] integrated a GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
-  - Enriched spans with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
-* [For GenAI metrics] created a summary rule which ouputs transformed GenAI spans into `AppEvents_CL` table. 
-  - Select a single summary rule and metric configuration file from the version table in [`genai` directory](./genai/). Do not deploy multiple summary rule versions. If in doubt, choose the most recent version.
+* [For GenAI metrics] integrate a GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
+     * Enrich spans with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
+     * You must also create a summary rule which ouputs transformed GenAI spans into `AppEvents_CL` table. Summary rule and directions are provided in this repository. See [`genai` directory](./genai/). 
 
 ## Demo
 
