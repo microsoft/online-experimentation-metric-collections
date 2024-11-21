@@ -1,6 +1,6 @@
 # GenAI metric collection
 
-Metrics contained in the GenAI [metric collection](./metrics-genai-v0.1.0.0.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules-v0.1.0.0.json) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
+Metrics contained in the GenAI [metric collection](./metrics-genai-v0.1.0.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules-v0.1.0.json) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
 
 
 The semantic conventions for GenAI are in active development and are marked as experimental. For experimental semantic conventions there is risk in breaking changes due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. 
@@ -11,7 +11,7 @@ The semantic conventions for GenAI are in active development and are marked as e
 
 | GenAI metric collection version | OTeL semantic convention version | Creation date | Metric collection | Summary rule |
 | --------| ---------------------------------| --------------| -------- | ------- |
-| v0 | Version 1.27+ | November 2024 | [metrics-genai-v0.1.0.0](./metrics-genai-v0.1.0.0.json) | [summaryrules-v0.1.0.0](./summaryrules-v0.1.0.0.json)
+| v0 | Version 1.27+ | November 2024 | [metrics-genai-v0.1.0](./metrics-genai-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.json)
 
 ## Prerequisites
 
@@ -134,7 +134,7 @@ For summary rules that are managed by GitHub Action:
 
 To update summary rules directly through Log Analytics API, or to manage or delete summary rules, see [Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) documentation.
 
-To preview the output of the summary rule you'd set up using [`summaryrules-v0.1.0.0.json`](./summaryrules-v0.1.0.0.json), run the query below on your application's Log Analytics workspace.
+To preview the output of the summary rule you'd set up using [`summaryrules-v0.1.0.json`](./summaryrules-v0.1.0.json), run the query below on your application's Log Analytics workspace.
 
 ```kusto
 let otel_genai_semantic_convention_keys = dynamic(["gen_ai.operation.name","gen_ai.request.model", "gen_ai.system","error.type","server.port","gen_ai.request.frequency_penalty", "gen_ai.request.max_tokens","gen_ai.request.presence_penalty","gen_ai.request.stop_sequences","gen_ai.request.temperature","gen_ai.request.top_k","gen_ai.request.top_p","gen_ai.response.finish_reasons","gen_ai.response.id","gen_ai.response.model","gen_ai.usage.input_tokens","gen_ai.usage.output_tokens","server.address","gen_ai.openai.request.response_format","gen_ai.openai.request.seed","gen_ai.openai.request.service_tier","gen_ai.openai.response.service_tier"]);
