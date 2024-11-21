@@ -5,6 +5,10 @@ Metrics contained in the GenAI [metric collection](./metrics-v0.json) are common
 
 The semantic conventions for GenAI are in active development and are marked as experimental. For experimental semantic conventions there is risk in breaking changes due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. 
 
+> [!Warning]
+> Do not deploy multiple Online Experimentation summary rule versions at the same time. If in doubt, choose the most recent version.
+
+
 | GenAI metric collection version | OTEL semantic convention version | Creation date | Metric collection | Summary rule |
 | --------| ---------------------------------| --------------| -------- | ------- |
 | v0 | Version 1.27+ | November 2024 | [metrics-v0](./metrics-v0.json) | [summaryrules-v0](./summaryrules-v0.json)
