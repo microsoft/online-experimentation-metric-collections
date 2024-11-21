@@ -4,28 +4,25 @@ Custom metric collections are organized by metric topic. It is recommended for m
 
 ## Prerequisites
 
-### Instrumentation
-Custom metrics rely on custom event logs that are instrumented via App Configuration's `TrackEvent` (or `track_event` in Python) and sent to Azure Monitor Analytics Logs. App Configuration's extension on [Azure Monitor custom event tracking](https://learn.microsoft.com/en-us/dotnet/api/microsoft.applicationinsights.telemetryclient.trackevent) accepts an event name (string) and an optional string dictionary of key:value properties and automatically attaches `TargetingId` as a property for each event. Events without `TargetingId` cannot be used for online experimentation metrics. 
+1. Instrumentation. See sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for example custom event tracking and configuring Azure Monitor OpenTelemetry to ensure events are sent to Log Analytics.
+   
+    * Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
+    * If you use alternative instrumentation, ensure events are sent to Log Analytics `AppEvents` table, and ensure that App Configuration's `TargetingId` is provided as a property for each event. Events without this attribute cannot be used for online experimentation metrics. App Configuration's `TrackEvent` (`track_event` in Python) automatically adds this TargetingId.
 
-Required event name and property references for each metric collection are stated in each section. If events use alternative naming conventions, the metric definition field should be edited to match existing instrumentation.
-
-* The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) contains examples for custom event tracking in python applications.
-* Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
+       
 
 
-### GitHub action for metric deployment
-
-Deployment of online experimentation metrics is managed by configuring the [Deploy Metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your experimentation-enabled repository.
+1. GitHub action for metric deployment. See [Deploy Metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GHA.
 
 ## Use
 
 1. Browse for sample metrics similar to your intended target.
-1. Review the `eventName(s)` and attributes referenced in `condition` and `filter` expressions.
-    - [If necessary] add instrumentation in your app using [Azure Monitor custom event tracking](https://learn.microsoft.com/en-us/dotnet/api/microsoft.applicationinsights.telemetryclient.trackevent). App Configuration provides a telemetry client that automatically adds the required TargetingId property to every event.     A sample for Python is available [here](https://github.com/Azure-Samples/quote-of-the-day-python/blob/main/src/quoteoftheday/routes.py). 
-1. Copy the desired metric configurations into your metric configuration file(s) under your experimentation-enabled repository. Edit with the following in mind:
-    - Metrics depend on the event name (encoded as `EventName`) to identify the relevant event types. 
-    - Most metrics also depend on selected attributes from the Track        as filters or numeric values. `StatusCode == 400` is equivalent to `Properties['StatusCode'] == 400`
-    - Ensure the `"lifecycle"` is set to `"Active"` in order to enable the metric computation.
+1. Add the desired metric configurations into your metric configuration file(s) under your experimentation-enabled repository. Edit metrics with the following in mind:
+    * For full documentation about syntax for expressions in Online Experimentation metric definitions, see [Create and Manage Metrics](https://github.com/MicrosoftDocs/online-experimentation-docs/blob/54a6d5ef8ee1d124f3370d12d07d4c32858c1217/Documentation/Create%20and%20manage%20metrics.md)
+    * Metrics depend on the event name (encoded as `EventName`) to identify the relevant event types.
+    * Event attributes (properties) are used as filters to restrict events beyond the event name, values to provide a numeric value for average or sum metric aggregations, and conditions to provide the 'success' condition for an event rates.
+        *  Reference attributes directly by their name. `StatusCode == 400` or `['StatusCode'] == 400`. Not `Properties['StatusCode'] == 400`
+    * Ensure the `"lifecycle"` is set to `"Active"` in order to enable the metric computation.
 1. Upon the next run of your GitHub Action Workflow, the metrics will be deployed for computation in all subsequent scorecards. Metrics can be disabled later through deletion or by setting the `"lifecycle"` to `"Inactive"`.
 
 
@@ -52,7 +49,7 @@ User feedback should be logged as a numeric score from -1(negative) to +1(positi
 
 | Event Name | Properties |
 | -------- | -------- |
-|`UserFeedback` | `Score` (numeric): the numeric score. Recommended to use +1 for positive feedback and -1 for negative feedback. |
+|`UserFeedback` | `Score` (numeric): the numeric score. <br> +1 for positive feedback, -1 for negative feedback. |
 
 
 ### Errors
@@ -77,7 +74,7 @@ Therefore, we recommend enriching with custom event logging for key error handli
 
 | Event Name | Properties |
 | -------- | -------- | 
-| `ErrorLLM` | `Code` (str): the descriptive code of the error e.g. "content_filter", `StatusCode` (int): the numeric code of the error e.g. 400 | 
+| `ErrorLLM` | `Code` (str): the descriptive code of the error e.g. "content_filter" <br> `StatusCode` (int): the numeric code of the error e.g. 400 | 
 
 A generic error event (not specific to LLM calls) is a good alternative if adding instrumentation for all error handling.
 
