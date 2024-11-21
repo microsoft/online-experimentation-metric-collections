@@ -33,7 +33,7 @@ The semantic conventions for GenAI are in active development and are marked as e
 
     or `traceloop.association.properties.{one of the list above}`
 
-1. GenAI spans must be sent to Azure Monitor, and be accessible in the Log Analytics Workspace configured for use with Online Experimentation. Confirm this by running a query like the one below in your Log Analytics Workspace:
+1. GenAI spans must be sent to Azure Monitor, and be accessible in the Log Analytics workspace configured for use with Online Experimentation. Confirm this by running a query like the one below in your Log Analytics workspace:
 
     ```kusto
     AppDependencies
