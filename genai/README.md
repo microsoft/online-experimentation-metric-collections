@@ -9,7 +9,7 @@ The semantic conventions for GenAI are in active development and are marked as e
 > Do not deploy multiple Online Experimentation summary rule versions at the same time. If in doubt, choose the most recent version.
 
 
-| GenAI metric collection version | OTeL semantic convention version | Creation date | Metric collection | Summary rule |
+| GenAI metric collection version | OTel semantic convention version | Creation date | Metric collection | Summary rule |
 | --------| ---------------------------------| --------------| -------- | ------- |
 | v0 | Version 1.27+ | November 2024 | [metrics-genai-v0.1.0](./metrics-genai-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.json)
 
@@ -149,8 +149,8 @@ AppDependencies
 | extend  keys = bag_keys(Properties)
 | extend newProperties = bag_remove_keys(Properties, set_difference(keys,supported_keys))
 | extend TargetingId = max_of(tostring(Properties["TargetingId"]),tostring(Properties["targetingid"]),tostring(Properties["targeting_id"]),tostring(Properties["traceloop.association.properties.TargetingId"]),tostring(Properties["traceloop.association.properties.targetingid"]),tostring(Properties["traceloop.association.properties.targeting_id"]),tostring(Properties["traceloop.association.properties.targetingId"]),tostring(Properties["targetingId"]))
-| extend OTeLVersion = extract("otel([0-9.]+[0-9])",1,SDKVersion)
-| extend newProperties = bag_merge(newProperties, bag_pack("OTeLVersion",OTeLVersion, "TargetingId",TargetingId, "DurationMs",DurationMs, "Success",Success,"Name",Name, "ResutCode",ResultCode, "gen_ai.usage.tokens",max_of(toint(Properties["gen_ai.usage.input_tokens"]),toint(Properties["gen_ai.usage.prompt_tokens"]))+ max_of(toint(Properties["gen_ai.usage.output_tokens"]),toint(Properties["gen_ai.usage.completion_tokens"]))))
+| extend OTelVersion = extract("otel([0-9.]+[0-9])",1,SDKVersion)
+| extend newProperties = bag_merge(newProperties, bag_pack("OTelVersion",OTelVersion, "TargetingId",TargetingId, "DurationMs",DurationMs, "Success",Success,"Name",Name, "ResutCode",ResultCode, "gen_ai.usage.tokens",max_of(toint(Properties["gen_ai.usage.input_tokens"]),toint(Properties["gen_ai.usage.prompt_tokens"]))+ max_of(toint(Properties["gen_ai.usage.output_tokens"]),toint(Properties["gen_ai.usage.completion_tokens"]))))
 | extend stop = iff(Properties["gen_ai.response.finish_reasons"] has "stop", bag_pack("gen_ai.response.finish_reason.stop", 1),dynamic({})), tool_calls = iff(Properties["gen_ai.response.finish_reasons"] has "tool_calls", bag_pack("gen_ai.response.finish_reason.tool_calls", 1),dynamic({})), content_filter = iff(Properties["gen_ai.response.finish_reasons"] has "content_filter", bag_pack("gen_ai.response.finish_reason.content_filter", 1),dynamic({})), length = iff(Properties["gen_ai.response.finish_reasons"] has "length", bag_pack("gen_ai.response.finish_reason.length", 1),dynamic({}))
 | extend Properties = bag_merge(newProperties, stop, tool_calls, content_filter, length)
 | extend Name = "gen_ai.otel.span"
