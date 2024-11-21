@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "metrics": [
+    {
+      "id": "events_ErrorLLM",
+      "lifecycle": "Active",
+      "displayName": "LLM error count",
+      "description": "The total number of errors resulting from LLM calls.",
+      "tags": [
+        "Errors"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "ErrorLLM"
+        }
+      }
+    },
+    {
+      "id": "events_400_ErrorLLM",
+      "displayName": "LLM 400 error count",
+      "description": "The number of LLM requests that resulted in a 400 error.",
+      "lifecycle": "Active",
+      "tags": [
+        "Errors"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "ErrorLLM",
+          "filter": "StatusCode == 400"
+        }
+      }
+    },
+    {
+      "id": "users_400_ErrorLLM",
+      "displayName": "Users with LLM 400 error",
+      "description": "The number of users with at least one LLM request that resulted in a 400 error.",
+      "lifecycle": "Active",
+      "tags": [
+        "Errors"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "UserCount",
+        "event": {
+          "eventName": "ErrorLLM",
+          "filter": "StatusCode == 400"
+        }
+      }
+    },
+    {
+      "id": "events_content_filter_ErrorLLM",
+      "lifecycle": "Active",
+      "displayName": "LLM error count -- content filter",
+      "description": "The total number of errors with code indicating content filtering blocked LLM response.",
+      "tags": [
+        "Errors"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "ErrorLLM",
+          "filter": "Code == 'content_filter'"
+        }
+      }
+    },
+    {
+      "id": "assignment_event_count",
+      "lifecycle": "Inactive",
+      "displayName": "Number of assignment events",
+      "description": "The total number of App Configuration assignment events.",
+      "tags": [
+        "_DUMMY_"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "FeatureEvaluation",
+          "filter": "VariantAssignmentReason == 'Percentile'"
+        }
+      }
+    }
+  ]
+}

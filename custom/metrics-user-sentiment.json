@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0",
+  "metrics": [
+    {
+      "id": "events_feedback",
+      "lifecycle": "Active",
+      "displayName": "Feedback event count",
+      "description": "The total number of feedbacks received from users (clicked thumbs-up or thumbs-down).",
+      "tags": [
+        "Feedback"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "UserFeedback"
+        }
+      }
+    },
+    {
+      "id": "users_feedback",
+      "lifecycle": "Active",
+      "displayName": "Users who gave feedback",
+      "description": "The number of users who gave at least one feedback (clicked thumbs-up or thumbs-down).",
+      "tags": [
+        "Feedback"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "UserCount",
+        "event": {
+          "eventName": "UserFeedback"
+        }
+      }
+    },
+    {
+      "id": "rate_feedback_positive",
+      "displayName": "Positive feedback rate",
+      "description": "The percentage of feedback which is positive (thumbs-up).",
+      "lifecycle": "Active",
+      "tags": [
+        "Feedback",
+        "Important"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "kind": "EventRate",
+        "event": {
+          "eventName": "UserFeedback"
+        },
+        "condition": "Score > 0"
+      }
+    },
+    {
+      "id": "rate_feedback_negative",
+      "displayName": "Negative feedback rate",
+      "description": "The percentage of feedback which is negative (thumbs-down).",
+      "lifecycle": "Active",
+      "tags": [
+        "Feedback"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "EventRate",
+        "event": {
+          "eventName": "UserFeedback"
+        },
+        "condition": "Score < 0"
+      }
+    }
+  ]
+}
