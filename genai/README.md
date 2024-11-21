@@ -49,6 +49,10 @@ The semantic conventions for GenAI are in active development and are marked as e
         gen_ai.usage.output_tokens: 180
     }
     ```
+
+    If GenAI spans are enabled but not sent to Application Insights and Log Analytics, configure the [Azure Monitor OpenTelemetry Distro](https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable).
+
+   
 ### GitHub action for metric deployment
 
 Deployment of online experimentation metrics is managed by configuring the [Deploy Metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your experimentation-enabled repository.
