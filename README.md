@@ -24,7 +24,7 @@ Sample metric collections are organized into 2 directories:
 To generate metrics with Online Experimentation you must integrate Online Experimentation offering. See [Online Experimentation documentation](https://aka.ms/exp/public/docs) for the full setup documentation.
 
 
-* App Configuration with Online Experimentation and Azure Monitor resources - See this [quickstart guide](https://github.com/MicrosoftDocs/online-experimentation-docs/blob/aprilk/gh-actions-quickstart/Documentation/Quickstarts/Setup_Azure_AppConfig_Bicep.md) for details. 
+* App Configuration with Online Experimentation and Azure Monitor resources. See this [quickstart guide](https://github.com/MicrosoftDocs/online-experimentation-docs/blob/aprilk/gh-actions-quickstart/Documentation/Quickstarts/Setup_Azure_AppConfig_Bicep.md) for details. 
 * GitHub Action [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics) in your CI/CD workflow.
 * Instrument your application. 
     * App Configuration provides a [custom event logger](https://github.com/microsoft/FeatureManagement-Python/blob/2982253c865208f49a8e9cd18f4bc5004376cd8e/featuremanagement/azuremonitor/_send_telemetry.py#L31) that automatically adds the App Configuration targeting id to each event. Targeting id is required for any event used in Online Experimentation metrics.
