@@ -33,6 +33,8 @@ jobs:
       - name: Validate Metrics (v0.1.0)
         uses: azure/online-experimentation-deploy-metrics@v1-beta
         with:
-          path: '**/metrics-*-v0.1.0.json'
+          path: |
+            custom/metrics-*.json  
+            genai/metrics-*-v0.1.0.json
           online-experimentation-workspace-id: ${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}
           operation: validate
