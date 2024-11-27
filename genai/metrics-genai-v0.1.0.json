@@ -1,291 +1,291 @@
 {
-    "schemaVersion": "1.0",
-    "metrics": [
-      {
-        "id": "count_genai_spans",
-        "displayName": "Number of GenAI spans",
-        "description": "The number of GenAI spans. This is an approximation of the number of total GenAI requests made.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Usage"
-        ],
-        "desiredDirection": "Neutral",
-        "definition": {
-          "kind": "EventCount",
-          "event": {
-            "eventName": "gen_ai.otel.span"
-          }
-        }
-      },
-      {
-        "id": "count_genai_users",
-        "displayName": "Number of GenAI users",
-        "description": "The number of users producing at least one GenAI span. This metric measures discovery/adoption of your GenAI features. ",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Usage",
-          "Important"
-        ],
-        "desiredDirection": "Increase",
-        "definition": {
-          "kind": "UserCount",
-          "event": {
-            "eventName": "gen_ai.otel.span"
-          }
-        }
-      },
-      {
-        "id": "count_genai_chats",
-        "displayName": "Number of GenAI chat calls",
-        "description": "The number of GenAI spans with gen_ai.operation.name =='chat'.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Usage"
-        ],
-        "desiredDirection": "Neutral",
-        "definition": {
-          "kind": "EventCount",
-          "event": {
-            "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.operation.name'] == 'chat'"
-          }
-        }
-      },
-      {
-        "id": "count_genai_chat_users",
-        "displayName": "Number of GenAI chat users",
-        "description": "The number of users with at least one GenAI span with gen_ai.operation.name =='chat'.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Usage"
-        ],
-        "desiredDirection": "Neutral",
-        "definition": {
-          "kind": "UserCount",
-          "event": {
-            "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.operation.name'] == 'chat'"
-          }
-        }
-      },
-      {
-        "id": "avg_genai_tokens",
-        "displayName": "Average GenAI usage tokens",
-        "description": "The average usage tokens (both input and output) per GenAI call of any type. Default desiredDirection is 'Decrease', appropriate for cases where cost reduction is a priority. If you are optimizing for user engagement regardless of cost, you may want to change this to 'Neutral'.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Cost",
-          "Important"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "Average",
-          "value": {
-            "eventName": "gen_ai.otel.span",
-            "eventProperty": "gen_ai.usage.tokens"
-          }
-        }
-      },
-      {
-        "id": "p95_genai_tokens",
-        "displayName": "95th percentile GenAI usage tokens",
-        "description": "The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. Because percentile metrics can be less sensitive and more costly to compute, we mark this metric as 'Inactive' by default.",
-        "lifecycle": "Inactive",
-        "tags": [
-          "GenAI",
-          "Cost"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "Percentile",
-          "value": {
-            "eventName": "gen_ai.otel.span",
-            "eventProperty": "gen_ai.usage.tokens"
-          },
-          "percentile": 95
-        }
-      },
-      {
-        "id": "avg_genai_input_tokens",
-        "displayName": "Average GenAI usage input tokens",
-        "description": "The average tokens used on input (prompt) per GenAI call of any type.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Cost"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "Average",
-          "value": {
-            "eventName": "gen_ai.otel.span",
-            "eventProperty": "gen_ai.usage.input_tokens"
-          }
-        }
-      },
-      {
-        "id": "avg_genai_output_tokens",
-        "displayName": "Average GenAI usage output tokens",
-        "description": "The average tokens used on output (response) per GenAI call of any type.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Cost"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "Average",
-          "value": {
-            "eventName": "gen_ai.otel.span",
-            "eventProperty": "gen_ai.usage.output_tokens"
-          }
-        }
-      },
-      {
-        "id": "sum_genai_tokens",
-        "displayName": "Total GenAI usage tokens",
-        "description": "While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Cost"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "Sum",
-          "value": {
-            "eventName": "gen_ai.otel.span",
-            "eventProperty": "gen_ai.usage.tokens"
-          }
-        }
-      },
-      {
-        "id": "sum_genai_chat_tokens",
-        "displayName": "Total GenAI chat usage tokens",
-        "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Cost"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "Sum",
-          "value": {
-            "eventName": "gen_ai.otel.span",
-            "eventProperty": "gen_ai.usage.tokens",
-            "filter": "['gen_ai.operation.name'] == 'chat'"
-          }
-        }
-      },
-      {
-        "id": "avg_genai_duration",
-        "displayName": "Average GenAI call duration [ms]",
-        "description": "The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMS property of the span capturing GenAI call completion.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI",
-          "Performance"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "Average",
-          "value": {
-            "eventName": "gen_ai.otel.span",
-            "eventProperty": "DurationMS",
-            "filter": "DurationMS > 0"
-          }
-        }
-      },
-      {
-        "id": "count_genai_with_error",
-        "displayName": "Number of GenAI operations that end in an error",
-        "description": "The number of GenAI calls that have a non-empty 'error.type' attribute.",
-        "lifecycle": "Active",
-        "tags": [
-          "GenAI"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "EventCount",
-          "event": {
-            "eventName": "gen_ai.otel.span",
-            "filter": "['error.type'] != ''"
-          }
-        }
-      },
-      {
-        "id": "count_genai_with_timeout_error",
-        "displayName": "Number of GenAI operations that end in a timeout error",
-        "description": "The number of GenAI calls that have 'error.type' equal to 'timeout'. This is an example metric for how to customize GenAI error type metrics to particular error classes. It is set by default to 'Inactive' since different isntrumentation libraries may use different error class descriptions.",
-        "lifecycle": "Inactive",
-        "tags": [
-          "GenAI"
-        ],
-        "desiredDirection": "Decrease",
-        "definition": {
-          "kind": "EventCount",
-          "event": {
-            "eventName": "gen_ai.otel.span",
-            "filter": "['error.type'] == 'timeout'"
-          }
-        }
-      },
-      {
-        "id": "count_genai_with_content_filter",
-        "displayName": "Number of GenAI calls with content filter finish reason",
-        "description": "The number of GenAI calls that listed 'content_filter' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
-        "lifecycle": "Inactive",
-        "tags": [
-          "GenAI"
-        ],
-        "desiredDirection": "Neutral",
-        "definition": {
-          "kind": "EventCount",
-          "event": {
-            "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.finish_reason.content_filter'] == true"
-          }
-        }
-      },
-      {
-        "id": "count_genai_with_length_restriction",
-        "displayName": "Number of GenAI calls with length restriction finish reason",
-        "description": "The number of GenAI calls that listed 'length' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
-        "lifecycle": "Inactive",
-        "tags": [
-          "GenAI"
-        ],
-        "desiredDirection": "Neutral",
-        "definition": {
-          "kind": "EventCount",
-          "event": {
-            "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.finish_reason.length'] == true"
-          }
-        }
-      },
-      {
-        "id": "count_genai_with_tool_calls",
-        "displayName": "Number of GenAI calls with tool call finish reason",
-        "description": "The number of GenAI calls that listed 'tool_calls' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
-        "lifecycle": "Inactive",
-        "tags": [
-          "GenAI"
-        ],
-        "desiredDirection": "Neutral",
-        "definition": {
-          "kind": "EventCount",
-          "event": {
-            "eventName": "gen_ai.otel.span",
-            "filter": "['gen_ai.finish_reason.tool_calls'] == true"
-          }
+  "schemaVersion": "1.0",
+  "metrics": [
+    {
+      "id": "count_genai_spans",
+      "displayName": "Number of GenAI spans",
+      "description": "The number of GenAI spans. This is an approximation of the number of total GenAI requests made.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "gen_ai.otel.span"
         }
       }
-    ]
-  }
+    },
+    {
+      "id": "count_genai_users",
+      "displayName": "Number of GenAI users",
+      "description": "The number of users producing at least one GenAI span. This metric measures discovery/adoption of your GenAI features. ",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Usage",
+        "Important"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "kind": "UserCount",
+        "event": {
+          "eventName": "gen_ai.otel.span"
+        }
+      }
+    },
+    {
+      "id": "count_genai_chats",
+      "displayName": "Number of GenAI chat calls",
+      "description": "The number of GenAI spans with gen_ai.operation.name =='chat'.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "gen_ai.otel.span",
+          "filter": "['gen_ai.operation.name'] == 'chat'"
+        }
+      }
+    },
+    {
+      "id": "count_genai_chat_users",
+      "displayName": "Number of GenAI chat users",
+      "description": "The number of users with at least one GenAI span with gen_ai.operation.name =='chat'.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "UserCount",
+        "event": {
+          "eventName": "gen_ai.otel.span",
+          "filter": "['gen_ai.operation.name'] == 'chat'"
+        }
+      }
+    },
+    {
+      "id": "avg_genai_tokens",
+      "displayName": "Average GenAI usage tokens",
+      "description": "The average usage tokens (both input and output) per GenAI call of any type. Default desiredDirection is 'Decrease', appropriate for cases where cost reduction is a priority. If you are optimizing for user engagement regardless of cost, you may want to change this to 'Neutral'.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Cost",
+        "Important"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "Average",
+        "value": {
+          "eventName": "gen_ai.otel.span",
+          "eventProperty": "gen_ai.usage.tokens"
+        }
+      }
+    },
+    {
+      "id": "p95_genai_tokens",
+      "displayName": "95th percentile GenAI usage tokens",
+      "description": "The 95th percentile usage tokens (both input and output) per GenAI call of any type. This gives an indication of the usage near the upper end of the distribution. Because percentile metrics can be less sensitive and more costly to compute, we mark this metric as 'Inactive' by default.",
+      "lifecycle": "Inactive",
+      "tags": [
+        "GenAI",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "Percentile",
+        "value": {
+          "eventName": "gen_ai.otel.span",
+          "eventProperty": "gen_ai.usage.tokens"
+        },
+        "percentile": 95
+      }
+    },
+    {
+      "id": "avg_genai_input_tokens",
+      "displayName": "Average GenAI usage input tokens",
+      "description": "The average tokens used on input (prompt) per GenAI call of any type.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "Average",
+        "value": {
+          "eventName": "gen_ai.otel.span",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        }
+      }
+    },
+    {
+      "id": "avg_genai_output_tokens",
+      "displayName": "Average GenAI usage output tokens",
+      "description": "The average tokens used on output (response) per GenAI call of any type.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "Average",
+        "value": {
+          "eventName": "gen_ai.otel.span",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        }
+      }
+    },
+    {
+      "id": "sum_genai_tokens",
+      "displayName": "Total GenAI usage tokens",
+      "description": "While average usage tokens gives an indication of per-call efficiency, your cost is based on the total token usage. This metric show total usage tokens (both input and output) for any type of GenAI calls. Assuming equal number of GenAI calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "Sum",
+        "value": {
+          "eventName": "gen_ai.otel.span",
+          "eventProperty": "gen_ai.usage.tokens"
+        }
+      }
+    },
+    {
+      "id": "sum_genai_chat_tokens",
+      "displayName": "Total GenAI chat usage tokens",
+      "description": "The total usage tokens (both input and output) for GenAI chat calls. Assuming equal number of chat calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "Sum",
+        "value": {
+          "eventName": "gen_ai.otel.span",
+          "eventProperty": "gen_ai.usage.tokens",
+          "filter": "['gen_ai.operation.name'] == 'chat'"
+        }
+      }
+    },
+    {
+      "id": "avg_genai_duration",
+      "displayName": "Average GenAI call duration [ms]",
+      "description": "The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMS property of the span capturing GenAI call completion.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "Average",
+        "value": {
+          "eventName": "gen_ai.otel.span",
+          "eventProperty": "DurationMS",
+          "filter": "DurationMS > 0"
+        }
+      }
+    },
+    {
+      "id": "count_genai_with_error",
+      "displayName": "Number of GenAI operations that end in an error",
+      "description": "The number of GenAI calls that have a non-empty 'error.type' attribute.",
+      "lifecycle": "Active",
+      "tags": [
+        "GenAI"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "gen_ai.otel.span",
+          "filter": "['error.type'] != ''"
+        }
+      }
+    },
+    {
+      "id": "count_genai_with_timeout_error",
+      "displayName": "Number of GenAI operations that end in a timeout error",
+      "description": "The number of GenAI calls that have 'error.type' equal to 'timeout'. This is an example metric for how to customize GenAI error type metrics to particular error classes. It is set by default to 'Inactive' since different instrumentation libraries may use different error class descriptions.",
+      "lifecycle": "Inactive",
+      "tags": [
+        "GenAI"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "gen_ai.otel.span",
+          "filter": "['error.type'] == 'timeout'"
+        }
+      }
+    },
+    {
+      "id": "count_genai_with_content_filter",
+      "displayName": "Number of GenAI calls with content filter finish reason",
+      "description": "The number of GenAI calls that listed 'content_filter' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
+      "lifecycle": "Inactive",
+      "tags": [
+        "GenAI"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "gen_ai.otel.span",
+          "filter": "['gen_ai.finish_reason.content_filter'] == true"
+        }
+      }
+    },
+    {
+      "id": "count_genai_with_length_restriction",
+      "displayName": "Number of GenAI calls with length restriction finish reason",
+      "description": "The number of GenAI calls that listed 'length' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
+      "lifecycle": "Inactive",
+      "tags": [
+        "GenAI"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "gen_ai.otel.span",
+          "filter": "['gen_ai.finish_reason.length'] == true"
+        }
+      }
+    },
+    {
+      "id": "count_genai_with_tool_calls",
+      "displayName": "Number of GenAI calls with tool call finish reason",
+      "description": "The number of GenAI calls that listed 'tool_calls' among their finish reason. Note that while listing this is a recommended semantic convention, not all telemetry instrumenters do include it. Therefore this metric is marked as 'Inactive' by default. We recommend checking your logs to determine if your instrumentation provider does log in this fashion. If not, this metric may need to be edited or will always return '0' incorrectly.",
+      "lifecycle": "Inactive",
+      "tags": [
+        "GenAI"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "kind": "EventCount",
+        "event": {
+          "eventName": "gen_ai.otel.span",
+          "filter": "['gen_ai.finish_reason.tool_calls'] == true"
+        }
+      }
+    }
+  ]
+}
