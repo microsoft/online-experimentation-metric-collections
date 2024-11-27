@@ -35,6 +35,6 @@ jobs:
         id: validate-metric-task
         uses: azure/online-experimentation-deploy-metrics@v1-beta
         with:
-          path: 'genai/metrics-*.json'
+          path: '**/metrics-*.json'
           online-experimentation-workspace-id: ${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}
-          operation: validate          
+          operation: validate
