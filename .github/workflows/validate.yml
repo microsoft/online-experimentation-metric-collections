@@ -20,7 +20,6 @@ jobs:
 
     steps:
       - name: Checkout
-        id: checkout
         uses: actions/checkout@v4
 
       - name: Azure login using Federated Credentials
@@ -31,10 +30,9 @@ jobs:
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
-      - name: ValidateMetrics
-        id: validate-metric-task
+      - name: Validate Metrics (v0.1.0)
         uses: azure/online-experimentation-deploy-metrics@v1-beta
         with:
-          path: '**/metrics-*.json'
+          path: '**/metrics-*-v0.1.0.json'
           online-experimentation-workspace-id: ${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}
           operation: validate
