@@ -1,6 +1,6 @@
 # GenAI metric collection
 
-Metrics contained in the GenAI [metric collection](./metrics-genai-v0.1.0.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules-v0.1.0.json) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
+Metrics contained in the GenAI [metric collection](./metrics-genai-v0.1.0.json) are common GenAI-related measures such as token consumption and request latency. They are meant to be used, in combination with the [provided](./summaryrules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume GenAI spans and attributes created automatically by instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/).
 
 
 The semantic conventions for GenAI are in active development and are marked as experimental. For experimental semantic conventions there is risk in breaking changes due to either semantic conventions or GenAI instrumentation library updates. The Online Experimentation team will release updates to align to any major updates of the semantic conventions. 
@@ -11,13 +11,13 @@ The semantic conventions for GenAI are in active development and are marked as e
 
 | GenAI metric collection version | OTel semantic convention version | Creation date | Metric collection | Summary rule |
 | --------| ---------------------------------| --------------| -------- | ------- |
-| v0 | Version 1.27+ | November 2024 | [metrics-genai-v0.1.0](./metrics-genai-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.json)
+| v0 | Version 1.27+ | November 2024 | [metrics-genai-v0.1.0](./metrics-genai-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.yaml)
 
 ## Prerequisites
 
 ### Instrumentation 
 
-1. To use these metrics and summary rule without edits you must use a GenAI instrumentation library which adheres to OpenTelemtry semantic conventions.
+1. To use these metrics and summary rule without edits you must use a GenAI instrumentation library which adheres to OpenTelemetry semantic conventions.
 
     [Azure AI Inference](https://learn.microsoft.com/en-us/azure/ai-studio/reference/reference-model-inference-api?tabs=python#inference-sdk-support) with [tracing via OpenTelemetry](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/ai/azure-ai-inference/README.md) and [Traceloop OpenLLMetry](https://www.traceloop.com/openllmetry) both have high alignment with the OpenTelemetry semantic conventions.
 
@@ -126,36 +126,15 @@ If this is your first time adding a Log Analytics summary rule for Online Experi
 If you have changed or updated instrumentation libraries, you may need to update an _existing_ summary rule.
 
 For summary rules that are managed by GitHub Action:
-1. Update the query in the corresponding summary rule object in `summaryrules.json` file in your experimentation-enabled repository under the `infra` folder. 
+1. Update the query in the corresponding summary rule object in `summaryrules.yaml` file in your experimentation-enabled repository under the `infra` folder. 
 1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs which can skew metrics.
-1. Confirm the summary rule destination table (configured in bicep file) is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
+1. Confirm the summary rule destination table is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
 
     Upon deployment, the bicep template will create/update the summary rule: if a summary rule of the same name exists it will be updated. 
 
 To update summary rules directly through Log Analytics API, or to manage or delete summary rules, see [Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) documentation.
 
-To preview the output of the summary rule you'd set up using [`summaryrules-v0.1.0.json`](./summaryrules-v0.1.0.json), run the query below on your application's Log Analytics workspace.
-
-```kusto
-let otel_genai_semantic_convention_keys = dynamic(["gen_ai.operation.name","gen_ai.request.model", "gen_ai.system","error.type","server.port","gen_ai.request.frequency_penalty", "gen_ai.request.max_tokens","gen_ai.request.presence_penalty","gen_ai.request.stop_sequences","gen_ai.request.temperature","gen_ai.request.top_k","gen_ai.request.top_p","gen_ai.response.finish_reasons","gen_ai.response.id","gen_ai.response.model","gen_ai.usage.input_tokens","gen_ai.usage.output_tokens","server.address","gen_ai.openai.request.response_format","gen_ai.openai.request.seed","gen_ai.openai.request.service_tier","gen_ai.openai.response.service_tier"]);
-let otel_genai_deprecated_keys = dynamic(["gen_ai.usage.completion_tokens","gen_ai.usage.prompt_tokens"]);
-let other_supported_keys = dynamic(["gen_ai.response.model","gen_ai.openai.api_version"]);
-let supported_keys = set_union(otel_genai_semantic_convention_keys, other_supported_keys);
-let targetingid_keys = dynamic(["traceloop.association.properties.TargetingId", "traceloop.association.properties.targetingid","traceloop.association.properties.targetingId", "traceloop.association.properties.targeting_id", "TargetingId","targetingid","targetingId","targeting_id"]);
-AppDependencies
-| where Properties has "gen_ai.system"
-| where Properties has "targetingid" or Properties has "targeting_id"
-| extend Properties = iff(Properties has "gen_ai.usage.completion_tokens" and Properties !has "gen_ai.usage.output_tokens", bag_merge(Properties, bag_pack("gen_ai.usage.output_tokens",toint(Properties["gen_ai.usage.completion_tokens"]), "gen_ai.usage.input_tokens",toint(Properties["gen_ai.usage.prompt_tokens"]))),Properties)
-| extend  keys = bag_keys(Properties)
-| extend newProperties = bag_remove_keys(Properties, set_difference(keys,supported_keys))
-| extend TargetingId = max_of(tostring(Properties["TargetingId"]),tostring(Properties["targetingid"]),tostring(Properties["targeting_id"]),tostring(Properties["traceloop.association.properties.TargetingId"]),tostring(Properties["traceloop.association.properties.targetingid"]),tostring(Properties["traceloop.association.properties.targeting_id"]),tostring(Properties["traceloop.association.properties.targetingId"]),tostring(Properties["targetingId"]))
-| extend OTelVersion = extract("otel([0-9.]+[0-9])",1,SDKVersion)
-| extend newProperties = bag_merge(newProperties, bag_pack("OTelVersion",OTelVersion, "TargetingId",TargetingId, "DurationMs",DurationMs, "Success",Success,"Name",Name, "ResutCode",ResultCode, "gen_ai.usage.tokens",max_of(toint(Properties["gen_ai.usage.input_tokens"]),toint(Properties["gen_ai.usage.prompt_tokens"]))+ max_of(toint(Properties["gen_ai.usage.output_tokens"]),toint(Properties["gen_ai.usage.completion_tokens"]))))
-| extend stop = iff(Properties["gen_ai.response.finish_reasons"] has "stop", bag_pack("gen_ai.response.finish_reason.stop", 1),dynamic({})), tool_calls = iff(Properties["gen_ai.response.finish_reasons"] has "tool_calls", bag_pack("gen_ai.response.finish_reason.tool_calls", 1),dynamic({})), content_filter = iff(Properties["gen_ai.response.finish_reasons"] has "content_filter", bag_pack("gen_ai.response.finish_reason.content_filter", 1),dynamic({})), length = iff(Properties["gen_ai.response.finish_reasons"] has "length", bag_pack("gen_ai.response.finish_reason.length", 1),dynamic({}))
-| extend Properties = bag_merge(newProperties, stop, tool_calls, content_filter, length)
-| extend Name = "gen_ai.otel.span"
-| project Name, TimeGenerated, ItemCount, Properties
-```
+To preview the output of the summary rule in advance, copy the query from [`summaryrules-{version}.yaml`] and paste into your application's Log Analytics workspace.
 
 ## Help
-For questions or issues with GenAI metrics, contact <a href="mailto:exp-preview-fb\@microsoft.com">exp-preview-fb\@microsoft.com</a>.
+For questions or issues with GenAI metrics, contact [exp-preview-fb@microsoft.com](mailto:exp-preview-fb@microsoft.com).
