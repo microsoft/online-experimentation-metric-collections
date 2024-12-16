@@ -1,0 +1,6 @@
+summaryRules:
+  - name: SUMMARY_RULE_NAME
+    binSize: SUMMARY_RULE_BIN_SIZE
+    destinationTable: SUMMARY_RULE_DESTINATION_TABLE
+    description: SUMMARY_RULE_DESCRIPTION
+    query: LOG_ANALYTICS_QUERY

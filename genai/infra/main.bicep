@@ -10,8 +10,8 @@ resource logAnalyticsWorkspaceResourceGroup 'Microsoft.Resources/resourceGroups@
 
 
 // summary rule module
-var ruleDefinitions = loadJsonContent('./monitor/summaryrules.json')
-module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefinitions: {
+var ruleDefinitions = loadYamlContent('./monitor/summaryrules.yaml')
+module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefinitions.summaryRules: {
   name: 'loganalytics-summaryrule-${i}'
   scope: logAnalyticsWorkspaceResourceGroup
   params: {
@@ -20,7 +20,7 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
     summaryRuleName: rule.name
     description: rule.description
     query: rule.query
-    binSize: 20 
-    destinationTable: 'AppEvents_CL'
+    binSize: rule.binSize // see choices at https://aka.ms/LogsSummaryRule#create-or-update-a-summary-rule
+    destinationTable: rule.destinationTable
   }
 } ]
