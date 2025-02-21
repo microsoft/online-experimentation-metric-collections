@@ -6,12 +6,12 @@
       "lifecycle": "Active",
       "displayName": "Feedback event count",
       "description": "The total number of feedbacks received from users (clicked thumbs-up or thumbs-down).",
-      "tags": [
+      "categories": [
         "Feedback"
       ],
       "desiredDirection": "Neutral",
       "definition": {
-        "kind": "EventCount",
+        "type": "EventCount",
         "event": {
           "eventName": "UserFeedback"
         }
@@ -22,12 +22,12 @@
       "lifecycle": "Active",
       "displayName": "Users who gave feedback",
       "description": "The number of users who gave at least one feedback (clicked thumbs-up or thumbs-down).",
-      "tags": [
+      "categories": [
         "Feedback"
       ],
       "desiredDirection": "Neutral",
       "definition": {
-        "kind": "UserCount",
+        "type": "UserCount",
         "event": {
           "eventName": "UserFeedback"
         }
@@ -38,17 +38,17 @@
       "displayName": "Positive feedback rate",
       "description": "The percentage of feedback which is positive (thumbs-up).",
       "lifecycle": "Active",
-      "tags": [
+      "categories": [
         "Feedback",
         "Important"
       ],
       "desiredDirection": "Increase",
       "definition": {
-        "kind": "EventRate",
+        "type": "EventRate",
         "event": {
           "eventName": "UserFeedback"
         },
-        "condition": "Score > 0"
+        "rateCondition": "Score > 0"
       }
     },
     {
@@ -56,16 +56,16 @@
       "displayName": "Negative feedback rate",
       "description": "The percentage of feedback which is negative (thumbs-down).",
       "lifecycle": "Active",
-      "tags": [
+      "categories": [
         "Feedback"
       ],
       "desiredDirection": "Decrease",
       "definition": {
-        "kind": "EventRate",
+        "type": "EventRate",
         "event": {
           "eventName": "UserFeedback"
         },
-        "condition": "Score < 0"
+        "rateCondition": "Score < 0"
       }
     }
   ]

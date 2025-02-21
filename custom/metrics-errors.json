@@ -6,12 +6,12 @@
       "displayName": "LLM error count",
       "description": "The total number of errors resulting from LLM calls.",
       "lifecycle": "Active",
-      "tags": [
+      "categories": [
         "Errors"
       ],
       "desiredDirection": "Decrease",
       "definition": {
-        "kind": "EventCount",
+        "type": "EventCount",
         "event": {
           "eventName": "ErrorLLM"
         }
@@ -22,12 +22,12 @@
       "displayName": "LLM 400 error count",
       "description": "The number of LLM requests that resulted in a 400 error.",
       "lifecycle": "Active",
-      "tags": [
+      "categories": [
         "Errors"
       ],
       "desiredDirection": "Decrease",
       "definition": {
-        "kind": "EventCount",
+        "type": "EventCount",
         "event": {
           "eventName": "ErrorLLM",
           "filter": "StatusCode == 400"
@@ -39,12 +39,12 @@
       "displayName": "Users with LLM 400 error",
       "description": "The number of users with at least one LLM request that resulted in a 400 error.",
       "lifecycle": "Active",
-      "tags": [
+      "categories": [
         "Errors"
       ],
       "desiredDirection": "Decrease",
       "definition": {
-        "kind": "UserCount",
+        "type": "UserCount",
         "event": {
           "eventName": "ErrorLLM",
           "filter": "StatusCode == 400"
@@ -56,12 +56,12 @@
       "lifecycle": "Active",
       "displayName": "LLM error count -- content filter",
       "description": "The total number of errors with code indicating content filtering blocked LLM response.",
-      "tags": [
+      "categories": [
         "Errors"
       ],
       "desiredDirection": "Decrease",
       "definition": {
-        "kind": "EventCount",
+        "type": "EventCount",
         "event": {
           "eventName": "ErrorLLM",
           "filter": "Code == 'content_filter'"
