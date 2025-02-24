@@ -31,7 +31,7 @@ jobs:
           enable-AzPSSession: true
 
       - name: Validate Metrics (v0.1.0)
-        uses: azure/online-experimentation-deploy-metrics@v1-beta
+        uses: azure/online-experimentation-deploy-metrics@v2-beta
         with:
           path: |
             custom/metrics-*.json  
