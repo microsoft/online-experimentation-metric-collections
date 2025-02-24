@@ -36,5 +36,5 @@ jobs:
           path: |
             custom/metrics-*.json  
             genai/metrics-*-v0.1.0.json
-          online-experimentation-workspace-id: ${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}
+          online-experimentation-workspace-endpoint: ${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}
           operation: validate
