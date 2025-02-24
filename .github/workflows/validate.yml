@@ -30,11 +30,11 @@ jobs:
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
-      - name: Validate Metrics (v0.1.0)
-        uses: azure/online-experimentation-deploy-metrics@v1-beta
+      - name: Validate Metrics (v2.0.0)
+        uses: azure/online-experimentation-deploy-metrics@v2-beta
         with:
           path: |
             custom/metrics-*.json  
-            genai/metrics-*-v0.1.0.json
-          online-experimentation-workspace-id: ${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}
+            genai/metrics-*-v2.0.0.json
+          online-experimentation-workspace-endpoint: https://${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}.eastus2.exp.azure.net
           operation: validate
