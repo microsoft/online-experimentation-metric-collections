@@ -34,7 +34,7 @@ jobs:
         uses: azure/online-experimentation-deploy-metrics@v2-beta
         with:
           path: |
-            custom/metrics-*.json  
-            genai/metrics-*-v2.0.0.json
+            custom/metrics-*.json
+            genai/metrics-*-v0.2.0.json
           online-experimentation-workspace-endpoint: https://${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}.eastus2.exp.azure.net
           operation: validate
