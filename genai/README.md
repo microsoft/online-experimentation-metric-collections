@@ -85,7 +85,7 @@ If you have an active summary rule but need to update it, see the section [Summa
 
 The following metrics are defined in `metrics-genai-{version}.json`:
 
-| Display name | Metric Type | Description | Default lifecycle |
+| Display name | Metric type | Description | Default lifecycle |
 | ------- | ------- | ------ | ------ | 
 | Number of GenAI spans | EventCount | The number of GenAI spans. This is an approximation of the number of total GenAI requests made, as a single span _may_ incorporate multiple related GenAI calls depending on the instrumentation. | Active | 
 | Number of GenAI users | UserCount | The number of users producing at least one GenAI span. This metric measures discovery/adoption of your GenAI features.  | Active | 
