@@ -44,9 +44,9 @@ summaryRules:
       | project TargetingId, OperationId
       | summarize TargetingId=any(TargetingId) by OperationId;
       AppTraces
-      | extend event_name_ = tostring(Properties.["event.name"])
-      | extend gen_ai_evaluation_score_ = todouble(Properties.["gen_ai.evaluation.score"])
-      | extend gen_ai_response_id_ = tostring(Properties.["gen_ai.response_id"])
+      | extend event_name_ = tostring(Properties["event.name"])
+      | extend gen_ai_evaluation_score_ = todouble(Properties["gen_ai.evaluation.score"])
+      | extend gen_ai_response_id_ = tostring(Properties["gen_ai.response_id"])
       | where gen_ai_response_id_ != ""
       | where event_name_ startswith "gen_ai.evaluation."
       | join kind=inner operationId_to_Targeting_Id on OperationId
