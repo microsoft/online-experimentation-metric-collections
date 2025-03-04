@@ -34,6 +34,7 @@ To generate metrics with Online Experimentation you must integrate Online Experi
 * [For GenAI metrics] integrate a GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
      * Enrich spans with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
      * You must also create a summary rule which outputs transformed GenAI spans into `AppEvents_CL` table. Summary rule and directions are provided in this repository. See [`genai` directory](./genai/). 
+* [For Azure AI Evaluation metrics] Ensure you have setup the Azure Foundary SDK with the following tutorial (https://learn.microsoft.com/en-us/azure/ai-studio/how-to/online-evaluation?tabs=windows) [summaryrules-v0.1.0.yaml](./genai/infra/monitor/summaryrules.yaml) includes the **`Online-Experimentation-GenAI-eval`** rule to convert these `gen_ai.evaluation` events into the `AppEvents_CL` table.
 
 ## Demo
 
@@ -87,4 +88,5 @@ This module requires two dependent files:
 - [Online Experimentation documentation](https://aka.ms/exp/public/docs)
 - [Sample Online Experimentation enabled OpenAI app](https://github.com/Azure-Samples/openai-chat-app-eval-ab)
 - [GitHub Action to deploy metrics](https://github.com/Azure/online-experimentation-deploy-metrics)
+- For continuous (online) evaluation in production environments, see [How to run evaluations online with the Azure AI Foundry SDK](./online_evaluation_doc.md).
 - Contact [exp-preview-fb@microsoft.com](mailto:exp-preview-fb@microsoft.com) for assistance during private preview.

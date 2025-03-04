@@ -1,0 +1,131 @@
+{
+    "schemaVersion": "1.0",
+    "metrics": [
+        {
+            "id": "genai_evaluation_protected_material",
+            "displayName": "Protected material score",
+            "description": "Protected material score by Azure AI content safety API. The Protected material detection APIs scan the output of large language models to identify and flag known protected material. See (https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/protected-material?tabs=text) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.protectedMaterial",
+                    "eventProperty": "gen_ai.ai.evaluation.score"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_hate_unfairness",
+            "displayName": "Hate unfairness score",
+            "description": "Hate and unfair score given by Azure AI evaluation. Hateful and unfair content refers to any language pertaining to hate toward or unfair representations of individuals and social groups along factors including but not limited to race, ethnicity, nationality, gender, sexual orientation, religion, immigration status, ability, personal appearance, and body size. Unfairness occurs when AI systems treat or represent social groups inequitably, creating or contributing to societal inequities. Safety evaluations annotate self-harm-related content using a 0-7 scale. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.hateunfairnessevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.hateUnfairness",
+                    "eventProperty": "gen_ai.ai.evaluation.score"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_sexual",
+            "displayName": "Sexual content score",
+            "description": "Score for sexual content given by Azure AI evaluation. Sexual score is range from 0 to 7. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.sexualevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.sexual",
+                    "eventProperty": "gen_ai.ai.evaluation.score"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_violence",
+            "displayName": "Violent content score",
+            "description": "Violence score given by Azure AI evaluation, Violence score is range from 0 to 7. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.violenceevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.violence",
+                    "eventProperty": "gen_ai.ai.evaluation.score"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_relevance",
+            "displayName": "Relevance score",
+            "description": "Relevance score given by Azure AI evaluation. The relevance measure assesses the ability of answers to capture the key points of the context. High relevance scores signify the AI system's understanding of the input and its capability to produce coherent and contextually appropriate outputs. Conversely, low relevance scores indicate that generated responses might be off-topic, lacking in context, or insufficient in addressing the user's intended queries. Relevance scores range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.relevanceevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.relevance",
+                    "eventProperty": "gen_ai.ai.evaluation.score"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_fluency",
+            "displayName": "Fluency score",
+            "description": "Fluency score given by Azure AI evaluation. The fluency measure assesses the extent to which the generated text conforms to grammatical rules, syntactic structures, and appropriate vocabulary usage, resulting in linguistically correct responses. The fluency score range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.fluencyevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.fluency",
+                    "eventProperty": "gen_ai.ai.evaluation.score"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_coherence",
+            "displayName": "Coherence score",
+            "description": "Coherence score given by Azure AI evaluation. The coherence measure assesses the ability of the language model to generate text that reads naturally, flows smoothly, and resembles human-like language in its responses. Use it when assessing the readability and user-friendliness of a model's generated responses in real-world applications. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.coherenceevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.coherence",
+                    "eventProperty": "gen_ai.ai.evaluation.score"
+                }
+            }
+        }
+    ]
+}
