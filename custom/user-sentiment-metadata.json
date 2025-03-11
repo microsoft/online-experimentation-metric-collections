@@ -1,0 +1,17 @@
+{
+    "title": "GenAI Users Sentiment Metrics",
+    "description": "GenAI Users Sentiment Metrics",
+    "metricConfig": "custom/metrics-user-sentiment.json",
+    "summaryRules": [
+        {
+            "config": "genai/summaryrules-v0.1.0.yaml",
+            "condition": []
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Please ensure your application is emitting ```UserFeedback``` event with ```Score``` from -1(negative) to +1(positive) based on user feedback. Common implementation is thumbs-up/thumbs-down which translate to +1/-1 scores",
+            "condition": []
+        }
+    ]
+}

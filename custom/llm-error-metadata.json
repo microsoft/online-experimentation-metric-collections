@@ -1,0 +1,21 @@
+{
+    "title": "GenAI Error Metrics",
+    "description": "GenAI Error Metrics",
+    "metricConfig": "custom/metrics-errors.json",
+    "summaryRules": [
+        {
+            "config": "genai/summaryrules-v0.1.0.yaml",
+            "condition": [] 
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Please ensure your application is using instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/)",
+            "condition": []
+        },
+        {
+            "message": "Use App Configuration event tracking in order to attach the ```TargetingId``` by default.",
+            "condition": []
+        }
+    ]
+}

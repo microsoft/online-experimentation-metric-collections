@@ -1,0 +1,19 @@
+{
+    "collections": [
+        {
+            "id": "gen-ai",
+            "metadata": "genai/metadata.json",
+            "enabled": true
+        },
+        {
+            "id": "llm-error",
+            "metadata": "custom/llm-error-metadata.json",
+            "enabled": true
+        },
+        {
+            "id": "user-sentiment",
+            "metadata": "custom/user-sentiment-metadata.json",
+            "enabled": true
+        }
+    ]
+}
