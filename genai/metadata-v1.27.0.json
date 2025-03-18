@@ -1,0 +1,12 @@
+{
+    "title": "GenAI Metrics",
+    "description": "Standard GenAI metrics",
+    "metricConfig": "genai/metrics-genai-v0.2.0.json", 
+    "summaryRule": "genai/summaryrules-v0.1.0.yaml",
+    "prerequisites": [
+        {
+            "message": "Please ensure your application is using instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions v1.27.0+](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/)",
+            "forMetrics": []
+        }
+    ]
+}
