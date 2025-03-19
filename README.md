@@ -11,7 +11,7 @@ This repository provides documentation and samples of online experimentation met
 
 Sample metric collections are organized into 2 directories:
 
-1. **[genai](./genai):** A pre-built GenAI metric collection compatible with instrumentation libraries that adhere to [OpenTelemetry semantic conventions for GenAI spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/). Contents include configuration for GenAI metrics such as frequency of user engagement, token usage and response latency so that you can monitor usage volume, costs and varied operational metrics for GenAI integrations within your application. 
+1. **[genai-operational](./genai-operational):** A pre-built GenAI metric collection compatible with instrumentation libraries that adhere to [OpenTelemetry semantic conventions for GenAI spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/). Contents include configuration for GenAI metrics such as frequency of user engagement, token usage and response latency so that you can monitor usage volume, costs and varied operational metrics for GenAI integrations within your application. 
 The `summaryrules.yaml` file is necessary to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation on GenAI spans.
 
 2. **[custom](./custom):** Sample metric collections based on Azure Monitor custom events (with corresponding sample code for instrumentation). These samples demonstrate how to instrument custom events and then use them in metric definitions. They can also be used directly in your application. This section also documents requirements around instrumentation for Online Experimentation metrics.
@@ -33,7 +33,7 @@ To generate metrics with Online Experimentation you must integrate Online Experi
     * Azure Monitor Logs charge based on data ingested. See [pricing](https://azure.microsoft.com/en-us/pricing/details/monitor/).
 * [For GenAI metrics] integrate a GenAI instrumentation library which follows the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
      * Enrich spans with custom attribute `TargetingId` (required): Azure App Configuration's TargetingId must be attached to GenAI traces in order to consume them for Online Experimentation metrics.
-     * You must also create a summary rule which outputs transformed GenAI spans into `AppEvents_CL` table. Summary rule and directions are provided in this repository. See [`genai` directory](./genai/). 
+     * You must also create a summary rule which outputs transformed GenAI spans into `AppEvents_CL` table. Summary rule and directions are provided in this repository. See [`genai-operational` directory](./genai-operational/). 
 
 ## Demo
 
@@ -42,7 +42,7 @@ The sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/open
 To modify the metrics in this sample application:
 
 * [Add (your customized) metrics to a json file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/tree/main/.config). Check your [GitHub Actions workflow file](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/.github/workflows/azure-dev.yml) configured file path to ensure the file is processed by that GHA.
-* Add the summary rule(s) necessary for consuming OTel-based GenAI spans into your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.yaml) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./genai/infra) folder of this samples repo.
+* Add the summary rule(s) necessary for consuming OTel-based GenAI spans into your repository's [infra path](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/la-summary-rules.yaml) and ensure your [main.bicep](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep) has a module for summary rule deployment. For more clarity on deploying summary rules, a sample bicep template is referenced below, with placeholder support files in the [infra](./genai-operational/infra) folder of this samples repo.
 
 Sample bicep module for summary rule deployment:
 
@@ -79,8 +79,8 @@ module summaryRules './monitor/summaryrule.bicep' =  [ for (rule, i) in ruleDefi
 > Ensure destinationTable matches 'AppEvents_CL'. No other custom log tables are used for Online Experimentation metric computation.
 
 This module requires two dependent files:
-- [`summaryrule.bicep`](./genai/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
-- [`summaryrules.yaml`](./genai/infra/monitor/summaryrules.yaml) -- a list of parameterized summary rules to create or update. Examples are provided in the [genai directory](./genai).
+- [`summaryrule.bicep`](./genai-operational/infra/monitor/summaryrule.bicep) template (can be copied as-is from this repo)
+- [`summaryrules.yaml`](./genai-operational/infra/monitor/summaryrules.yaml) -- a list of parameterized summary rules to create or update. Examples are provided in the [genai-operational directory](./genai-operational).
 
 ## Resources
 
