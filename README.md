@@ -11,7 +11,7 @@ This repository provides documentation and samples of online experimentation met
 
 Sample metric collections are organized into 2 directories:
 
-1. **[genai](./genai):** A pre-built GenAI metric collection compatible with instrumentation libraries that adhere to [OpenTelemetry semantic conventions for GenAI spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/). Contents include configuration for GenAI metrics such as frequency of user engagement, token usage and response latency so that you can monitor usage volume, costs and varied operational metrics for GenAI integrations within your application. 
+1. **[genai-operational](./genai-operational):** A pre-built GenAI metric collection compatible with instrumentation libraries that adhere to [OpenTelemetry semantic conventions for GenAI spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/). Contents include configuration for GenAI metrics such as frequency of user engagement, token usage and response latency so that you can monitor usage volume, costs and varied operational metrics for GenAI integrations within your application. 
 The `summaryrules.yaml` file is necessary to provision a corresponding [Log Analytics summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) for data extraction and transformation on GenAI spans.
 
 2. **[custom](./custom):** Sample metric collections based on Azure Monitor custom events (with corresponding sample code for instrumentation). These samples demonstrate how to instrument custom events and then use them in metric definitions. They can also be used directly in your application. This section also documents requirements around instrumentation for Online Experimentation metrics.
