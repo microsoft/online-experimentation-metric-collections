@@ -1,0 +1,15 @@
+{
+    "title": "Application Insights Metrics",
+    "metricCategory": "__MetricsCollection_appinsights__",
+    "description": "Standard metrics related to Application Insights.",
+    "metricConfig": "appinsights/metrics-appinsights-v0.1.0.json", 
+    "summaryRule": "appinsights/summaryrules-v0.1.0.yaml",
+    "prerequisites": [
+        {
+            "messageMarkdown": "Ensure your application sends `request` and `dependency` telemetry to Application Insights. By default, Azure Monitor instrumentation libraries do this automatically."
+        },
+        {
+            "messageMarkdown": "Attach the `TargetingId` attribute to each span (request or dependency) if you plan to use these metrics in Online Experimentation. Without this identifier, data cannot be attributed to feature flag variants."
+        }
+    ]
+}
