@@ -1,0 +1,18 @@
+{
+    "title": "Azure AI evaluation Metrics",
+    "metricCategory": "__MetricsCollection_azure_ai_evaluation__",
+    "description": "Metrics for Azure AI evaluation service",
+    "metricConfig": "azure_ai_evaluation/metrics-azure-ai-evaluation-v0.1.0.json", 
+    "summaryRule": "azure_ai_evaluation/summaryrules-v0.1.0.yaml",
+    "prerequisites": [
+        {
+            "messageMarkdown": "To use these metrics and summary rule, you must use the Azure AI Evaluation services which are part of the Azure AI Foundry SDK."
+        },
+        {
+            "messageMarkdown": "`TargetingId` must be associated with your GenAI spans that are being evaluated."
+        },
+        {
+            "messageMarkdown": "Azure AI Evaluation spans must be sent to Azure Monitor, and be accessible in the Log Analytics workspace configured for use with Online Experimentation."
+        }
+    ]
+}
