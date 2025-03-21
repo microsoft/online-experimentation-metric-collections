@@ -1,0 +1,14 @@
+summaryRules:
+  - name: "Online-Experimentation-AppInsights"
+    binSize: 20
+    destinationTable: AppEvents_CL
+    description: "Summary rule definition for non-eval GenAI metrics. For use to convert metrics from GenAI spans logged following OpenTelemetry v1.27+ semantic conventions."
+    query: |
+      let dependency_spans = dependencies
+      | extend Properties = bag_pack('DurationMs', duration, 'Success', tobool(success), "ResultCode", iff(isempty(resultCode), "0", resultCode), "SDKVersion", sdkVersion, "TargetingId", operation_Id)
+      | project Name = "dependency.span", TimeGenerated = timestamp, itemCount, Properties;
+      let request_spans = requests
+      | extend Properties = bag_pack('DurationMs', duration, 'Success', tobool(success), "ResultCode", iff(isempty(resultCode), "0", resultCode), "SDKVersion", sdkVersion, "TargetingId", operation_Id)
+      | project Name = "request.span", TimeGenerated = timestamp, itemCount, Properties;
+      request_spans
+      | union dependency_spans

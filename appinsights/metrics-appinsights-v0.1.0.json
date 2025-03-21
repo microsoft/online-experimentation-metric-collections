@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "metrics": [
+    {
+      "id": "count_dependency_spans",
+      "displayName": "Number of dependency spans",
+      "description": "The number of dependency calls.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "dependency.span"
+        }
+      }
+    },
+    {
+      "id": "avg_dependency_duration",
+      "displayName": "Average dependency call duration [ms]",
+      "description": "The average duration of dependency calls in milliseconds. This is measured by the DrationMs property of the span.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "dependency.span",
+          "property": "DurationMs",
+          "filter": "DurationMs > 0"
+        }
+      }
+    },
+    {
+      "id": "count_requests_spans",
+      "displayName": "Number of request spans",
+      "description": "The number of request spans.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "request.span"
+        }
+      }
+    },
+    {
+      "id": "avg_request_duration",
+      "displayName": "Average request call duration [ms]",
+      "description": "The average duration of request spans in milliseconds. This is measured by the DrationMs property of the span.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "request.span",
+          "property": "DurationMs",
+          "filter": "DurationMs > 0"
+        }
+      }
+    }
+  ]
+}
