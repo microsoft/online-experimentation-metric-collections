@@ -12,6 +12,19 @@
                     "enabled": true
                 }
             ]
+        },
+        "appinsights": {
+            "versionType": "otelconv",
+            "versionDetails": "Choose the appropriate OpenTelemetry convention version",
+            "versions": [
+                {
+                    "min": "1.27.0",
+                    "max": "",
+                    "versionText": "1.27+",
+                    "metadata": "appinsights/metadata-v1.27.0.json",
+                    "enabled": true
+                }
+            ]
         }
     }
 }
