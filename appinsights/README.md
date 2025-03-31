@@ -5,7 +5,7 @@ The [AppInsights metric collection](./metrics-appinsights-v0.1.0.json) defines c
 ## Prerequisites
 
 1. Ensure your application sends `request` and `dependency` telemetry to Application Insights. By default, Azure Monitor instrumentation libraries do this automatically.
-2. Attach the `TargetingId` attribute to each span (request or dependency) if you plan to use these metrics in Online Experimentation. Without this identifier, data cannot be attributed to feature flag variants.
+2. Ensure you are using the latest preview app config SDK. This SDK log AllocationId and VariantAssignmentPercentage in property for summary rule to work properly.
 
 ## Metrics
 

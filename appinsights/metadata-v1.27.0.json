@@ -1,6 +1,6 @@
 {
     "title": "Application Insights Metrics",
-    "metricCategory": "__MetricsCollection_appinsights__",
+    "metricCategory": "__MetricsCollection_AppInsights__",
     "description": "Standard metrics related to Application Insights.",
     "metricConfig": "appinsights/metrics-appinsights-v0.1.0.json", 
     "summaryRule": "appinsights/summaryrules-v0.1.0.yaml",

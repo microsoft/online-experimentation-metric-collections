@@ -7,13 +7,14 @@
       "description": "The number of dependency calls.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights"
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
       ],
       "desiredDirection": "Neutral",
       "definition": {
         "type": "EventCount",
         "event": {
-          "eventName": "dependency.span"
+          "eventName": "appinsights.dependency.span"
         }
       }
     },
@@ -23,14 +24,15 @@
       "description": "The average duration of dependency calls in milliseconds. This is measured by the DrationMs property of the span.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights"
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
       ],
       "desiredDirection": "Decrease",
       "definition": {
         "type": "Average",
         "value": {
-          "eventName": "dependency.span",
-          "property": "DurationMs",
+          "eventName": "appinsights.dependency.span",
+          "eventProperty": "DurationMs",
           "filter": "DurationMs > 0"
         }
       }
@@ -41,13 +43,14 @@
       "description": "The number of request spans.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights"
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
       ],
       "desiredDirection": "Neutral",
       "definition": {
         "type": "EventCount",
         "event": {
-          "eventName": "request.span"
+          "eventName": "appinsights.request.span"
         }
       }
     },
@@ -57,15 +60,88 @@
       "description": "The average duration of request spans in milliseconds. This is measured by the DrationMs property of the span.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights"
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
       ],
       "desiredDirection": "Decrease",
       "definition": {
         "type": "Average",
         "value": {
-          "eventName": "request.span",
-          "property": "DurationMs",
+          "eventName": "appinsights.request.span",
+          "eventProperty": "DurationMs",
           "filter": "DurationMs > 0"
+        }
+      }
+    },
+    {
+      "id": "event_dependency_error",
+      "displayName": "Number of dependency errors",
+      "description": "The number of dependency calls that resulted in an error.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "appinsights.dependency.span",
+          "filter": "Success == false"
+        }
+      }
+    },
+    {
+      "id": "event_dependency_error_403",
+      "displayName": "Dependency 403 error count",
+      "description": "Number of dependency calls that resulted in a 403 error",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "appinsights.dependency.span",
+          "filter": "ResultCode == 403"
+        }
+      }
+    },
+    {
+      "id": "event_request_error",
+      "displayName": "Number of request errors",
+      "description": "The number of request spans that resulted in an error.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "appinsights.request.span",
+          "filter": "Success == false"
+        }
+      }
+    },
+    {
+      "id": "event_request_error_404",
+      "displayName": "Request 404 error count",
+      "description": "Number of request spans that resulted in a 404 error",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "appinsights.request.span",
+          "filter": "ResultCode == 404"
         }
       }
     }
