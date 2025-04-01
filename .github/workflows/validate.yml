@@ -36,5 +36,6 @@ jobs:
           path: |
             custom/metrics-*.json
             genai-operational/metrics-*-v0.2.0.json
+            appinsights/metrics-*.json
           online-experimentation-workspace-endpoint: https://${{ vars.ONLINE_EXPERIMENTATION_WORKSPACE_ID }}.eastus2.exp.azure.net
           operation: validate
