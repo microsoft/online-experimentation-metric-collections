@@ -10,10 +10,10 @@ The [AppInsights metric collection](./metrics-appinsights-v0.1.0.json) defines c
 ## Metrics
 
 The JSON file [metrics-appinsights-v0.1.0.json](./metrics-appinsights-v0.1.0.json) contains definitions for:
-- Count of dependency spans
-- Average duration of dependency spans
-- Count of request spans
-- Average request duration
+- Count of dependency calls
+- Average duration of dependency calls
+- Count of request calls
+- Average duration of request calls
 
 Metrics are computed via the summary rule output in `AppEvents_CL`. Adjust filters to match your needs or rename them to fit your naming conventions.
 

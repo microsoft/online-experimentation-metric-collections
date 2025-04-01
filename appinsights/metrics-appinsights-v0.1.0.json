@@ -2,8 +2,8 @@
   "schemaVersion": "1.0",
   "metrics": [
     {
-      "id": "count_dependency_spans",
-      "displayName": "Number of dependency spans",
+      "id": "count_dependency_calls",
+      "displayName": "Number of dependency calls",
       "description": "The number of dependency calls.",
       "lifecycle": "Active",
       "categories": [
@@ -14,14 +14,14 @@
       "definition": {
         "type": "EventCount",
         "event": {
-          "eventName": "appinsights.dependency.span"
+          "eventName": "appinsights.dependency"
         }
       }
     },
     {
       "id": "avg_dependency_duration",
       "displayName": "Average dependency call duration [ms]",
-      "description": "The average duration of dependency calls in milliseconds. This is measured by the DrationMs property of the span.",
+      "description": "The average duration of dependency calls in milliseconds. This is measured by the DrationMs property.",
       "lifecycle": "Active",
       "categories": [
         "AppInsights",
@@ -31,16 +31,16 @@
       "definition": {
         "type": "Average",
         "value": {
-          "eventName": "appinsights.dependency.span",
+          "eventName": "appinsights.dependency",
           "eventProperty": "DurationMs",
           "filter": "DurationMs > 0"
         }
       }
     },
     {
-      "id": "count_requests_spans",
-      "displayName": "Number of request spans",
-      "description": "The number of request spans.",
+      "id": "count_request_calls",
+      "displayName": "Number of request calls",
+      "description": "The number of request calls.",
       "lifecycle": "Active",
       "categories": [
         "AppInsights",
@@ -50,14 +50,14 @@
       "definition": {
         "type": "EventCount",
         "event": {
-          "eventName": "appinsights.request.span"
+          "eventName": "appinsights.request"
         }
       }
     },
     {
       "id": "avg_request_duration",
       "displayName": "Average request call duration [ms]",
-      "description": "The average duration of request spans in milliseconds. This is measured by the DrationMs property of the span.",
+      "description": "The average duration of request calls in milliseconds. This is measured by the DrationMs property of the call.",
       "lifecycle": "Active",
       "categories": [
         "AppInsights",
@@ -67,81 +67,9 @@
       "definition": {
         "type": "Average",
         "value": {
-          "eventName": "appinsights.request.span",
+          "eventName": "appinsights.request",
           "eventProperty": "DurationMs",
           "filter": "DurationMs > 0"
-        }
-      }
-    },
-    {
-      "id": "event_dependency_error",
-      "displayName": "Number of dependency errors",
-      "description": "The number of dependency calls that resulted in an error.",
-      "lifecycle": "Active",
-      "categories": [
-        "AppInsights",
-        "__MetricsCollection_AppInsights__"
-      ],
-      "desiredDirection": "Decrease",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "appinsights.dependency.span",
-          "filter": "Success == false"
-        }
-      }
-    },
-    {
-      "id": "event_dependency_error_403",
-      "displayName": "Dependency 403 error count",
-      "description": "Number of dependency calls that resulted in a 403 error",
-      "lifecycle": "Active",
-      "categories": [
-        "AppInsights",
-        "__MetricsCollection_AppInsights__"
-      ],
-      "desiredDirection": "Decrease",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "appinsights.dependency.span",
-          "filter": "ResultCode == 403"
-        }
-      }
-    },
-    {
-      "id": "event_request_error",
-      "displayName": "Number of request errors",
-      "description": "The number of request spans that resulted in an error.",
-      "lifecycle": "Active",
-      "categories": [
-        "AppInsights",
-        "__MetricsCollection_AppInsights__"
-      ],
-      "desiredDirection": "Decrease",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "appinsights.request.span",
-          "filter": "Success == false"
-        }
-      }
-    },
-    {
-      "id": "event_request_error_404",
-      "displayName": "Request 404 error count",
-      "description": "Number of request spans that resulted in a 404 error",
-      "lifecycle": "Active",
-      "categories": [
-        "AppInsights",
-        "__MetricsCollection_AppInsights__"
-      ],
-      "desiredDirection": "Decrease",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "appinsights.request.span",
-          "filter": "ResultCode == 404"
         }
       }
     }

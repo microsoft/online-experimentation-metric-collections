@@ -10,11 +10,11 @@ summaryRules:
       let app_dependencies = AppDependencies
       | join kind=inner targeting_id_to_operation_id on OperationId
       | extend Properties2 = bag_pack("DurationMs", DurationMs, "Name", Name, "Success", tobool(Success), "ResultCode", iff(isempty(ResultCode), "0", ResultCode), "SDKVersion", SDKVersion, "TargetingId", TargetingId, "AppVersion", AppVersion)
-      | project Name = "appinsights.dependency.span", TimeGenerated, ItemCount, Properties=Properties2;
+      | project Name = "appinsights.dependency", TimeGenerated, ItemCount, Properties=Properties2;
       AppRequests 
       | join kind=inner targeting_id_to_operation_id on OperationId
       | extend Properties2 = bag_pack("DurationMs", DurationMs, "Name", Name, "Success", tobool(Success), "ResultCode", iff(isempty(ResultCode), "0", ResultCode), "SDKVersion", SDKVersion, "TargetingId", TargetingId, "AppVersion", AppVersion)
-      | project Name = "appinsights.request.span", TimeGenerated, ItemCount, Properties=Properties2
+      | project Name = "appinsights.request", TimeGenerated, ItemCount, Properties=Properties2
       | union app_dependencies
   - name: "Online-Experimentation-Assignment-Summary"
     binSize: 20
