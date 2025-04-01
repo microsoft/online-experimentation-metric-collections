@@ -72,6 +72,23 @@
           "filter": "DurationMs > 0"
         }
       }
+    },
+    {
+      "id": "count_users",
+      "displayName": "Number of users",
+      "description": "The number of users make at least one request.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "appinsights.request"
+        }
+      }
     }
   ]
 }
