@@ -74,6 +74,26 @@
       }
     },
     {
+      "id": "p90_request_duration",
+      "displayName": "P90 request call duration [ms]",
+      "description": "A performance metric where 90% of all requests complete faster than this value (measured in milliseconds). This provides visibility into slower user experiences while filtering out extreme outliers. Set to 'Inactive' by default due to higher processing demands and reduced sensitivity compared to average metrics.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AppInsights",
+        "__MetricsCollection_AppInsights__"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "appinsights.request",
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
+        },
+        "percentile": 90
+      }
+    },
+    {
       "id": "count_users",
       "displayName": "Number of users",
       "description": "The number of users make at least one request.",
