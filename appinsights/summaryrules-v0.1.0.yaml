@@ -1,8 +1,8 @@
 summaryRules:
-  - name: "AppEvents-Summary"
+  - name: "AppInsights-WebAPI"
     binSize: 20
     destinationTable: AppEvents_CL
-    description: "Summary rule definition for application insights metrics."
+    description: "Summary rule definition for Application Insights Web API metrics."
     query: |
       let targeting_id_to_operation_id = AppEvents
       | extend TargetingId = Properties.TargetingId, Variant = Properties.Variant, ParentId = Properties.ParentId
@@ -16,30 +16,3 @@ summaryRules:
       | extend Properties2 = bag_pack("DurationMs", DurationMs, "Name", Name, "Success", tobool(Success), "ResultCode", iff(isempty(ResultCode), "0", ResultCode), "SDKVersion", SDKVersion, "TargetingId", TargetingId, "AppVersion", AppVersion)
       | project Name = "appinsights.request", TimeGenerated, ItemCount, Properties=Properties2
       | union app_dependencies
-  - name: "Online-Experimentation-Assignment-Summary"
-    binSize: 20
-    destinationTable: OEWExperimentAssignmentSummary_CL
-    description: "Summary rule definition for online experiment assignment summary."
-    query: |
-      AppEvents
-      | where Name == "FeatureEvaluation"
-      | where Properties has "Percentile"
-      | where tostring(Properties.VariantAssignmentReason) == "Percentile"
-      | where tostring(Properties.TargetingId) != ""
-      | where tostring(Properties.Enabled) == "True"
-      | project
-          TimeGenerated,
-          ItemCount,
-          FeatureFlagReference = tostring(Properties.FeatureFlagReference),
-          FeatureName = tostring(Properties.FeatureName),
-          AllocationId = tostring(Properties.AllocationId),
-          Variant = tostring(Properties.Variant),
-          VariantAssignmentPercentage = toreal(Properties.VariantAssignmentPercentage),
-          IsControlVariant = tostring(Properties.DefaultWhenEnabled) == tostring(Properties.Variant)
-      | summarize
-          VariantAssignmentPercentage = take_any(VariantAssignmentPercentage),
-          IsControlVariant = take_any(IsControlVariant),
-          AssignmentEventCount = tolong(sum(ItemCount)),
-          FirstAssignmentTimestamp = min(TimeGenerated),
-          LastAssignmentTimestamp = max(TimeGenerated)
-          by FeatureFlagReference, FeatureName, AllocationId, Variant
