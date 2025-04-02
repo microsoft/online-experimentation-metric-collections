@@ -18,6 +18,7 @@ The JSON file [metrics-appinsights-v0.1.0.json](./metrics-appinsights-v0.1.0.jso
 Metrics are computed via the summary rule output in `AppEvents_CL`. Adjust filters to match your needs or rename them to fit your naming conventions.
 
 ### Errors
+
 For error-related events, see [metrics-appinsights-errors-v0.1.0.json](./metrics-appinsights-errors-v0.1.0.json). It includes sample metrics focusing on HTTP status checks (e.g., 403, 404).
 
 ## Summary rule
