@@ -1,35 +1,39 @@
-# AppInsights metric collection
+# AppInsights Web API Metric Collection
 
-The [AppInsights metric collection](./metrics-appinsights-v0.1.0.json) defines common telemetry-based measures on HTTP dependencies and requests. It is meant to be used alongside the [provided summary rule](./summaryrules-v0.1.0.yaml), which processes and forwards these events to the `AppEvents_CL` table in Log Analytics for evaluation by Online Experimentation.
+The [AppInsights Web API metric collection](./metrics-appinsights-v0.1.0.json) defines common telemetry-based measures on HTTP dependencies and requests for backend services. It is meant to be used alongside the [provided summary rule](./summaryrules-v0.1.0.yaml), which processes and forwards these events to the `AppEvents_CL` table in Log Analytics for evaluation by Online Experimentation.
+
+| GenAI metric collection version | Creation date | Metric collection | Summary rule |
+| -------- | --------------| -------- | ------- |
+| v0 | April 2025 | [metrics-appinsights-v0.1.0](./metrics-appinsights-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.yaml)
 
 ## Prerequisites
 
-1. Ensure your application sends `request` and `dependency` telemetry to Application Insights. By default, Azure Monitor instrumentation libraries do this automatically.
-2. Ensure you are using the latest preview app config SDK. This SDK log AllocationId and VariantAssignmentPercentage in property for summary rule to work properly.
+Ensure your application supports autoinstrumentation in Azure Monitor Application Insights and that it is enabled. For more details, refer to the documentation: [What is autoinstrumentation for Azure Monitor Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/codeless-overview).
 
 ## Metrics
 
-The JSON file [metrics-appinsights-v0.1.0.json](./metrics-appinsights-v0.1.0.json) contains definitions for:
-- Count of dependency calls
-- Average duration of dependency calls
-- Count of request calls
-- Average duration of request calls
+The following metrics are defined in `metrics-appinsights-v0.1.0.json`:
 
-Metrics are computed via the summary rule output in `AppEvents_CL`. Adjust filters to match your needs or rename them to fit your naming conventions.
-
-### Errors
-
-For error-related events, see [metrics-appinsights-errors-v0.1.0.json](./metrics-appinsights-errors-v0.1.0.json). It includes sample metrics focusing on HTTP status checks (e.g., 403, 404).
+| Display name | Metric type | Description | Default lifecycle |
+| ------- | ------- | ------ | ------ | 
+| Number of users | UserCount | Counts unique users who made at least one request to your application. Essential for understanding application reach, adoption, and usage patterns. | Active |
+| Number of request calls | EventCount | Counts the total number of incoming HTTP requests received by your application. This fundamental metric helps comparing traffic, understand usage patterns, and monitor system load. | Active |
+| Number of dependency calls | EventCount | Counts the total number of outbound calls from your application to external dependencies such as databases, APIs, or other services. Useful for comparing system load and identifying potential bottlenecks. | Active |
+| Number of exceptions | EventCount | Tracks all exceptions captured by Application Insights. This metric is essential for identifying stability issues, monitoring error trends, and improving application reliability. | Inactive |
+| Request success rate | EventRate | Measures the percentage of successful HTTP requests to your application. This metric is crucial for understanding application reliability. A high success rate indicates a healthy application, while a low rate may signal issues that need attention. | Active |
+| Dependency success rate | EventRate | Measures the percentage of successful calls to external dependencies. This metric is crucial for understanding the reliability of your application's interactions with external services. | Active |
+| Average dependency call duration [ms] | Average | Measures the average time in milliseconds required to complete calls to external dependencies like databases, external APIs, or other services. This is a fundamental performance indicator that helps identify slowdowns in external systems. | Active |
+| Average request call duration [ms] | Average | Measures the average time in milliseconds required to process incoming HTTP requests from receipt to response completion. This core performance metric directly impacts user experience and perceived application speed. | Active |
+| P90 dependency call duration [ms] | Percentile | A performance metric where 90% of all dependencies complete faster than this value (measured in milliseconds). This provides visibility into slower user experiences while filtering out extreme outliers. | Inactive |
+| P90 request call duration [ms] | Percentile | A performance metric where 90% of all requests complete faster than this value (measured in milliseconds). This provides visibility into slower user experiences while filtering out extreme outliers. | Inactive |
 
 ## Summary rule
 
-The [summaryrules-v0.1.0.yaml](./summaryrules-v0.1.0.yaml) file contains a query that brings relevant dependency/request data from Application Insights into `AppEvents_CL`, which Online Experimentation automatically consumes. Ensure you keep the rule name consistent so only one valid summary rule is active.
+If this is your first time adding a Log Analytics summary rule for Online Experimentation, see  [root `README`](../README.md). An example of setting up the configured bicep template can be found in the Online Experimentation [sample application code](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep).
 
-## Deployment
+To update summary rules directly through Log Analytics API, or to manage or delete summary rules, see [Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) documentation.
 
-1. Include these files in your GitHub repository used for experimentation.
-2. Run your GitHub Actions deployment that calls [azure/online-experimentation-deploy-metrics](https://github.com/Azure/online-experimentation-deploy-metrics).
-3. Verify the `AppEvents_CL` table in Log Analytics for data. Adjust filters or event names as needed.
+To preview the output of the summary rule in advance, copy the query from [`summaryrules-{version}.yaml`] and paste into your application's Log Analytics workspace.
 
-## Questions or Feedback
-Contact your team’s Azure Monitor or Online Experimentation owners for help with customizing metrics, or refer to the [Online Experimentation documentation](https://aka.ms/exp/public/docs).
+## Help
+For questions or issues with GenAI metrics, contact [exp-preview-fb@microsoft.com](mailto:exp-preview-fb@microsoft.com).
