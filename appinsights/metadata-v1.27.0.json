@@ -1,15 +1,12 @@
 {
     "title": "AppInsights Web API Metrics",
     "metricCategory": "__MetricsCollection_AppInsights_WebAPI__",
-    "description": "Standard metrics related to Application.",
+    "description": "Standard metrics related to Application Insights Web API.",
     "metricConfig": "appinsights/metrics-appinsights-v0.1.0.json", 
     "summaryRule": "appinsights/summaryrules-v0.1.0.yaml",
     "prerequisites": [
         {
-            "messageMarkdown": "Ensure your application sends `request` and `dependency` telemetry to Application Insights. By default, Azure Monitor instrumentation libraries do this automatically."
-        },
-        {
-            "messageMarkdown": "Attach the `TargetingId` attribute to each span (request or dependency) if you plan to use these metrics in Online Experimentation. Without this identifier, data cannot be attributed to feature flag variants."
+            "messageMarkdown": "Ensure your application supports autoinstrumentation in Azure Monitor Application Insights and that it is enabled. For more details, refer to the documentation: [What is autoinstrumentation for Azure Monitor Application Insights?](https://learn.microsoft.com/en-us/azure/azure-monitor/app/codeless-overview)."
         }
     ]
 }
