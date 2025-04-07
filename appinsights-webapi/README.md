@@ -24,6 +24,8 @@ The following metrics are defined in `metrics-appinsights-v0.1.0.json`:
 | Dependency success rate | EventRate | Measures the percentage of successful calls to external dependencies. This metric is crucial for understanding the reliability of your application's interactions with external services. | Active |
 | Average dependency call duration [ms] | Average | Measures the average time in milliseconds required to complete calls to external dependencies like databases, external APIs, or other services. This is a fundamental performance indicator that helps identify slowdowns in external systems. | Active |
 | Average request call duration [ms] | Average | Measures the average time in milliseconds required to process incoming HTTP requests from receipt to response completion. This core performance metric directly impacts user experience and perceived application speed. | Active |
+| Median dependency call duration [ms] | Percentile | Measures the median (50th percentile) time in milliseconds required to complete calls to external dependencies. Unlike average duration, median is less affected by outliers, providing a more representative view of typical performance. | Active |
+| Median request call duration [ms] | Percentile | Measures the median (50th percentile) time in milliseconds required to process incoming HTTP requests. Unlike average duration, median is less affected by outliers, providing a more representative view of typical performance. | Active |
 | P90 dependency call duration [ms] | Percentile | A performance metric where 90% of all dependencies complete faster than this value (measured in milliseconds). This provides visibility into slower user experiences while filtering out extreme outliers. | Inactive |
 | P90 request call duration [ms] | Percentile | A performance metric where 90% of all requests complete faster than this value (measured in milliseconds). This provides visibility into slower user experiences while filtering out extreme outliers. | Inactive |
 
@@ -36,4 +38,4 @@ To update summary rules directly through Log Analytics API, or to manage or dele
 To preview the output of the summary rule in advance, copy the query from [`summaryrules-{version}.yaml`] and paste into your application's Log Analytics workspace.
 
 ## Help
-For questions or issues with GenAI metrics, contact [exp-preview-fb@microsoft.com](mailto:exp-preview-fb@microsoft.com).
+For questions or issues with Application insights WebAPI metrics, contact [exp-preview-fb@microsoft.com](mailto:exp-preview-fb@microsoft.com).
