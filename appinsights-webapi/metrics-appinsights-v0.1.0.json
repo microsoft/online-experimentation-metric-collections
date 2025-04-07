@@ -136,7 +136,7 @@
       }
     },
     {
-      "id": "median_dependency_duration [ms]",
+      "id": "median_dependency_duration",
       "displayName": "Median dependency call duration [ms]",
       "description": "Measures the median (50th percentile) time in milliseconds required to complete calls to external dependencies like databases, external APIs, or other services. Unlike average duration, median is less affected by outliers, providing a more representative view of typical performance.",
       "lifecycle": "Active",
@@ -155,7 +155,7 @@
       }
     },
     {
-      "id": "median_request_duration [ms]",
+      "id": "median_request_duration",
       "displayName": "Median request call duration [ms]",
       "description": "Measures the median (50th percentile) time in milliseconds required to process incoming HTTP requests. Unlike average duration, median provides a more representative view of typical user experience by eliminating the impact of outliers.",
       "lifecycle": "Active",
