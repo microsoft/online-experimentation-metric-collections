@@ -15,7 +15,7 @@
         },
         "webapi": {
             "versionType": "none",
-            "versionDetails": "N/A",
+            "versionDetails": "Schema defined by Azure Application Insights. See https://learn.microsoft.com/en-us/azure/azure-monitor/app/data-model for details.",
             "versions": [
                 {
                     "min": "",
