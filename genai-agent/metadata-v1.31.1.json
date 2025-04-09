@@ -1,0 +1,12 @@
+{
+    "title": "GenAI Agent Metrics",
+    "metricCategory": "__MetricCollection_genai_agent__",
+    "description": "Standard GenAI Agent metrics",
+    "metricConfig": "genai-agent/metrics-genai-agent-v0.1.0.json", 
+    "summaryRule": "genai-agent/summaryrules-v0.1.0.yaml",
+    "prerequisites": [
+        {
+            "messageMarkdown": ""
+        }
+    ]
+}
