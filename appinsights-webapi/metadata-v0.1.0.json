@@ -2,7 +2,7 @@
     "title": "AppInsights Web API Metrics",
     "metricCategory": "__MetricsCollection_AppInsights_WebAPI__",
     "description": "Standard metrics for Web API with Application Insights autoinstrumentation enabled.",
-    "metricConfig": "appinsights/metrics-appinsights-v0.1.0.json", 
+    "metricConfig": "appinsights/metrics-appinsights-webapi-v0.1.0.json", 
     "summaryRule": "appinsights/summaryrules-v0.1.0.yaml",
     "prerequisites": [
         {

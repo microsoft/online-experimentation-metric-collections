@@ -2,9 +2,9 @@
 
 The [AppInsights Web API metric collection](./metrics-appinsights-v0.1.0.json) defines common telemetry-based measures on HTTP dependencies and requests for backend services. It is meant to be used alongside the [provided summary rule](./summaryrules-v0.1.0.yaml), which processes and forwards these events to the `AppEvents_CL` table in Log Analytics for evaluation by Online Experimentation.
 
-| GenAI metric collection version | Creation date | Metric collection | Summary rule |
+| AppInsights Web API metric collection version | Creation date | Metric collection | Summary rule |
 | -------- | --------------| -------- | ------- |
-| v0 | April 2025 | [metrics-appinsights-v0.1.0](./metrics-appinsights-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.yaml)
+| webapi | April 2025 | [metrics-appinsights-webapi-v0.1.0](./metrics-appinsights-webapi-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.yaml)
 
 ## Prerequisites
 
