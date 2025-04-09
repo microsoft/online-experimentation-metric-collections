@@ -21,7 +21,7 @@
                     "min": "",
                     "max": "",
                     "versionText": "",
-                    "metadata": "appinsights/metadata-v1.27.0.json",
+                    "metadata": "appinsights/metadata-v0.1.0.json",
                     "enabled": false
                 }
             ]
