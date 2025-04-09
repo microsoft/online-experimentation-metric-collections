@@ -1,0 +1,13 @@
+summaryRules:
+  - name: "Online-Experimentation-GenAI"
+    binSize: 20
+    destinationTable: AppEvents_CL
+    description: "Summary rule definition for non-eval GenAI metrics. For use to convert metrics from GenAI spans logged following OpenTelemetry v1.27+ semantic conventions."
+    query: |
+      let supported_keys = dynamic(["gen_ai.message.id", "gen_ai.operation.name", "gen_ai.system", "gen_ai.response.model", "gen_ai.thread.id", "gen_ai.thread.run.status", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.agent.id", "gen_ai.tool.call.id", "gen_ai.tool.name", "gen_ai.thread.run.id", "gen_ai.request.model", "error.type"]);
+      AppDependencies
+      | where DependencyType == "az.ai.agents"
+      | extend OTelVersion = extract("otel([0-9.]+[0-9])", 1, SDKVersion)
+      | extend keys = bag_keys(Properties)
+      | extend newProperties = bag_remove_keys(Properties, set_difference(keys, supported_keys))
+      | project Name = "gen_ai.agent.otel.span", TimeGenerated, ItemCount, Properties=bag_merge(bag_pack("DurationMs", DurationMs, "Name", Name, "Success", tobool(Success), "ResultCode", iff(isempty(ResultCode), "0", ResultCode), "OperationId", OperationId, "OTelVersion", OTelVersion), newProperties)
