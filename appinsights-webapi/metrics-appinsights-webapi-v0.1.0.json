@@ -7,7 +7,9 @@
       "description": "Counts unique users who made at least one request to your application. Essential for understanding application reach, adoption, and usage patterns.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Usage",
+        "Important"
       ],
       "desiredDirection": "Increase",
       "definition": {
@@ -23,7 +25,8 @@
       "description": "Counts the total number of incoming HTTP requests received by your application. This fundamental metric helps comparing traffic, understand usage patterns, and monitor system load.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Usage"
       ],
       "desiredDirection": "Neutral",
       "definition": {
@@ -39,7 +42,8 @@
       "description": "Counts the total number of outbound calls from your application to external dependencies such as databases, APIs, or other services. Useful for comparing system load and identifying potential bottlenecks. You can change the desired direction to 'Decrease' if you are optimizing the dependency traffic.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Usage"
       ],
       "desiredDirection": "Neutral",
       "definition": {
@@ -105,7 +109,8 @@
       "description": "Measures the average time in milliseconds required to complete calls to external dependencies like databases, external APIs, or other services. This is a fundamental performance indicator that helps identify slowdowns in external systems.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Performance"
       ],
       "desiredDirection": "Decrease",
       "definition": {
@@ -123,7 +128,8 @@
       "description": "Measures the average time in milliseconds required to process incoming HTTP requests from receipt to response completion. Request duration is measured by the DurationMs property for all appinsights.request events. This core performance metric directly impacts user experience and perceived application speed.",
       "lifecycle": "Active",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Performance"
       ],
       "desiredDirection": "Decrease",
       "definition": {
@@ -141,7 +147,8 @@
       "description": "Measures the median (50th percentile) time in milliseconds required to complete calls to external dependencies like databases, external APIs, or other services. Unlike average duration, median is less affected by outliers, providing a more representative view of typical performance.",
       "lifecycle": "Inactive",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Performance"
       ],
       "desiredDirection": "Decrease",
       "definition": {
@@ -160,7 +167,8 @@
       "description": "Measures the median (50th percentile) time in milliseconds required to process incoming HTTP requests. Unlike average duration, median provides a more representative view of typical user experience by eliminating the impact of outliers.",
       "lifecycle": "Inactive",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Performance"
       ],
       "desiredDirection": "Decrease",
       "definition": {
@@ -179,7 +187,8 @@
       "description": "A performance metric where 90% of all dependencies complete faster than this value (measured in milliseconds). This provides visibility into slower user experiences while filtering out extreme outliers. Set to 'Inactive' by default due to higher processing demands and reduced sensitivity compared to average metrics.",
       "lifecycle": "Inactive",
       "categories": [
-        "AppInsights_WebAPI"      
+        "AppInsights_WebAPI",
+        "Performance" 
       ],
       "desiredDirection": "Decrease",
       "definition": {
@@ -198,7 +207,8 @@
       "description": "A performance metric where 90% of all requests complete faster than this value (measured in milliseconds). Request duration is measured by the DurationMs property for all appinsights.request events. This provides visibility into slower user experiences while filtering out extreme outliers. Particularly valuable for user-facing applications where consistent performance is important. Set to 'Inactive' by default due to higher processing demands and reduced sensitivity compared to average metrics.",
       "lifecycle": "Inactive",
       "categories": [
-        "AppInsights_WebAPI"
+        "AppInsights_WebAPI",
+        "Performance"
       ],
       "desiredDirection": "Decrease",
       "definition": {
