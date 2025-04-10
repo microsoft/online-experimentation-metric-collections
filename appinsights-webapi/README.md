@@ -31,7 +31,7 @@ The following metrics are defined in `metrics-appinsights-webapi-v0.1.0.json`:
 
 ## Summary rule
 
-If this is your first time adding a Log Analytics summary rule for Online Experimentation, see  [root `README`](../README.md). An example of setting up the configured bicep template can be found in the Online Experimentation [sample application code](https://github.com/Azure-Samples/openai-chat-app-eval-ab/blob/main/infra/main.bicep).
+If this is your first time adding a Log Analytics summary rule for Online Experimentation, see  [root `README`](../README.md).
 
 To update summary rules directly through Log Analytics API, or to manage or delete summary rules, see [Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) documentation.
 
