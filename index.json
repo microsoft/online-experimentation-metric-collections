@@ -13,7 +13,7 @@
                 }
             ]
         },
-        "webapi": {
+        "appinsights-webapi": {
             "versionType": "none",
             "versionDetails": "N/A",
             "versions": [
