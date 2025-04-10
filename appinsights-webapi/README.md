@@ -1,6 +1,6 @@
 # AppInsights Web API Metric Collection
 
-The [AppInsights Web API metric collection](./metrics-appinsights-v0.1.0.json) defines common telemetry-based measures on HTTP dependencies and requests for backend services. It is meant to be used alongside the [provided summary rule](./summaryrules-v0.1.0.yaml), which processes and forwards these events to the `AppEvents_CL` table in Log Analytics for evaluation by Online Experimentation.
+The [AppInsights Web API metric collection](./metrics-appinsights-webapi-v0.1.0.json) defines common telemetry-based measures on HTTP dependencies and requests for backend services. It is meant to be used alongside the [provided summary rule](./summaryrules-v0.1.0.yaml), which processes and forwards these events to the `AppEvents_CL` table in Log Analytics for evaluation by Online Experimentation.
 
 | AppInsights Web API metric collection version | Creation date | Metric collection | Summary rule |
 | -------- | --------------| -------- | ------- |
@@ -12,7 +12,7 @@ Ensure your application supports autoinstrumentation in Azure Monitor Applicatio
 
 ## Metrics
 
-The following metrics are defined in `metrics-appinsights-v0.1.0.json`:
+The following metrics are defined in `metrics-appinsights-webapi-v0.1.0.json`:
 
 | Display name | Metric type | Description | Default lifecycle |
 | ------- | ------- | ------ | ------ | 
