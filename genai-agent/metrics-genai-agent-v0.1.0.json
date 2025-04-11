@@ -1,0 +1,412 @@
+{
+  "schemaVersion": "2.0",
+  "metrics": [
+    {
+      "id": "count_genai_agent_spans",
+      "displayName": "Number of GenAI agent spans",
+      "description": "The total number of GenAI agent spans captured. This metric provides a baseline measure of your GenAI agent activity and usage volume across your application.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span"
+        }
+      }
+    },
+    {
+      "id": "count_genai_users",
+      "displayName": "Number of GenAI users",
+      "description": "The number of users producing at least one GenAI agent span. This metric measures discovery/adoption of your GenAI agent features. ",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage",
+        "Important"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_create_thread_spans",
+      "displayName": "Number of calls for creating new thread with GenAI Agent",
+      "description": "The total number of GenAI operations that create new threads. This metric helps track how frequently new conversation threads are being initiated in your GenAI agent implementation.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == create_thread"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_create_message_spans",
+      "displayName": "Number of calls for creating new message with GenAI Agent",
+      "description": "The total number of GenAI operations that create new messages. This metric helps track how frequently new messages are being sent in your GenAI agent implementation. It should be roughly equal to the number of process_thread_run calls.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == create_message"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_process_thread_run_spans",
+      "displayName": "Number of calls for processing thread run with GenAI Agent",
+      "description": "The total number of GenAI operations that process thread runs. This metric helps track how frequently thread runs are being processed in your GenAI agent implementation.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == process_thread_run"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_execute_tool_spans",
+      "displayName": "Number of calls for executing tool with GenAI Agent",
+      "description": "The total number of GenAI operations that execute tools. This metric helps track how frequently tools are being executed in your GenAI agent implementation.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage",
+        "Tool_use"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == execute_tool"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_submit_tool_outputs_spans",
+      "displayName": "Number of calls for submitting tool outputs with GenAI Agent",
+      "description": "The total number of GenAI operations that submit tool outputs. This metric helps track how frequently tool outputs are being submitted in your GenAI agent implementation.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage",
+        "Tool_use"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == submit_tool_outputs"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_start_thread_run_spans",
+      "displayName": "Number of calls for starting thread run with GenAI Agent",
+      "description": "The total number of GenAI operations that start thread runs without awaiting their completion / streaming. This metric helps track asynchronous thread run initiation patterns in your GenAI agent implementation. Unlike process_thread_run spans which capture full run processing, these spans indicate cases where the application initiates a run and polls for results later.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == start_thread_run"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_retrieve_run_spans",
+      "displayName": "Number of calls for retrieving thread run status with GenAI Agent",
+      "description": "The total number of GenAI operations that retrieve thread run status. This metric helps track how frequently applications poll for run status updates in asynchronous GenAI agent implementations.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == retrieve_run"
+        }
+      }
+    },
+    {
+      "id": "count_genai_agent_list_messages_spans",
+      "displayName": "Number of calls for listing messages with GenAI Agent",
+      "description": "The total number of GenAI operations that list messages from a thread. This metric helps track how frequently applications retrieve conversation history or final responses in GenAI agent implementations.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == list_messages"
+        }
+      }
+    },
+    {
+      "id": "count_genai_tool_users",
+      "displayName": "Number of GenAI chat users",
+      "description": "The number of users with at least one GenAI span with tool execution.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI",
+        "Usage",
+        "Tool_use"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == 'execute_tool'"
+        }
+      }
+    },
+    {
+      "id": "sum_genai_agent_input_tokens",
+      "displayName": "Total GenAI agent usage tokens",
+      "description": "The total usage tokens (both input and output) for GenAI agent calls. Assuming equal number of GenAI agent calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Sum",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        }
+      }
+    },
+    {
+      "id": "avg_genai_agent_input_tokens",
+      "displayName": "Average GenAI agent input tokens",
+      "description": "The average number of input tokens used per GenAI agent call. This metric helps track prompt efficiency and identify opportunities to optimize your prompts for cost reduction.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        }
+      }
+    },
+    {
+      "id": "p95_genai_agent_input_tokens",
+      "displayName": "90th percentile GenAI agent input tokens",
+      "description": "The 90th percentile input tokens per GenAI agent call. This gives an indication of the input token usage near the upper end of the distribution, helping identify outliers in prompt length.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        },
+        "percentile": 90
+      }
+    },
+    {
+      "id": "median_genai_agent_input_tokens",
+      "displayName": "Median GenAI agent input tokens",
+      "description": "The median (50th percentile) input tokens per GenAI agent call. This provides the typical prompt length used in your application, less influenced by outliers than the average.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        },
+        "percentile": 50
+      }
+    },
+    {
+      "id": "sum_genai_agent_output_tokens",
+      "displayName": "Total GenAI agent usage output tokens",
+      "description": "The total usage tokens (both input and output) for GenAI agent calls. Assuming equal number of GenAI agent calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Sum",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        }
+      }
+    },
+    {
+      "id": "avg_genai_agent_output_tokens",
+      "displayName": "Average GenAI agent output tokens",
+      "description": "The average number of output tokens generated per GenAI agent call. This metric helps track response length and verbosity across your application.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        }
+      }
+    },
+    {
+      "id": "p90_genai_agent_output_tokens",
+      "displayName": "90th percentile GenAI agent output tokens",
+      "description": "The 90th percentile output tokens per GenAI agent call. This gives an indication of the response length near the upper end of the distribution, helping identify particularly verbose responses.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Inactive",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        },
+        "percentile": 90
+      }
+    },
+    {
+      "id": "median_genai_agent_output_tokens",
+      "displayName": "Median GenAI agent output tokens",
+      "description": "The median (50th percentile) output tokens per GenAI agent call. This provides the typical response length in your application, less influenced by outliers than the average.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        },
+        "percentile": 50
+      }
+    },
+    {
+      "id": "avg_genai_agent_process_thread_run_duration",
+      "displayName": "Average GenAI agent duration",
+      "description": "The average duration of GenAI agent calls. This metric helps track the performance of your GenAI agent implementation and identify potential bottlenecks.",
+      "lifecycle": "Active",
+      "categories": [
+        "GenAI_Agent",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "DurationMs",
+          "filter": "gen_ai.operation.name == process_thread_run and DurationMS > 0"
+        }
+      }
+    },
+    {
+      "id": "p90_genai_agent_process_thread_run_duration",
+      "displayName": "90th percentile GenAI agent duration",
+      "description": "The 90th percentile duration of GenAI agent calls. This gives an indication of the performance near the upper end of the distribution, helping identify outliers in processing time.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "DurationMs",
+          "filter": "gen_ai.operation.name == process_thread_run and DurationMS > 0"
+        },
+        "percentile": 90
+      }
+    },
+    {
+      "id": "median_genai_agent_process_thread_run_duration",
+      "displayName": "Median GenAI agent duration",
+      "description": "The median (50th percentile) duration of GenAI agent calls. This provides the typical processing time in your application, less influenced by outliers than the average.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "DurationMs",
+          "filter": "gen_ai.operation.name == process_thread_run and DurationMS > 0"
+        },
+        "percentile": 50
+      }
+    }
+  ]
+}
