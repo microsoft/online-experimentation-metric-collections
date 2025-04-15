@@ -10,7 +10,7 @@ Metrics contained in the **Azure AI agent service** [metric collection](./metric
 
 | GenAI Agent metric collection version | OTel semantic convention version | Creation date | Metric collection | Summary rule |
 |---------------------------------------|----------------------------------|---------------|-------------------|--------------|
-| v0.1.0                                | Version 1.x (experimental)       | Feb 2025      | [metrics-genai-agent-v0.1.0](./metrics-genai-agent-v0.1.0.json) | [summaryrules-v0.1.0](../summaryrules-v0.1.0.yaml) |
+| v0.1.0                                | Version 1.31.1 (experimental)       | Feb 2025      | [metrics-genai-agent-v0.1.0](./metrics-genai-agent-v0.1.0.json) | [summaryrules-v0.1.0](../summaryrules-v0.1.0.yaml) |
 
 ---
 
@@ -19,7 +19,7 @@ Metrics contained in the **Azure AI agent service** [metric collection](./metric
 ### Instrumentation
 
 1. **Azure AI Agent Service**  
-    This metric is supposed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview).
+    This metric is supposed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview). [Tracing](https://learn.microsoft.com/en-us/azure/ai-services/agents/concepts/tracing) should also be enabled through AI foundary portal.
 2. **TargetingId on spans**  
    **to be determined
 
@@ -54,37 +54,31 @@ If you have never configured a summary rule, see [root `README.md`](../README.md
 
 ---
 
-## GenAI Agent metrics
+## Azure AI Agent metrics
 
 The following metrics are defined in `metrics-genai-agent-v0.1.0.json`:
 
 | Display name                                                        | Metric type   | Description                                                                                                                                                                | Default lifecycle |
 |---------------------------------------------------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| **Number of GenAI agent spans**                                     | EventCount    | The total number of GenAI agent spans captured. This metric provides a baseline measure of your GenAI agent activity and usage volume across your application.              | Active           |
-| **Number of GenAI users**                                          | UserCount     | The number of users producing at least one GenAI agent span. This metric measures discovery/adoption of your GenAI agent features.                                         | Active           |
+| **Number of GenAI agent spans**                                     | EventCount    | The total number of GenAI agent spans captured. This metric provides a baseline measure of your agent activity and usage volume across your application.              | Active           |
+| **Number of GenAI agent users**                                          | UserCount     | The number of users producing at least one GenAI agent span. This metric measures discovery/adoption of your agent features.                                         | Active           |
 | **Number of calls for creating new thread with GenAI Agent**       | EventCount    | Tracks the total number of GenAI operations that create new threads in your application.                                                                                   | Active           |
 | **Number of calls for creating new message with GenAI Agent**      | EventCount    | Tracks the total number of GenAI operations that create new messages in your agent. Often correlates closely with process_thread_run calls.                                 | Active           |
 | **Number of calls for processing thread run with GenAI Agent**     | EventCount    | The total number of GenAI operations that process a thread run, indicating how often your agent processes user input or conversation context.                               | Active           |
-| **Number of calls for executing tool with GenAI Agent**            | EventCount    | The total number of GenAI operations that execute external tools. Helps track how often the agent is leveraging external capabilities to handle user queries.               | Active           |
-| **Number of calls for submitting tool outputs with GenAI Agent**   | EventCount    | Tracks how often the agent finalizes or returns the result from external tools. Useful for analyzing the full tool usage lifecycle.                                         | Active           |
 | **Number of calls for starting thread run with GenAI Agent**       | EventCount    | Indicates asynchronous thread run starts. In contrast to `process_thread_run`, these calls initiate but do not wait for completion or streaming.                             | Active           |
 | **Number of calls for retrieving thread run status with GenAI Agent** | EventCount | Tracks how often applications poll for run status in asynchronous agent implementations.                                                                                     | Active           |
 | **Number of calls for listing messages with GenAI Agent**          | EventCount    | Tracks how frequently applications retrieve conversation history or final responses.                                                                                        | Active           |
-| **Number of GenAI chat users**                                      | UserCount     | The number of users that utilized at least one tool execution in the agent. (Filter: `gen_ai.operation.name == 'execute_tool'`)                                             | Active           |
-| **Total GenAI agent usage tokens**                                  | Sum           | The total usage tokens (both input and output) for all GenAI agent calls. Use it to monitor overall cost.                                                                    | Active           |
+| **Total GenAI agent input tokens**                                  | Sum           | The total usage tokens input tokens for all GenAI agent calls. Use it to monitor overall cost.                                                                    | Active           |
 | **Average GenAI agent input tokens**                                | Average       | The average number of input tokens used per agent call, measuring prompt efficiency.                                                                                        | Active           |
 | **90th percentile GenAI agent input tokens**                        | Percentile    | The 90th percentile of input tokens per agent call. Gives insight into outliers in prompt length.                                                                            | Inactive         |
 | **Median GenAI agent input tokens**                                 | Percentile    | The 50th percentile (median) of input tokens per agent call, less influenced by outliers than the average.                                                                  | Inactive         |
 | **Total GenAI agent usage output tokens**                           | Sum           | The total output tokens across all agent calls. Like input tokens, monitoring output tokens helps control cost and response verbosity.                                      | Active           |
 | **Average GenAI agent output tokens**                               | Average       | The average output tokens generated per agent call.                                                                                                                        | Active           |
-| **90th percentile GenAI agent output tokens**                       | Inactive      | The 90th percentile output tokens per agent call, measuring near-upper-bound verbosity.                                                                                     | Active (typo noted in JSON: check "type")  |
+| **90th percentile GenAI agent output tokens**                       | Inactive      | The 90th percentile output tokens per agent call, measuring near-upper-bound verbosity.                                                                                     | Inactive  |
 | **Median GenAI agent output tokens**                                | Percentile    | The 50th percentile output tokens per agent call. Useful if you want to watch typical response size.                                                                        | Inactive         |
 | **Average GenAI agent duration**                                    | Average       | The average duration in milliseconds of GenAI agent calls (most relevant to `process_thread_run`). Helps identify performance bottlenecks.                                   | Active           |
 | **90th percentile GenAI agent duration**                            | Percentile    | The 90th percentile duration of agent calls. Identifies outliers in performance.                                                                                            | Inactive         |
 | **Median GenAI agent duration**                                     | Percentile    | The median duration of agent calls. Less influenced by extremely long outlier calls.                                                                                        | Inactive         |
-| **Tool execution success rate**                                     | EventRate     | Percentage of successful tool executions (filtering only `gen_ai.operation.name == execute_tool`). Helps track reliability of external tool usage.                           | Inactive         |
-| **Thread run success rate**                                         | EventRate     | Percentage of successful thread runs (filtering only `gen_ai.operation.name == process_thread_run`). Indicates how often the agent run completes successfully.              | Inactive         |
-| **Thread run success rate (tool call rate)**                        | UserRate      | Percentage of users that executed tool-related agent calls, among those who started a thread run.                                                                            | Inactive         |
 
 > [!NOTE]
 > Some metrics are marked as **Inactive** by default. You can activate them if you expect sufficient data volume and want to track the relevant distribution details or success rates.

@@ -91,44 +91,6 @@
       }
     },
     {
-      "id": "count_genai_agent_execute_tool_spans",
-      "displayName": "Number of calls for executing tool with GenAI Agent",
-      "description": "The total number of GenAI operations that execute tools. This metric helps track how frequently tools are being executed in your GenAI agent implementation.",
-      "lifecycle": "Active",
-      "categories": [
-        "GenAI_Agent",
-        "Usage",
-        "Tool_use"
-      ],
-      "desiredDirection": "Neutral",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == execute_tool"
-        }
-      }
-    },
-    {
-      "id": "count_genai_agent_submit_tool_outputs_spans",
-      "displayName": "Number of calls for submitting tool outputs with GenAI Agent",
-      "description": "The total number of GenAI operations that submit tool outputs. This metric helps track how frequently tool outputs are being submitted in your GenAI agent implementation.",
-      "lifecycle": "Active",
-      "categories": [
-        "GenAI_Agent",
-        "Usage",
-        "Tool_use"
-      ],
-      "desiredDirection": "Neutral",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == submit_tool_outputs"
-        }
-      }
-    },
-    {
       "id": "count_genai_agent_start_thread_run_spans",
       "displayName": "Number of calls for starting thread run with GenAI Agent",
       "description": "The total number of GenAI operations that start thread runs without awaiting their completion / streaming. This metric helps track asynchronous thread run initiation patterns in your GenAI agent implementation. Unlike process_thread_run spans which capture full run processing, these spans indicate cases where the application initiates a run and polls for results later.",
@@ -183,28 +145,9 @@
       }
     },
     {
-      "id": "count_genai_tool_users",
-      "displayName": "Number of GenAI chat users",
-      "description": "The number of users with at least one GenAI span with tool execution.",
-      "lifecycle": "Active",
-      "categories": [
-        "GenAI",
-        "Usage",
-        "Tool_use"
-      ],
-      "desiredDirection": "Neutral",
-      "definition": {
-        "type": "UserCount",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == 'execute_tool'"
-        }
-      }
-    },
-    {
       "id": "sum_genai_agent_input_tokens",
-      "displayName": "Total GenAI agent usage tokens",
-      "description": "The total usage tokens (both input and output) for GenAI agent calls. Assuming equal number of GenAI agent calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+      "displayName": "Total GenAI agent input tokens",
+      "description": "The total input tokens used for GenAI agent calls. This metric helps track the overall token usage in your GenAI agent implementation and can be used to estimate costs.",
       "lifecycle": "Active",
       "categories": [
         "GenAI_Agent",
@@ -238,7 +181,7 @@
       }
     },
     {
-      "id": "p95_genai_agent_input_tokens",
+      "id": "p90_genai_agent_input_tokens",
       "displayName": "90th percentile GenAI agent input tokens",
       "description": "The 90th percentile input tokens per GenAI agent call. This gives an indication of the input token usage near the upper end of the distribution, helping identify outliers in prompt length.",
       "lifecycle": "Inactive",
@@ -278,7 +221,7 @@
     {
       "id": "sum_genai_agent_output_tokens",
       "displayName": "Total GenAI agent usage output tokens",
-      "description": "The total usage tokens (both input and output) for GenAI agent calls. Assuming equal number of GenAI agent calls, we want total token usage to reduce or remain constant. The statistical test on this metric compares the token usage per user: meaning increased usage may increase the total usage tokens without flagging this metric as statistically significant.",
+      "description": "The total number of output tokens generated across all GenAI agent interactions. This key cost metric directly impacts billing and helps forecast expenses. Combined with input token metrics, it provides complete visibility into token consumption patterns and can identify opportunities for optimization.",
       "lifecycle": "Active",
       "categories": [
         "GenAI_Agent",
@@ -296,7 +239,7 @@
     {
       "id": "avg_genai_agent_output_tokens",
       "displayName": "Average GenAI agent output tokens",
-      "description": "The average number of output tokens generated per GenAI agent call. This metric helps track response length and verbosity across your application.",
+      "description": "The average number of output tokens generated per GenAI agent call. This metric helps track response efficiency and identify opportunities to optimize your GenAI agent responses for cost reduction.",
       "lifecycle": "Active",
       "categories": [
         "GenAI_Agent",
@@ -322,10 +265,10 @@
       ],
       "desiredDirection": "Decrease",
       "definition": {
-        "type": "Inactive",
+        "type": "Percentile",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
-          "eventProperty": "gen_ai.usage.output_tokens"
+          "eventProperty": "gen_ai.usage.input_tokens"
         },
         "percentile": 90
       }
@@ -406,69 +349,6 @@
           "filter": "gen_ai.operation.name == process_thread_run and DurationMS > 0"
         },
         "percentile": 50
-      }
-    },
-    {
-      "id": "tool_execution_success_rate",
-      "displayName": "Tool execution success rate",
-      "description": "The percentage of successful tool executions in GenAI agent calls. This metric helps track the reliability and effectiveness of your GenAI agent's tool execution capabilities.",
-      "lifecycle": "Inactive",
-      "categories": [
-        "GenAI_Agent",
-        "Availability",
-        "Tool_use"
-      ],
-      "desiredDirection": "Increase",
-      "definition": {
-        "type": "EventRate",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == execute_tool"
-        },
-        "rateCondition": "Success == true"
-      }
-    },
-    {
-      "id": "genai_agent_thread_run_success_rate",
-      "displayName": "Thread run success rate",
-      "description": "The percentage of successful thread runs in GenAI agent calls. This metric helps track the reliability and effectiveness of your GenAI agent's thread run capabilities.",
-      "lifecycle": "Inactive",
-      "categories": [
-        "GenAI_Agent",
-        "Availability",
-        "Tool_use"
-      ],
-      "desiredDirection": "Increase",
-      "definition": {
-        "type": "EventRate",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == process_thread_run"
-        },
-        "rateCondition": "Success == true"
-      }
-    },
-    {
-      "id": "genai_agent_tool_call_rate",
-      "displayName": "Thread run success rate",
-      "description": "The percentage of user that used tool related GenAI agent capabilities. This metric helps track the reliability and ",
-      "lifecycle": "Inactive",
-      "categories": [
-        "GenAI_Agent",
-        "Availability",
-        "Tool_use"
-      ],
-      "desiredDirection": "Increase",
-      "definition": {
-        "type": "UserRate",
-        "startEvent": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == process_thread_run"
-        },
-        "endEvent": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == execute_tool"
-        }
       }
     }
   ]
