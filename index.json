@@ -21,7 +21,7 @@
                     "min": "1.31.1",
                     "max": "",
                     "versionText": "1.31.1+",
-                    "metadata": "genai-agent/metadata-v1.31.1.json",
+                    "metadata": "azure-ai-agent/metadata-v1.31.1.json",
                     "enabled": false
                 }
             ]

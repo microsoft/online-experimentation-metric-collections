@@ -1,0 +1,111 @@
+# Azure AI Agent Service metric collection
+
+Metrics contained in the **Azure AI agent service** [metric collection](./metrics-genai-agent-v0.1.0.json) provide observability over AI-powered agent interactions, including usage volume, cost (token consumption), performance (latency), and tool usage effectiveness. They are meant to be used, in combination with the same [provided](../summaryrules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-the-box with minimal edits. They consume spans and attributes created automatically by instrumentation libraries that adhere to the [**OpenTelemetry semantic conventions for GenAI agent**](https://github.com/microsoft/opentelemetry-semantic-conventions/blob/main/docs/gen-ai/azure-ai-agent-spans.md) spans—specifically, those that emit events named `gen_ai.agent.otel.span`.
+
+> [!NOTE]
+> The GenAI semantic conventions are in active development and marked as experimental. For experimental semantic conventions, there is risk of breaking changes due to updates in either the conventions themselves or in GenAI instrumentation libraries. The Online Experimentation team will release updates to align to major changes in these conventions. 
+
+> [!Warning]
+> Do not deploy multiple Online Experimentation summary rule versions at the same time. If in doubt, choose the most recent version.
+
+| GenAI Agent metric collection version | OTel semantic convention version | Creation date | Metric collection | Summary rule |
+|---------------------------------------|----------------------------------|---------------|-------------------|--------------|
+| v0.1.0                                | Version 1.x (experimental)       | Feb 2025      | [metrics-genai-agent-v0.1.0](./metrics-genai-agent-v0.1.0.json) | [summaryrules-v0.1.0](../summaryrules-v0.1.0.yaml) |
+
+---
+
+## Prerequisites
+
+### Instrumentation
+
+1. **Azure AI Agent Service**  
+    This metric is supposed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview).
+2. **TargetingId on spans**  
+   **to be determined
+
+### GitHub Action for metric deployment
+
+Deployment of online experimentation metrics is managed by configuring the [Deploy Metrics](https://github.com/Azure/online-experimentation-deploy-metrics) GitHub Action in your experimentation-enabled repository.
+
+### Log Analytics summary rule
+
+A summary rule is used to pre-process GenAI Agent spans for metric computation.  
+- You should have or provision a summary rule that maps `gen_ai.agent.otel.span` data into the `AppEvents_CL` table in your Log Analytics workspace.  
+- If you already have an existing summary rule for standard GenAI spans, you can optionally consolidate them, or create a new rule for agent spans.  
+- Ensure that the rule name stays consistent if you are updating an existing rule—this prevents duplication.
+
+If you do not see the `AppEvents_CL` table or no data flows in for agent spans, verify:
+1. You have pushed GenAI Agent instrumentation data into Application Insights.
+2. You have created or updated the summary rule to capture `gen_ai.agent.otel.span`.
+3. You are waiting at least an hour after traffic flows for the rule to produce summary data.
+
+If you have never configured a summary rule, see [root `README.md`](../README.md) for a detailed guide on creating it, or consult the [Online Experimentation documentation](https://aka.ms/exp/public/docs).
+
+---
+
+## Deploy metrics
+
+1. Add the contents of `metrics-azure-ai-agent-v0.1.0.json` into your experimentation-enabled repository (e.g., under an `infra` or `metrics` folder).
+2. Optionally modify the metrics:
+   - **Rename** or **update descriptions** of metrics if needed.
+   - Change the lifecycle of any `Inactive` metrics to `Active` if you want them computed.
+   - **Caution:** The metric definitions rely on your summary rule output format (e.g. eventName, property names). If you adjust the summary rule or the instrumentation attributes, update the metric definitions accordingly.
+3. If this is your first time deploying a summary rule for GenAI Agent data, see the [root `README.md`](../README.md) for general instructions on metric and summary rule deployment.
+
+---
+
+## GenAI Agent metrics
+
+The following metrics are defined in `metrics-genai-agent-v0.1.0.json`:
+
+| Display name                                                        | Metric type   | Description                                                                                                                                                                | Default lifecycle |
+|---------------------------------------------------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| **Number of GenAI agent spans**                                     | EventCount    | The total number of GenAI agent spans captured. This metric provides a baseline measure of your GenAI agent activity and usage volume across your application.              | Active           |
+| **Number of GenAI users**                                          | UserCount     | The number of users producing at least one GenAI agent span. This metric measures discovery/adoption of your GenAI agent features.                                         | Active           |
+| **Number of calls for creating new thread with GenAI Agent**       | EventCount    | Tracks the total number of GenAI operations that create new threads in your application.                                                                                   | Active           |
+| **Number of calls for creating new message with GenAI Agent**      | EventCount    | Tracks the total number of GenAI operations that create new messages in your agent. Often correlates closely with process_thread_run calls.                                 | Active           |
+| **Number of calls for processing thread run with GenAI Agent**     | EventCount    | The total number of GenAI operations that process a thread run, indicating how often your agent processes user input or conversation context.                               | Active           |
+| **Number of calls for executing tool with GenAI Agent**            | EventCount    | The total number of GenAI operations that execute external tools. Helps track how often the agent is leveraging external capabilities to handle user queries.               | Active           |
+| **Number of calls for submitting tool outputs with GenAI Agent**   | EventCount    | Tracks how often the agent finalizes or returns the result from external tools. Useful for analyzing the full tool usage lifecycle.                                         | Active           |
+| **Number of calls for starting thread run with GenAI Agent**       | EventCount    | Indicates asynchronous thread run starts. In contrast to `process_thread_run`, these calls initiate but do not wait for completion or streaming.                             | Active           |
+| **Number of calls for retrieving thread run status with GenAI Agent** | EventCount | Tracks how often applications poll for run status in asynchronous agent implementations.                                                                                     | Active           |
+| **Number of calls for listing messages with GenAI Agent**          | EventCount    | Tracks how frequently applications retrieve conversation history or final responses.                                                                                        | Active           |
+| **Number of GenAI chat users**                                      | UserCount     | The number of users that utilized at least one tool execution in the agent. (Filter: `gen_ai.operation.name == 'execute_tool'`)                                             | Active           |
+| **Total GenAI agent usage tokens**                                  | Sum           | The total usage tokens (both input and output) for all GenAI agent calls. Use it to monitor overall cost.                                                                    | Active           |
+| **Average GenAI agent input tokens**                                | Average       | The average number of input tokens used per agent call, measuring prompt efficiency.                                                                                        | Active           |
+| **90th percentile GenAI agent input tokens**                        | Percentile    | The 90th percentile of input tokens per agent call. Gives insight into outliers in prompt length.                                                                            | Inactive         |
+| **Median GenAI agent input tokens**                                 | Percentile    | The 50th percentile (median) of input tokens per agent call, less influenced by outliers than the average.                                                                  | Inactive         |
+| **Total GenAI agent usage output tokens**                           | Sum           | The total output tokens across all agent calls. Like input tokens, monitoring output tokens helps control cost and response verbosity.                                      | Active           |
+| **Average GenAI agent output tokens**                               | Average       | The average output tokens generated per agent call.                                                                                                                        | Active           |
+| **90th percentile GenAI agent output tokens**                       | Inactive      | The 90th percentile output tokens per agent call, measuring near-upper-bound verbosity.                                                                                     | Active (typo noted in JSON: check "type")  |
+| **Median GenAI agent output tokens**                                | Percentile    | The 50th percentile output tokens per agent call. Useful if you want to watch typical response size.                                                                        | Inactive         |
+| **Average GenAI agent duration**                                    | Average       | The average duration in milliseconds of GenAI agent calls (most relevant to `process_thread_run`). Helps identify performance bottlenecks.                                   | Active           |
+| **90th percentile GenAI agent duration**                            | Percentile    | The 90th percentile duration of agent calls. Identifies outliers in performance.                                                                                            | Inactive         |
+| **Median GenAI agent duration**                                     | Percentile    | The median duration of agent calls. Less influenced by extremely long outlier calls.                                                                                        | Inactive         |
+| **Tool execution success rate**                                     | EventRate     | Percentage of successful tool executions (filtering only `gen_ai.operation.name == execute_tool`). Helps track reliability of external tool usage.                           | Inactive         |
+| **Thread run success rate**                                         | EventRate     | Percentage of successful thread runs (filtering only `gen_ai.operation.name == process_thread_run`). Indicates how often the agent run completes successfully.              | Inactive         |
+| **Thread run success rate (tool call rate)**                        | UserRate      | Percentage of users that executed tool-related agent calls, among those who started a thread run.                                                                            | Inactive         |
+
+> [!NOTE]
+> Some metrics are marked as **Inactive** by default. You can activate them if you expect sufficient data volume and want to track the relevant distribution details or success rates.
+
+
+
+## Summary rule for GenAI Agent spans
+
+If this is your first time adding a Log Analytics summary rule for Online Experimentation, see  [root `README`](../README.md).
+
+For summary rules that are managed by GitHub Action:
+1. Update the query in the corresponding summary rule object in `summaryrules.yaml` file in your experimentation-enabled repository under the `infra` folder. 
+1. Do _not_ update the summary rule name: if you do, the old and new summary rules will both execute, producing duplicated logs which can skew metrics.
+1. Confirm the summary rule destination table is `AppEvents_CL`: other destination tables will _not_ be consumed for metric computation.
+
+    Upon deployment, the bicep template will create/update the summary rule: if a summary rule of the same name exists it will be updated. 
+
+To update summary rules directly through Log Analytics API, or to manage or delete summary rules, see [Log Analytics](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api) documentation.
+
+To preview the output of the summary rule in advance, copy the query from [`summaryrules-{version}.yaml`] and paste into your application's Log Analytics workspace.
+
+## Getting help
+
+For questions or issues with Application insights WebAPI metrics, contact [exp-preview-fb@microsoft.com](mailto:exp-preview-fb@microsoft.com).

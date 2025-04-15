@@ -407,6 +407,69 @@
         },
         "percentile": 50
       }
+    },
+    {
+      "id": "tool_execution_success_rate",
+      "displayName": "Tool execution success rate",
+      "description": "The percentage of successful tool executions in GenAI agent calls. This metric helps track the reliability and effectiveness of your GenAI agent's tool execution capabilities.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Availability",
+        "Tool_use"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "EventRate",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == execute_tool"
+        },
+        "rateCondition": "Success == true"
+      }
+    },
+    {
+      "id": "genai_agent_thread_run_success_rate",
+      "displayName": "Thread run success rate",
+      "description": "The percentage of successful thread runs in GenAI agent calls. This metric helps track the reliability and effectiveness of your GenAI agent's thread run capabilities.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Availability",
+        "Tool_use"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "EventRate",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == process_thread_run"
+        },
+        "rateCondition": "Success == true"
+      }
+    },
+    {
+      "id": "genai_agent_tool_call_rate",
+      "displayName": "Thread run success rate",
+      "description": "The percentage of user that used tool related GenAI agent capabilities. This metric helps track the reliability and ",
+      "lifecycle": "Inactive",
+      "categories": [
+        "GenAI_Agent",
+        "Availability",
+        "Tool_use"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserRate",
+        "startEvent": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == process_thread_run"
+        },
+        "endEvent": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "gen_ai.operation.name == execute_tool"
+        }
+      }
     }
   ]
 }
