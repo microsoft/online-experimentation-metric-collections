@@ -12,6 +12,19 @@
                     "enabled": true
                 }
             ]
+        },
+        "appinsights-webapi": {
+            "versionType": "none",
+            "versionDetails": "N/A",
+            "versions": [
+                {
+                    "min": "",
+                    "max": "",
+                    "versionText": "",
+                    "metadata": "appinsights/metadata-v0.1.0.json",
+                    "enabled": false
+                }
+            ]
         }
     }
 }

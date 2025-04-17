@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "2.0",
+  "metrics": [
+    {
+      "id": "count_users",
+      "displayName": "Number of users",
+      "description": "Counts unique users who made at least one request to your application. Essential for understanding application reach, adoption, and usage patterns.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Usage",
+        "Important"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "appinsights.request"
+        }
+      }
+    },
+    {
+      "id": "count_request_calls",
+      "displayName": "Number of request calls",
+      "description": "Counts the total number of incoming HTTP requests received by your application. This fundamental metric helps comparing traffic, understand usage patterns, and monitor system load.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "appinsights.request"
+        }
+      }
+    },
+    {
+      "id": "count_dependency_calls",
+      "displayName": "Number of dependency calls",
+      "description": "Counts the total number of outbound calls from your application to external dependencies such as databases, APIs, or other services. Useful for comparing system load and identifying potential bottlenecks. You can change the desired direction to 'Decrease' if you are optimizing the dependency traffic.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "appinsights.dependency"
+        }
+      }
+    },
+    {
+      "id": "count_exceptions",
+      "displayName": "Number of exceptions",
+      "description": "Tracks all exceptions captured by Application Insights. This metric is essential for identifying stability issues, monitoring error trends, and improving application reliability. Due to exception can be rare and less sensitive, we mark this metric as 'Inactive' by default.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AppInsights_WebAPI"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "appinsights.exception"
+        }
+      }
+    },
+    {
+      "id": "request_success_rate",
+      "displayName": "Request success rate",
+      "description": "Measures the percentage of successful HTTP requests to your application. This metric is crucial for understanding application reliability. A high success rate indicates a healthy application, while a low rate may signal issues that need attention.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights_WebAPI"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "EventRate",
+        "event": {
+          "eventName": "appinsights.request"
+        },
+        "rateCondition": "Success == true"
+      }
+    },
+    {
+      "id": "dependency_success_rate",
+      "displayName": "Dependency success rate",
+      "description": "Measures the percentage of successful calls to external dependencies. This metric is crucial for understanding the reliability of your application's interactions with external services. A high success rate indicates a healthy application, while a low rate may signal issues that need attention.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights_WebAPI"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "EventRate",
+        "event": {
+          "eventName": "appinsights.dependency"
+        },
+        "rateCondition": "Success == true"
+      }
+    },
+    {
+      "id": "avg_dependency_duration",
+      "displayName": "Average dependency call duration [ms]",
+      "description": "Measures the average time in milliseconds required to complete calls to external dependencies like databases, external APIs, or other services. This is a fundamental performance indicator that helps identify slowdowns in external systems.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "appinsights.dependency",
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
+        }
+      }
+    },
+    {
+      "id": "avg_request_duration",
+      "displayName": "Average request call duration [ms]",
+      "description": "Measures the average time in milliseconds required to process incoming HTTP requests from receipt to response completion. Request duration is measured by the DurationMs property for all appinsights.request events. This core performance metric directly impacts user experience and perceived application speed.",
+      "lifecycle": "Active",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "appinsights.request",
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
+        }
+      }
+    },
+    {
+      "id": "median_dependency_duration",
+      "displayName": "Median dependency call duration [ms]",
+      "description": "Measures the median (50th percentile) time in milliseconds required to complete calls to external dependencies like databases, external APIs, or other services. Unlike average duration, median is less affected by outliers, providing a more representative view of typical performance.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "appinsights.dependency",
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
+        },
+        "percentile": 50
+      }
+    },
+    {
+      "id": "median_request_duration",
+      "displayName": "Median request call duration [ms]",
+      "description": "Measures the median (50th percentile) time in milliseconds required to process incoming HTTP requests. Unlike average duration, median provides a more representative view of typical user experience by eliminating the impact of outliers.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "appinsights.request",
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
+        },
+        "percentile": 50
+      }
+    },
+    {
+      "id": "p90_dependency_duration",
+      "displayName": "P90 dependency call duration [ms]",
+      "description": "A performance metric where 90% of all dependencies complete faster than this value (measured in milliseconds). This provides visibility into slower user experiences while filtering out extreme outliers. Set to 'Inactive' by default due to higher processing demands and reduced sensitivity compared to average metrics.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Performance" 
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "appinsights.dependency",
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
+        },
+        "percentile": 90
+      }
+    },
+    {
+      "id": "p90_request_duration",
+      "displayName": "P90 request call duration [ms]",
+      "description": "A performance metric where 90% of all requests complete faster than this value (measured in milliseconds). Request duration is measured by the DurationMs property for all appinsights.request events. This provides visibility into slower user experiences while filtering out extreme outliers. Particularly valuable for user-facing applications where consistent performance is important. Set to 'Inactive' by default due to higher processing demands and reduced sensitivity compared to average metrics.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AppInsights_WebAPI",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "appinsights.request",
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
+        },
+        "percentile": 90
+      }
+    }
+  ]
+}
