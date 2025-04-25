@@ -186,7 +186,7 @@
     {
       "id": "avg_genai_duration",
       "displayName": "Average GenAI call duration [ms]",
-      "description": "The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMS property of the span capturing GenAI call completion.",
+      "description": "The average duration in milliseconds per GenAI operation. Duration is measured by the DurationMs property of the span capturing GenAI call completion.",
       "lifecycle": "Active",
       "categories": [
         "GenAI",
@@ -197,8 +197,8 @@
         "type": "Average",
         "value": {
           "eventName": "gen_ai.otel.span",
-          "eventProperty": "DurationMS",
-          "filter": "DurationMS > 0"
+          "eventProperty": "DurationMs",
+          "filter": "DurationMs > 0"
         }
       }
     },
