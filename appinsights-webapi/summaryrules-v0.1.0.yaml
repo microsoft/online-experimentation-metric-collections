@@ -1,0 +1,21 @@
+summaryRules:
+  - name: "AppInsights-WebAPI"
+    binSize: 20
+    destinationTable: AppEvents_CL
+    description: "Summary rule definition for Application Insights Web API metrics."
+    query: |
+      let targeting_id_to_operation_id = AppEvents
+      | extend TargetingId = Properties.TargetingId, Variant = Properties.Variant, ParentId = Properties.ParentId
+      | project TargetingId, OperationId;
+      let app_dependencies = AppDependencies
+      | join kind=inner targeting_id_to_operation_id on OperationId
+      | project Name = "appinsights.dependency", TimeGenerated, ItemCount, Properties=bag_pack("DurationMs", DurationMs, "Name", Name, "Success", tobool(Success), "ResultCode", iff(isempty(ResultCode), "0", ResultCode), "SDKVersion", SDKVersion, "TargetingId", TargetingId, "AppVersion", AppVersion);
+      let app_exception = AppExceptions
+      | join kind=inner targeting_id_to_operation_id on OperationId
+      | project Name = "appinsights.exception", TimeGenerated, ItemCount, Properties=bag_pack("SDKVersion", SDKVersion, "TargetingId", TargetingId, "AppVersion", AppVersion);
+      AppRequests 
+      | join kind=inner targeting_id_to_operation_id on OperationId
+      | project Name = "appinsights.request", TimeGenerated, ItemCount, Properties=bag_pack("DurationMs", DurationMs, "Name", Name, "Success", tobool(Success), "ResultCode", iff(isempty(ResultCode), "0", ResultCode), "SDKVersion", SDKVersion, "TargetingId", TargetingId, "AppVersion", AppVersion)
+      | union app_dependencies
+      | union app_exception
+      

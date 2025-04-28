@@ -21,7 +21,19 @@
                     "min": "1.31.1",
                     "max": "",
                     "versionText": "1.31.1+",
-                    "metadata": "azure-ai-agent/metadata-v1.31.1.json",
+                    "metadata": "azure-ai-agent/metadata-v1.31.1.json"
+                }
+            ]
+        },
+        "appinsights-webapi": {
+            "versionType": "none",
+            "versionDetails": "N/A",
+            "versions": [
+                {
+                    "min": "",
+                    "max": "",
+                    "versionText": "",
+                    "metadata": "appinsights-webapi/metadata-v0.1.0.json",
                     "enabled": false
                 }
             ]
