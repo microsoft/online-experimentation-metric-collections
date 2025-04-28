@@ -91,60 +91,6 @@
       }
     },
     {
-      "id": "count_genai_agent_start_thread_run_spans",
-      "displayName": "Number of calls for starting thread run with GenAI Agent",
-      "description": "The total number of GenAI operations that start thread runs without awaiting their completion / streaming. This metric helps track asynchronous thread run initiation patterns in your GenAI agent implementation. Unlike process_thread_run spans which capture full run processing, these spans indicate cases where the application initiates a run and polls for results later.",
-      "lifecycle": "Active",
-      "categories": [
-        "GenAI_Agent",
-        "Usage"
-      ],
-      "desiredDirection": "Neutral",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == start_thread_run"
-        }
-      }
-    },
-    {
-      "id": "count_genai_agent_retrieve_run_spans",
-      "displayName": "Number of calls for retrieving thread run status with GenAI Agent",
-      "description": "The total number of GenAI operations that retrieve thread run status. This metric helps track how frequently applications poll for run status updates in asynchronous GenAI agent implementations.",
-      "lifecycle": "Active",
-      "categories": [
-        "GenAI_Agent",
-        "Usage"
-      ],
-      "desiredDirection": "Neutral",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == retrieve_run"
-        }
-      }
-    },
-    {
-      "id": "count_genai_agent_list_messages_spans",
-      "displayName": "Number of calls for listing messages with GenAI Agent",
-      "description": "The total number of GenAI operations that list messages from a thread. This metric helps track how frequently applications retrieve conversation history or final responses in GenAI agent implementations.",
-      "lifecycle": "Active",
-      "categories": [
-        "GenAI_Agent",
-        "Usage"
-      ],
-      "desiredDirection": "Neutral",
-      "definition": {
-        "type": "EventCount",
-        "event": {
-          "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == list_messages"
-        }
-      }
-    },
-    {
       "id": "sum_genai_agent_input_tokens",
       "displayName": "Total GenAI agent input tokens",
       "description": "The total input tokens used for GenAI agent calls. This metric helps track the overall token usage in your GenAI agent implementation and can be used to estimate costs.",
