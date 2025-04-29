@@ -1,14 +1,14 @@
 # Azure AI Agent Service metric collection
 
-Metrics contained in the **Azure AI agent service** [metric collection](./metrics-azure-ai-agent-v0.1.0.json) provide observability over AI-powered agent interactions, including usage volume, cost (token consumption), performance (latency), and tool usage effectiveness. They are meant to be used, in combination with the same [provided](../summaryrules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-the-box with minimal edits. They consume spans and attributes created automatically by instrumentation libraries that adhere to the [**OpenTelemetry semantic conventions for GenAI agent**](https://github.com/microsoft/opentelemetry-semantic-conventions/blob/main/docs/gen-ai/azure-ai-agent-spans.md) spans—specifically, those that emit events named `gen_ai.agent.otel.span`.
+Metrics contained in the **Azure AI agent service** [metric collection](./metrics-azure-ai-agent-v0.1.0.json) provide observability over AI-powered agent interactions, including usage volume, cost (token consumption), performance (latency), and tool usage effectiveness. They are meant to be used, in combination with the same [provided](../summaryrules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-the-box with minimal edits. They consume spans and attributes created automatically by instrumentation libraries that adhere to the [**OpenTelemetry semantic conventions for AI agent**](https://github.com/microsoft/opentelemetry-semantic-conventions/blob/main/docs/gen-ai/azure-ai-agent-spans.md) spans—specifically, those that emit events named `gen_ai.agent.otel.span`.
 
 > [!NOTE]
-> The GenAI semantic conventions are in active development and marked as experimental. For experimental semantic conventions, there is risk of breaking changes due to updates in either the conventions themselves or in GenAI instrumentation libraries. The Online Experimentation team will release updates to align to major changes in these conventions. 
+> The AI agent semantic conventions are in active development and marked as experimental. For experimental semantic conventions, there is risk of breaking changes due to updates in either the conventions themselves or in instrumentation libraries. The Online Experimentation team will release updates to align to major changes in these conventions. 
 
 > [!Warning]
 > Do not deploy multiple Online Experimentation summary rule versions at the same time. If in doubt, choose the most recent version.
 
-| GenAI Agent metric collection version | OTel semantic convention version | Creation date | Metric collection | Summary rule |
+| AI Agent metric collection version | OTel semantic convention version | Creation date | Metric collection | Summary rule |
 |---------------------------------------|----------------------------------|---------------|-------------------|--------------|
 | v0.1.0                                | Version 1.31.1 (experimental)       | Feb 2025      | [metrics-azure-ai-agent-v0.1.0](./metrics-azure-ai-agent-v0.1.0.json) | [summaryrules-v0.1.0](../summaryrules-v0.1.0.yaml) |
 
@@ -29,13 +29,13 @@ Deployment of online experimentation metrics is managed by configuring the [Depl
 
 ### Log Analytics summary rule
 
-A summary rule is used to pre-process GenAI Agent spans for metric computation.  
+A summary rule is used to pre-process AI agent spans for metric computation.  
 - You should have or provision a summary rule that maps `gen_ai.agent.otel.span` data into the `AppEvents_CL` table in your Log Analytics workspace.  
-- If you already have an existing summary rule for standard GenAI spans, you can optionally consolidate them, or create a new rule for agent spans.  
+- If you already have an existing summary rule for standard AI agent spans, you can optionally consolidate them, or create a new rule for agent spans.  
 - Ensure that the rule name stays consistent if you are updating an existing rule—this prevents duplication.
 
 If you do not see the `AppEvents_CL` table or no data flows in for agent spans, verify:
-1. You have pushed GenAI Agent instrumentation data into Application Insights.
+1. You have pushed AI agent instrumentation data into Application Insights.
 2. You have created or updated the summary rule to capture `gen_ai.agent.otel.span`.
 3. You are waiting at least an hour after traffic flows for the rule to produce summary data.
 
@@ -50,7 +50,7 @@ If you have never configured a summary rule, see [root `README.md`](../README.md
    - **Rename** or **update descriptions** of metrics if needed.
    - Change the lifecycle of any `Inactive` metrics to `Active` if you want them computed.
    - **Caution:** The metric definitions rely on your summary rule output format (e.g. eventName, property names). If you adjust the summary rule or the instrumentation attributes, update the metric definitions accordingly.
-3. If this is your first time deploying a summary rule for GenAI Agent data, see the [root `README.md`](../README.md) for general instructions on metric and summary rule deployment.
+3. If this is your first time deploying a summary rule for AI agent data, see the [root `README.md`](../README.md) for general instructions on metric and summary rule deployment.
 
 ---
 
@@ -60,29 +60,29 @@ The following metrics are defined in `metrics-azure-ai-agent-v0.1.0.json`:
 
 | Display name                                                        | Metric type | Description                                                                                                                                                             | Default lifecycle |
 |---------------------------------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| **Number of GenAI agent spans**                                     | EventCount  | The total number of GenAI agent spans captured. This metric provides a baseline measure of your agent activity and usage volume across your application.                 | Active            |
-| **Number of GenAI agent users**                                     | UserCount   | The number of users producing at least one GenAI agent span. This metric measures discovery/adoption of your GenAI agent features.                                      | Active            |
-| **Number of calls for creating new thread with GenAI Agent**        | EventCount  | The total number of GenAI operations that create new threads in your GenAI agent implementation.                                                                        | Active            |
-| **Number of calls for creating new message with GenAI Agent**       | EventCount  | The total number of GenAI operations that create new messages in your GenAI agent implementation.                                                                      | Active            |
-| **Number of calls for processing thread run with GenAI Agent**      | EventCount  | The total number of GenAI operations that process thread runs in your GenAI agent implementation.                                                                        | Active            |
-| **Total GenAI agent input tokens**                                  | Sum         | The total input tokens used across all GenAI agent calls.                                                                                                               | Active            |
-| **Average GenAI agent input tokens**                                | Average     | The average number of input tokens used per GenAI agent call.                                                                                                           | Active            |
-| **90th percentile GenAI agent input tokens**                        | Percentile  | The 90th percentile of input tokens per GenAI agent call, showing usage near the upper end of the distribution.                                                         | Inactive          |
-| **Median GenAI agent input tokens**                                 | Percentile  | The median (50th percentile) input tokens per GenAI agent call.                                                                                                         | Inactive          |
-| **Total GenAI agent output tokens**                                 | Sum         | The total output tokens generated across all GenAI agent calls.                                                                                                         | Active            |
-| **Average GenAI agent output tokens**                               | Average     | The average number of output tokens generated per GenAI agent call.                                                                                                     | Active            |
-| **90th percentile GenAI agent output tokens**                       | Percentile  | The 90th percentile of output tokens per GenAI agent call, showing response lengths near the upper end of the distribution.                                             | Active            |
-| **Median GenAI agent output tokens**                                | Percentile  | The median (50th percentile) output tokens per GenAI agent call.                                                                                                        | Inactive          |
-| **Average GenAI agent duration**                                    | Average     | The average duration in milliseconds of GenAI agent calls (most relevant to `process_thread_run` operations).                                                          | Active            |
-| **90th percentile GenAI agent duration**                            | Percentile  | The 90th percentile duration of GenAI agent calls, showing outliers in processing time.                                                                                 | Inactive          |
-| **Median GenAI agent duration**                                     | Percentile  | The median duration of GenAI agent calls, showing typical processing times less influenced by outliers.                                                                | Inactive          |
+| **Number of AI agent spans**                                     | EventCount  | The total number of AI agent spans captured. This metric provides a baseline measure of your agent activity and usage volume across your application.                 | Active            |
+| **Number of AI agent users**                                     | UserCount   | The number of users producing at least one AI agent span. This metric measures discovery/adoption of your AI agent features.                                      | Active            |
+| **Number of calls for creating new thread with AI agent**        | EventCount  | The total number of AI agent operations that create new threads in your AI agent implementation.                                                                    | Active            |
+| **Number of calls for creating new message with AI agent**       | EventCount  | The total number of AI agent operations that create new messages in your AI agent implementation.                                                                  | Active            |
+| **Number of calls for processing thread run with AI agent**      | EventCount  | The total number of AI agent operations that process thread runs in your AI agent implementation.                                                                  | Active            |
+| **Total AI agent input tokens**                                  | Sum         | The total input tokens used across all AI agent calls.                                                                                                              | Active            |
+| **Average AI agent input tokens**                                | Average     | The average number of input tokens used per AI agent call.                                                                                                           | Active            |
+| **90th percentile AI agent input tokens**                        | Percentile  | The 90th percentile of input tokens per AI agent call, showing usage near the upper end of the distribution.                                                         | Inactive          |
+| **Median AI agent input tokens**                                 | Percentile  | The median (50th percentile) input tokens per AI agent call.                                                                                                         | Inactive          |
+| **Total AI agent output tokens**                                 | Sum         | The total output tokens generated across all AI agent calls.                                                                                                         | Active            |
+| **Average AI agent output tokens**                               | Average     | The average number of output tokens generated per AI agent call.                                                                                                     | Active            |
+| **90th percentile AI agent output tokens**                       | Percentile  | The 90th percentile of output tokens per AI agent call, showing response lengths near the upper end of the distribution.                                             | Active            |
+| **Median AI agent output tokens**                                | Percentile  | The median (50th percentile) output tokens per AI agent call.                                                                                                        | Inactive          |
+| **Average AI agent duration**                                    | Average     | The average duration in milliseconds of AI agent calls (most relevant to `process_thread_run` operations).                                                          | Active            |
+| **90th percentile AI agent duration**                            | Percentile  | The 90th percentile duration of AI agent calls, showing outliers in processing time.                                                                                 | Inactive          |
+| **Median AI agent duration**                                     | Percentile  | The median duration of AI agent calls, showing typical processing times less influenced by outliers.                                                                | Inactive          |
 
 > [!NOTE]
 > Some metrics are marked as **Inactive** by default. You can activate them if you expect sufficient data volume and want to track the relevant distribution details or success rates.
 
 
 
-## Summary rule for GenAI Agent spans
+## Summary rule for AI agent spans
 
 If this is your first time adding a Log Analytics summary rule for Online Experimentation, see  [root `README`](../README.md).
 

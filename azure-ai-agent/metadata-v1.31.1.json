@@ -1,6 +1,6 @@
 {
     "title": "Azure AI Agent Metrics",
-    "metricCategory": "__MetricCollection_genai_agent__",
+    "metricCategory": "__MetricCollection_ai_agent__",
     "description": "Standard Azure AI Agent Metrics",
     "metricConfig": "azure-ai-agent/metrics-azure-ai-agent-v0.1.0.json", 
     "summaryRule": "azure-ai-agent/summaryrules-v0.1.0.yaml",

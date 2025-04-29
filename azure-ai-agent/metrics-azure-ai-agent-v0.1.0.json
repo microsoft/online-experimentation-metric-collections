@@ -2,12 +2,12 @@
   "schemaVersion": "2.0",
   "metrics": [
     {
-      "id": "count_genai_agent_spans",
-      "displayName": "Number of GenAI agent spans",
-      "description": "The total number of GenAI agent spans captured. This metric provides a baseline measure of your GenAI agent activity and usage volume across your application.",
+      "id": "count_ai_agent_spans",
+      "displayName": "Number of AI agent spans",
+      "description": "The total number of AI agent spans captured. This metric provides a baseline measure of your AI agent activity and usage volume across your application.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Usage"
       ],
       "desiredDirection": "Neutral",
@@ -19,12 +19,12 @@
       }
     },
     {
-      "id": "count_genai_users",
-      "displayName": "Number of GenAI users",
-      "description": "The number of users producing at least one GenAI agent span. This metric measures discovery/adoption of your GenAI agent features.",
+      "id": "count_ai_users",
+      "displayName": "Number of AI users",
+      "description": "The number of users producing at least one AI agent span. This metric measures discovery/adoption of your AI agent features.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Usage",
         "Important"
       ],
@@ -37,12 +37,12 @@
       }
     },
     {
-      "id": "count_genai_agent_create_thread_spans",
-      "displayName": "Number of calls for creating new thread with GenAI Agent",
-      "description": "The total number of GenAI operations that create new threads. This metric helps track how frequently new conversation threads are being initiated in your GenAI agent implementation.",
+      "id": "count_ai_agent_create_thread_spans",
+      "displayName": "Number of calls for creating new thread with AI agent",
+      "description": "The total number of AI agent operations that create new threads. This metric helps track how frequently new conversation threads are being initiated in your AI agent implementation.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Usage"
       ],
       "desiredDirection": "Neutral",
@@ -55,12 +55,12 @@
       }
     },
     {
-      "id": "count_genai_agent_create_message_spans",
-      "displayName": "Number of calls for creating new message with GenAI Agent",
-      "description": "The total number of GenAI operations that create new messages. This metric helps track how frequently new messages are being sent in your GenAI agent implementation. It should be roughly equal to the number of process_thread_run calls.",
+      "id": "count_ai_agent_create_message_spans",
+      "displayName": "Number of calls for creating new message with AI agent",
+      "description": "The total number of AI agent operations that create new messages. This metric helps track how frequently new messages are being sent in your AI agent implementation. It should be roughly equal to the number of process_thread_run calls.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Usage"
       ],
       "desiredDirection": "Neutral",
@@ -73,12 +73,12 @@
       }
     },
     {
-      "id": "count_genai_agent_process_thread_run_spans",
-      "displayName": "Number of calls for processing thread run with GenAI Agent",
-      "description": "The total number of GenAI operations that process thread runs. This metric helps track how frequently thread runs are being processed in your GenAI agent implementation.",
+      "id": "count_ai_agent_process_thread_run_spans",
+      "displayName": "Number of calls for processing thread run with AI agent",
+      "description": "The total number of AI agent operations that process thread runs. This metric helps track how frequently thread runs are being processed in your AI agent implementation.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Usage"
       ],
       "desiredDirection": "Neutral",
@@ -91,12 +91,12 @@
       }
     },
     {
-      "id": "sum_genai_agent_input_tokens",
-      "displayName": "Total GenAI agent input tokens",
-      "description": "The total input tokens used for GenAI agent calls. This metric helps track the overall token usage in your GenAI agent implementation and can be used to estimate costs.",
+      "id": "sum_ai_agent_input_tokens",
+      "displayName": "Total AI agent input tokens",
+      "description": "The total input tokens used for AI agent calls. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -109,12 +109,12 @@
       }
     },
     {
-      "id": "avg_genai_agent_input_tokens",
-      "displayName": "Average GenAI agent input tokens",
-      "description": "The average number of input tokens used per GenAI agent call. This metric helps track prompt efficiency and identify opportunities to optimize your prompts for cost reduction.",
+      "id": "avg_ai_agent_input_tokens",
+      "displayName": "Average AI agent input tokens",
+      "description": "The average number of input tokens used per AI agent call. This metric helps track prompt efficiency and identify opportunities to optimize your prompts for cost reduction.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -127,12 +127,12 @@
       }
     },
     {
-      "id": "p90_genai_agent_input_tokens",
-      "displayName": "90th percentile GenAI agent input tokens",
-      "description": "The 90th percentile input tokens per GenAI agent call. This gives an indication of the input token usage near the upper end of the distribution, helping identify outliers in prompt length.",
+      "id": "p90_ai_agent_input_tokens",
+      "displayName": "90th percentile AI agent input tokens",
+      "description": "The 90th percentile input tokens per AI agent call. This gives an indication of the input token usage near the upper end of the distribution, helping identify outliers in prompt length.",
       "lifecycle": "Inactive",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -146,12 +146,12 @@
       }
     },
     {
-      "id": "median_genai_agent_input_tokens",
-      "displayName": "Median GenAI agent input tokens",
-      "description": "The median (50th percentile) input tokens per GenAI agent call. This provides the typical prompt length used in your application, less influenced by outliers than the average.",
+      "id": "median_ai_agent_input_tokens",
+      "displayName": "Median AI agent input tokens",
+      "description": "The median (50th percentile) input tokens per AI agent call. This provides the typical prompt length used in your application, less influenced by outliers than the average.",
       "lifecycle": "Inactive",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -165,12 +165,12 @@
       }
     },
     {
-      "id": "sum_genai_agent_output_tokens",
-      "displayName": "Total GenAI agent usage output tokens",
-      "description": "The total number of output tokens generated across all GenAI agent interactions. This key cost metric directly impacts billing and helps forecast expenses. Combined with input token metrics, it provides complete visibility into token consumption patterns and can identify opportunities for optimization.",
+      "id": "sum_ai_agent_output_tokens",
+      "displayName": "Total AI agent usage output tokens",
+      "description": "The total number of output tokens generated across all AI agent interactions. This key cost metric directly impacts billing and helps forecast expenses. Combined with input token metrics, it provides complete visibility into token consumption patterns and can identify opportunities for optimization.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -183,12 +183,12 @@
       }
     },
     {
-      "id": "avg_genai_agent_output_tokens",
-      "displayName": "Average GenAI agent output tokens",
-      "description": "The average number of output tokens generated per GenAI agent call. This metric helps track response efficiency and identify opportunities to optimize your GenAI agent responses for cost reduction.",
+      "id": "avg_ai_agent_output_tokens",
+      "displayName": "Average AI agent output tokens",
+      "description": "The average number of output tokens generated per AI agent call. This metric helps track response efficiency and identify opportunities to optimize your AI agent responses for cost reduction.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -201,12 +201,12 @@
       }
     },
     {
-      "id": "p90_genai_agent_output_tokens",
-      "displayName": "90th percentile GenAI agent output tokens",
-      "description": "The 90th percentile output tokens per GenAI agent call. This gives an indication of the response length near the upper end of the distribution, helping identify particularly verbose responses.",
+      "id": "p90_ai_agent_output_tokens",
+      "displayName": "90th percentile AI agent output tokens",
+      "description": "The 90th percentile output tokens per AI agent call. This gives an indication of the response length near the upper end of the distribution, helping identify particularly verbose responses.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -220,12 +220,12 @@
       }
     },
     {
-      "id": "median_genai_agent_output_tokens",
-      "displayName": "Median GenAI agent output tokens",
-      "description": "The median (50th percentile) output tokens per GenAI agent call. This provides the typical response length in your application, less influenced by outliers than the average.",
+      "id": "median_ai_agent_output_tokens",
+      "displayName": "Median AI agent output tokens",
+      "description": "The median (50th percentile) output tokens per AI agent call. This provides the typical response length in your application, less influenced by outliers than the average.",
       "lifecycle": "Inactive",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Cost"
       ],
       "desiredDirection": "Decrease",
@@ -239,12 +239,12 @@
       }
     },
     {
-      "id": "avg_genai_agent_process_thread_run_duration",
-      "displayName": "Average GenAI agent duration",
-      "description": "The average duration of GenAI agent calls. This metric helps track the performance of your GenAI agent implementation and identify potential bottlenecks.",
+      "id": "avg_ai_agent_process_thread_run_duration",
+      "displayName": "Average AI agent duration",
+      "description": "The average duration of AI agent calls. This metric helps track the performance of your AI agent implementation and identify potential bottlenecks.",
       "lifecycle": "Active",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Performance"
       ],
       "desiredDirection": "Decrease",
@@ -258,12 +258,12 @@
       }
     },
     {
-      "id": "p90_genai_agent_process_thread_run_duration",
-      "displayName": "90th percentile GenAI agent duration",
-      "description": "The 90th percentile duration of GenAI agent calls. This gives an indication of the performance near the upper end of the distribution, helping identify outliers in processing time.",
+      "id": "p90_ai_agent_process_thread_run_duration",
+      "displayName": "90th percentile AI agent duration",
+      "description": "The 90th percentile duration of AI agent calls. This gives an indication of the performance near the upper end of the distribution, helping identify outliers in processing time.",
       "lifecycle": "Inactive",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Performance"
       ],
       "desiredDirection": "Decrease",
@@ -278,12 +278,12 @@
       }
     },
     {
-      "id": "median_genai_agent_process_thread_run_duration",
-      "displayName": "Median GenAI agent duration",
-      "description": "The median (50th percentile) duration of GenAI agent calls. This provides the typical processing time in your application, less influenced by outliers than the average.",
+      "id": "median_ai_agent_process_thread_run_duration",
+      "displayName": "Median AI agent duration",
+      "description": "The median (50th percentile) duration of AI agent calls. This provides the typical processing time in your application, less influenced by outliers than the average.",
       "lifecycle": "Inactive",
       "categories": [
-        "GenAI_Agent",
+        "AI_Agent",
         "Performance"
       ],
       "desiredDirection": "Decrease",
