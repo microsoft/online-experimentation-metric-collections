@@ -2,7 +2,7 @@ summaryRules:
   - name: "Online-Experimentation-Azure-AI-Agent"
     binSize: 20
     destinationTable: AppEvents_CL
-    description: "Summary rule definition for Azure AI Agent metrics."
+    description: "Summary rule definition for Azure AI Agent Metrics."
     query: |
       let supported_keys = dynamic(["gen_ai.message.id", "gen_ai.operation.name", "gen_ai.system", "gen_ai.response.model", "gen_ai.thread.id", "gen_ai.thread.run.status", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.agent.id", "gen_ai.tool.call.id", "gen_ai.tool.name", "gen_ai.thread.run.id", "gen_ai.request.model", "error.type", "TargetingId"]);
       AppDependencies
