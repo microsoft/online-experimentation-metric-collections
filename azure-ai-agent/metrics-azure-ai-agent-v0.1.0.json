@@ -50,7 +50,7 @@
         "type": "EventCount",
         "event": {
           "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == \"create_thread\""
+          "filter": "['gen_ai.operation.name'] == \"create_thread\""
         }
       }
     },
@@ -68,7 +68,7 @@
         "type": "EventCount",
         "event": {
           "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == \"create_message\""
+          "filter": "['gen_ai.operation.name'] == \"create_message\""
         }
       }
     },
@@ -86,7 +86,7 @@
         "type": "EventCount",
         "event": {
           "eventName": "gen_ai.agent.otel.span",
-          "filter": "gen_ai.operation.name == \"process_thread_run\""
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\""
         }
       }
     },
@@ -253,7 +253,7 @@
         "value": {
           "eventName": "gen_ai.agent.otel.span",
           "eventProperty": "DurationMs",
-          "filter": "gen_ai.operation.name == \"process_thread_run\" and DurationMs > 0"
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\" and DurationMs > 0"
         }
       }
     },
@@ -272,7 +272,7 @@
         "value": {
           "eventName": "gen_ai.agent.otel.span",
           "eventProperty": "DurationMs",
-          "filter": "gen_ai.operation.name == \"process_thread_run\" and DurationMs > 0"
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\" and DurationMs > 0"
         },
         "percentile": 90
       }
@@ -292,10 +292,13 @@
         "value": {
           "eventName": "gen_ai.agent.otel.span",
           "eventProperty": "DurationMs",
-          "filter": "gen_ai.operation.name == \"process_thread_run\" and DurationMs > 0"
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\" and DurationMs > 0"
         },
         "percentile": 50
       }
+    },
+    {
+      "id"
     }
   ]
 }
