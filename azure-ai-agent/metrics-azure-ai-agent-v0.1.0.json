@@ -452,6 +452,46 @@
           "filter": "['gen_ai.tools.file_search'] >= 1"
         }
       }
+    },
+    {
+      "id": "code_interpreter_success_rate",
+      "displayName": "Number of code interpreter tool calls",
+      "description": "The total number of code interpreter tool calls. This metric helps track how frequently the code interpreter is being used in your AI agent implementation.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventRateDefinition",
+        "event": {
+          "eventName": "gen_ai.agent.otel.trace.span",
+          "filter": "['gen_ai.tools.code_interpreter'] >= 1"
+        },
+        "rateCondition": "['gen_ai.thread.run.status'] == 'success'"
+      }
+    },
+    {
+      "id": "file_search_success_rate",
+      "displayName": "Number of code interpreter tool calls",
+      "description": "The total number of code interpreter tool calls. This metric helps track how frequently the code interpreter is being used in your AI agent implementation.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventRateDefinition",
+        "event": {
+          "eventName": "gen_ai.agent.otel.trace.span",
+          "filter": "['gen_ai.tools.file_search'] >= 1"
+        },
+        "rateCondition": "['gen_ai.thread.run.status'] == 'success'"
+      }
     }
   ]
 }
