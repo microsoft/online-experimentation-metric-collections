@@ -14,8 +14,9 @@ summaryRules:
       | mv-expand tool_calls = a_dyn["tool_calls"]
       | extend keys = bag_keys(tool_calls)
       | extend file_search = iff(keys has "file_search", 1, 0)
-      | extend code_intepreter = iff(keys has "code_interpreter", 1, 0)
-      | project Name = "gen_ai.agent.otel.trace.span", TimeGenerated, ItemCount, Properties=bag_pack("gen_ai.agent.id", Properties["gen_ai.agent.id"], "gen_ai.message.status", Properties["gen_ai.message.status"], "gen_ai.system", Properties["gen_ai.system"], "gen_ai.thread.id", Properties["gen_ai.thread.id"], "gen_ai.usage.input_tokens", Properties["gen_ai.usage.input_tokens"], "gen_ai.usage.output_tokens", Properties["gen_ai.usage.output_tokens"], "file_search", file_search, "code_interpreter", code_intepreter);
+      | extend code_interpreter = iff(keys has "code_interpreter", 1, 0)
+      | extend bing_grounding = iff(keys has "bing_grounding", 1, 0)
+      | project Name = "gen_ai.agent.otel.trace.span", TimeGenerated, ItemCount, Properties=bag_pack("gen_ai.agent.id", Properties["gen_ai.agent.id"], "gen_ai.message.status", Properties["gen_ai.message.status"], "gen_ai.system", Properties["gen_ai.system"], "gen_ai.thread.id", Properties["gen_ai.thread.id"], "gen_ai.usage.input_tokens", Properties["gen_ai.usage.input_tokens"], "gen_ai.usage.output_tokens", Properties["gen_ai.usage.output_tokens"], "file_search", file_search, "code_interpreter", code_interpreter, "bing_grounding", bing_grounding);
       let operationId_to_tools = AppTraces
       | where Message == "gen_ai.assistant.message"
       | project Message, TimeGenerated, Properties, OperationId
