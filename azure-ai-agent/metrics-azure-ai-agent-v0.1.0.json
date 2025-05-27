@@ -301,7 +301,7 @@
       "id": "count_code_interpreter",
       "displayName": "Number of code interpreter calls",
       "description": "The total number of code interpreter calls. This metric helps track how frequently the code interpreter is being used in your AI agent implementation.",
-      "lifecycle": "Active",
+      "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
         "Usage",
@@ -320,7 +320,7 @@
       "id": "count_file_search",
       "displayName": "Number of file search calls",
       "description": "The total number of file search calls. This metric helps track how frequently the file search is being used in your AI agent implementation.",
-      "lifecycle": "Active",
+      "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
         "Usage",
@@ -336,82 +336,21 @@
       }
     },
     {
-      "id": "input_tokens_file_search",
-      "displayName": "Input tokens for calls related to file search",
-      "description": "The total number of input tokens used for file search related process_thread_run calls. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
+      "id": "count_bing_grounding",
+      "displayName": "Number of Bing grounding calls",
+      "description": "The total number of Bing grounding calls. This metric helps track how frequently the Bing grounding is being used in your AI agent implementation.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
-        "Cost",
+        "Usage",
         "Tool_Call"
       ],
-      "desiredDirection": "Decrease",
+      "desiredDirection": "Neutral",
       "definition": {
-        "type": "Sum",
-        "value": {
+        "type": "EventCount",
+        "event": {
           "eventName": "gen_ai.agent.otel.span",
-          "eventProperty": "gen_ai.usage.input_tokens",
-          "filter": "['gen_ai.tools.file_search'] >= 1"
-        }
-      }
-    },
-    {
-      "id": "input_tokens_code_interpreter",
-      "displayName": "Input tokens for calls related to code interpreter",
-      "description": "The total number of input tokens used for code interpreter related process_thread_run calls. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
-      "lifecycle": "Inactive",
-      "categories": [
-        "AI_Agent",
-        "Cost",
-        "Tool_Call"
-      ],
-      "desiredDirection": "Decrease",
-      "definition": {
-        "type": "Sum",
-        "value": {
-          "eventName": "gen_ai.agent.otel.span",
-          "eventProperty": "gen_ai.usage.input_tokens",
-          "filter": "['gen_ai.tools.code_interpreter'] >= 1"
-        }
-      }
-    },
-    {
-      "id": "output_tokens_file_search",
-      "displayName": "Output tokens for calls related to file search",
-      "description": "The total number of output tokens used for file search related process_thread_run calls. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
-      "lifecycle": "Inactive",
-      "categories": [
-        "AI_Agent",
-        "Cost",
-        "Tool_Call"
-      ],
-      "desiredDirection": "Decrease",
-      "definition": {
-        "type": "Sum",
-        "value": {
-          "eventName": "gen_ai.agent.otel.span",
-          "eventProperty": "gen_ai.usage.output_tokens",
-          "filter": "['gen_ai.tools.file_search'] >= 1"
-        }
-      }
-    },
-    {
-      "id": "output_tokens_code_interpreter",
-      "displayName": "Output tokens for calls related to code interpreter",
-      "description": "The total number of output tokens used for code interpreter related process_thread_run calls. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
-      "lifecycle": "Inactive",
-      "categories": [
-        "AI_Agent",
-        "Cost",
-        "Tool_Call"
-      ],
-      "desiredDirection": "Decrease",
-      "definition": {
-        "type": "Sum",
-        "value": {
-          "eventName": "gen_ai.agent.otel.span",
-          "eventProperty": "gen_ai.usage.output_tokens",
-          "filter": "['gen_ai.tools.code_interpreter'] >= 1"
+          "filter": "['gen_ai.tools.bing_grounding'] >= 1"
         }
       }
     },
@@ -454,18 +393,18 @@
       }
     },
     {
-      "id": "count_ai_agent_bing_grounding",
-      "displayName": "Number of AI agent Bing grounding calls",
-      "description": "The total number of AI agent operations that use Bing grounding. This metric helps track how frequently Bing grounding is being used in your AI agent implementation.",
+      "id": "count_bing_grounding_users",
+      "displayName": "Number of users using Bing grounding",
+      "description": "The number of users producing at least one Bing grounding span. This metric measures discovery/adoption of your Bing grounding features.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
         "Usage",
         "Tool_Call"
       ],
-      "desiredDirection": "Neutral",
+      "desiredDirection": "Increase",
       "definition": {
-        "type": "EventCount",
+        "type": "UserCount",
         "event": {
           "eventName": "gen_ai.agent.otel.span",
           "filter": "['gen_ai.tools.bing_grounding'] >= 1"
@@ -474,8 +413,8 @@
     },
     {
       "id": "code_interpreter_success_rate",
-      "displayName": "Number of code interpreter tool calls",
-      "description": "The total number of code interpreter tool calls. This metric helps track how frequently the code interpreter is being used in your AI agent implementation.",
+      "displayName": "Success rate of code interpreter tool calls",
+      "description": "The percentage of code interpreter tool calls that complete successfully. This metric indicates the reliability of code-interpreter executions within your AI agent workflows.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -489,13 +428,13 @@
           "eventName": "gen_ai.agent.otel.trace.span",
           "filter": "['gen_ai.tools.code_interpreter'] >= 1"
         },
-        "rateCondition": "['gen_ai.thread.run.status'] == 'success'"
+        "rateCondition": "['gen_ai.thread.run.status'] == 'completed'"
       }
     },
     {
       "id": "file_search_success_rate",
-      "displayName": "Number of file search tool calls",
-      "description": "The total number of file search tool calls. This metric helps track how frequently the file search is being used in your AI agent implementation.",
+      "displayName": "Success rate of file search tool calls",
+      "description": "The percentage of file search tool calls that complete successfully. This metric indicates the reliability of file search executions within your AI agent workflows.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -509,13 +448,13 @@
           "eventName": "gen_ai.agent.otel.trace.span",
           "filter": "['gen_ai.tools.file_search'] >= 1"
         },
-        "rateCondition": "['gen_ai.thread.run.status'] == 'success'"
+        "rateCondition": "['gen_ai.thread.run.status'] == 'completed'"
       }
     },
     {
       "id": "bing_grounding_success_rate",
-      "displayName": "Number of Bing grounding tool calls",
-      "description": "The total number of Bing grounding tool calls. This metric helps track how frequently the Bing grounding is being used in your AI agent implementation.",
+      "displayName": "Success rate of Bing grounding tool calls",
+      "description": "The percentage of Bing grounding tool calls that complete successfully. This metric indicates the reliability of Bing grounding executions within your AI agent workflows.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -529,7 +468,7 @@
           "eventName": "gen_ai.agent.otel.trace.span",
           "filter": "['gen_ai.tools.bing_grounding'] >= 1"
         },
-        "rateCondition": "['gen_ai.thread.run.status'] == 'success'"
+        "rateCondition": "['gen_ai.thread.run.status'] == 'completed'"
       }
     }
   ]
