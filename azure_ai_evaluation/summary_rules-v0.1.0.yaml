@@ -4,26 +4,13 @@ summaryRules:
     destinationTable: AppEvents_CL
     description: "Summary rule definition for Azure AI evaluation-based GenAI metrics."
     query: |
-      let operationId_to_Targeting_Id = AppDependencies
-      | where Properties has "TargetingId" and Properties['TargetingId'] != ""
-      | extend TargetingId = Properties['TargetingId']
-      | project TargetingId, OperationId
-      | summarize TargetingId=any(TargetingId) by OperationId;
       AppTraces
-      | extend event_name_ = tostring(Properties["event.name"])
-      | extend gen_ai_evaluation_score_ = todouble(Properties["gen_ai.evaluation.score"])
-      | extend gen_ai_response_id_ = tostring(Properties["gen_ai.response_id"])
-      | where gen_ai_response_id_ != ""
-      | where event_name_ startswith "gen_ai.evaluation."
-      | join kind=inner operationId_to_Targeting_Id on OperationId
-      | extend span_gen_ai_response_id_ = tostring(Properties.["gen_ai.response.id"])
-      | project 
-          Name=event_name_,
+      | where TimeGenerated > ago(30d)
+      | where Message == "gen_ai.evaluation.result"
+      | project Name = Message,
           TimeGenerated,
           ItemCount,
-          Properties=pack("gen_ai.evaluation.score", gen_ai_evaluation_score_, "TargetingId", TargetingId, "gen_ai.response_id", gen_ai_response_id_, "OperationId", OperationId),
-          tool_calls = iff(Properties["gen_ai.response.finish_reasons"] has "tool_calls", bag_pack("gen_ai.response.finish_reason.tool_calls", 1), dynamic({})),
-          content_filter = iff(Properties["gen_ai.response.finish_reasons"] has "content_filter", bag_pack("gen_ai.response.finish_reason.content_filter", 1), dynamic({})),
-          length = iff(Properties["gen_ai.response.finish_reasons"] has "length", bag_pack("gen_ai.response.finish_reason.length", 1), dynamic({}))
-      | extend Properties = bag_merge(Properties, tool_calls, content_filter, length)
-      | project Name, TimeGenerated, ItemCount, Properties
+          Properties= pack("gen_ai.evaluation.score", todouble(Properties["gen_ai.evaluation.score"]),
+          "gen_ai.evaluator.name", tostring(Properties["gen_ai.evaluator.name"]),
+          "gen_ai.usage.input_tokens", toint(Properties["gen_ai.usage.input_tokens"]),
+          "gen_ai.usage.output_tokens", toint(Properties["gen_ai.usage.output_tokens"]))
