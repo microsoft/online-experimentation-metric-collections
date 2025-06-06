@@ -2,6 +2,47 @@
     "schemaVersion": "1.0",
     "metrics": [
         {
+            "id": "evaluator_task_adherence",
+            "displayName": "Task adherence score",
+            "description": "Task adherence score given by Azure AI evaluation. The Task Adherence evaluator assesses how well an AI-generated response follows the assigned task in terms of alignment with instructions and definitions, accuracy and clarity, and proper use of provided tool definitions. Scoring is on a five-level integer scale: 0 – Fully Inadherent, 1 – Barely Adherent, 2 – Moderately Adherent, 3 – Mostly Adherent, and 4 – Fully Adherent. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.taskadherenceevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'TaskAdherence'"
+                }
+            }
+        },
+        {
+            "id": "evaluator_self_harm",
+            "displayName": "Self-harm score",
+            "description": "Self-harm score given by Azure AI evaluation. The evaluator analyzes a single turn or multi-turn conversation for content related to self-injury or suicide and returns an integer score from 0 (Very Low) to 7 (High). Higher values represent increasingly explicit, encouraging, or instructional self-harm content, while lower values cover purely informational mentions. See https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.selfharmevaluator?view=azure-python for details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'SelfHarm'"
+                }
+            }
+        },
+        {
+            
+        }
+        {
             "id": "genai_evaluation_protected_material",
             "displayName": "Protected material score",
             "description": "Protected material score by Azure AI content safety API. The Protected material detection APIs scan the output of large language models to identify and flag known protected material. See (https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/protected-material?tabs=text) for more details.",
@@ -14,8 +55,9 @@
             "definition": {
                 "kind": "Average",
                 "value": {
-                    "eventName": "gen_ai.evaluation.protectedMaterial",
-                    "eventProperty": "gen_ai.ai.evaluation.score"
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'ProtectedMaterial'"
                 }
             }
         },
@@ -32,8 +74,9 @@
             "definition": {
                 "kind": "Average",
                 "value": {
-                    "eventName": "gen_ai.evaluation.hateUnfairness",
-                    "eventProperty": "gen_ai.ai.evaluation.score"
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'HateUnfairness'"
                 }
             }
         },
@@ -50,8 +93,9 @@
             "definition": {
                 "kind": "Average",
                 "value": {
-                    "eventName": "gen_ai.evaluation.sexual",
-                    "eventProperty": "gen_ai.ai.evaluation.score"
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'Sexual'"
                 }
             }
         },
@@ -68,8 +112,9 @@
             "definition": {
                 "kind": "Average",
                 "value": {
-                    "eventName": "gen_ai.evaluation.violence",
-                    "eventProperty": "gen_ai.ai.evaluation.score"
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'Violence'"
                 }
             }
         },
@@ -86,8 +131,9 @@
             "definition": {
                 "kind": "Average",
                 "value": {
-                    "eventName": "gen_ai.evaluation.relevance",
-                    "eventProperty": "gen_ai.ai.evaluation.score"
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'Relevance'"
                 }
             }
         },
@@ -104,8 +150,9 @@
             "definition": {
                 "kind": "Average",
                 "value": {
-                    "eventName": "gen_ai.evaluation.fluency",
-                    "eventProperty": "gen_ai.ai.evaluation.score"
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'Fluency'"
                 }
             }
         },
@@ -122,8 +169,47 @@
             "definition": {
                 "kind": "Average",
                 "value": {
-                    "eventName": "gen_ai.evaluation.coherence",
-                    "eventProperty": "gen_ai.ai.evaluation.score"
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'Coherence'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_retrieval",
+            "displayName": "Coherence score",
+            "description": "Retrieval score given by Azure AI evaluation. The retrieval evaluator measures how effectively an AI system selects and ranks the most relevant information for a query or multi-turn conversation (e.g., in RAG scenarios). Scores range from 1 (worst) to 5 (best). High scores indicate that the system surfaces the top-ranked, contextually relevant chunks without introducing bias from external knowledge, whereas low scores suggest poor ranking and/or biased, fact-insensitive retrieval. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.retrievalevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'Retrieval'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_groundedness",
+            "displayName": "Groundedness score",
+            "description": "Groundedness score given by Azure AI evaluation. This evaluator checks how well each claim in the model’s response is substantiated by the supplied context; factually correct but unsupported statements are marked ungrounded. Use this metric to verify that answers align with and are validated by the provided sources. Scores range from 1 (least grounded) to 5 (most grounded). See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.groundednessproevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'Groundedness'"
                 }
             }
         }

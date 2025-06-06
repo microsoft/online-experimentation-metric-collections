@@ -46,17 +46,21 @@ If you do not see the table:
 
 ## Azure AI Evaluation metrics
 
-The following metrics are defined in `metric-azure-ai-evaluation.json`:
+The following metrics are defined in `metrics-azure-ai-evaluation-v0.1.0.json`:
 
 | Display name | Metric kind | Description | Default lifecycle |
 | ------------ | ----------- | ----------- | ---------------- |
-| Protected material score | Average | Uses the Azure AI content safety API to scan LLM outputs for protected material. It detects and flags sensitive content, helping ensure compliance with content safety standards. | Active |
-| Hate unfairness score | Average | Evaluates hateful and unfair language, addressing biases related to race, gender, ethnicity, and more. The score, derived from a 0-7 scale, helps in mitigating inequitable representations. | Active |
-| Sexual content score | Average | Quantifies the presence of sexual content in generated text. The score ranges from 0 (no content) to 7 (high content), providing a basis for moderating explicit output. | Active |
-| Violent content score | Average | Assesses the level of violent content within LLM outputs. With a range from 0 to 7, it supports moderation efforts by flagging high-violence scenarios. | Active |
-| Relevance score | Average | Measures how well the response captures the key points of the input context. Scores range from 1 to 5, where higher scores indicate more contextually accurate and coherent outputs. | Active |
-| Fluency score | Average | Evaluates the grammatical correctness, syntax, and overall fluency of generated text. Rated on a scale from 1 to 5, this metric reflects the linguistic quality of the output. | Active |
-| Coherence score | Average | Assesses the logical flow and natural readability of generated responses. It indicates how well the text is structured and if it resembles human-like language. | Active |
+| Task adherence score | Average | Assesses how well an AI-generated response follows the assigned task in terms of alignment with instructions and definitions, accuracy and clarity, and proper use of provided tool definitions. Scoring is on a five-level integer scale: 0 – Fully Inadherent, 1 – Barely Adherent, 2 – Moderately Adherent, 3 – Mostly Adherent, and 4 – Fully Adherent. | Active |
+| Self-harm score | Average | Analyzes a single turn or multi-turn conversation for content related to self-injury or suicide and returns an integer score from 0 (Very Low) to 7 (High). Higher values represent increasingly explicit, encouraging, or instructional self-harm content, while lower values cover purely informational mentions. | Active |
+| Protected material score | Average | Uses the Azure AI content safety API to scan the output of large language models to identify and flag known protected material. It detects and flags sensitive content, helping ensure compliance with content safety standards. | Active |
+| Hate unfairness score | Average | Evaluates hateful and unfair language pertaining to hate toward or unfair representations of individuals and social groups along factors including but not limited to race, ethnicity, nationality, gender, sexual orientation, religion, immigration status, ability, personal appearance, and body size. Safety evaluations use a 0-7 scale. | Active |
+| Sexual content score | Average | Quantifies the presence of sexual content in generated text. The score ranges from 0 to 7, providing a basis for moderating explicit output. | Active |
+| Violent content score | Average | Assesses the level of violent content within LLM outputs. Violence score ranges from 0 to 7, supporting moderation efforts by flagging high-violence scenarios. | Active |
+| Relevance score | Average | Assesses the ability of answers to capture the key points of the context. High relevance scores signify the AI system's understanding of the input and its capability to produce coherent and contextually appropriate outputs. Conversely, low relevance scores indicate that generated responses might be off-topic, lacking in context, or insufficient in addressing the user's intended queries. Relevance scores range from 1 to 5. | Active |
+| Fluency score | Average | Assesses the extent to which the generated text conforms to grammatical rules, syntactic structures, and appropriate vocabulary usage, resulting in linguistically correct responses. The fluency score ranges from 1 to 5. | Active |
+| Coherence score | Average | Assesses the ability of the language model to generate text that reads naturally, flows smoothly, and resembles human-like language in its responses. Use it when assessing the readability and user-friendliness of a model's generated responses in real-world applications. Scores range from 1 to 5. | Active |
+| Retrieval score | Average | Measures how effectively an AI system selects and ranks the most relevant information for a query or multi-turn conversation (e.g., in RAG scenarios). Scores range from 1 (worst) to 5 (best). High scores indicate that the system surfaces the top-ranked, contextually relevant chunks without introducing bias from external knowledge, whereas low scores suggest poor ranking and/or biased, fact-insensitive retrieval. | Active |
+| Groundedness score | Average | Checks how well each claim in the model's response is substantiated by the supplied context; factually correct but unsupported statements are marked ungrounded. Use this metric to verify that answers align with and are validated by the provided sources. Scores range from 1 (least grounded) to 5 (most grounded). | Active |
 
 ## Summary rule for Azure AI Evaluation spans
 
