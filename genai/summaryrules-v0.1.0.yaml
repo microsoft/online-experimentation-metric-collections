@@ -1,0 +1,35 @@
+summaryRules:
+  - name: "Online-Experimentation-GenAI"
+    binSize: 20
+    destinationTable: AppEvents_CL
+    description: "Summary rule definition for non-eval GenAI metrics. For use to convert metrics from GenAI spans logged following OpenTelemetry v1.27+ semantic conventions."
+    query: |
+      let otel_genai_semantic_convention_keys = dynamic(["gen_ai.operation.name", "gen_ai.request.model", "gen_ai.system", "error.type", "server.port", "gen_ai.request.frequency_penalty", "gen_ai.request.max_tokens", "gen_ai.request.presence_penalty", "gen_ai.request.stop_sequences", "gen_ai.request.temperature", "gen_ai.request.top_k", "gen_ai.request.top_p", "gen_ai.response.finish_reasons", "gen_ai.response.id", "gen_ai.response.model", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "server.address", "gen_ai.openai.request.response_format", "gen_ai.openai.request.seed", "gen_ai.openai.request.service_tier", "gen_ai.openai.response.service_tier"]);
+      let otel_genai_deprecated_keys = dynamic(["gen_ai.usage.completion_tokens", "gen_ai.usage.prompt_tokens"]);
+      let other_supported_keys = dynamic(["gen_ai.response.model", "gen_ai.openai.api_version"]);
+      let supported_keys = set_union(otel_genai_semantic_convention_keys, other_supported_keys);
+      let targetingid_keys = dynamic(["traceloop.association.properties.TargetingId", "traceloop.association.properties.targetingid", "traceloop.association.properties.targetingId", "traceloop.association.properties.targeting_id", "TargetingId", "targetingid", "targetingId", "targeting_id"]);
+      AppDependencies
+      | where Properties has "gen_ai.system"
+      | where Properties has "targetingid" or Properties has "targeting_id"
+      | extend Properties = iff(Properties has "gen_ai.usage.completion_tokens" and Properties !has "gen_ai.usage.output_tokens", bag_merge(Properties, bag_pack("gen_ai.usage.output_tokens", toint(Properties["gen_ai.usage.completion_tokens"]), "gen_ai.usage.input_tokens", toint(Properties["gen_ai.usage.prompt_tokens"]))), Properties)
+      | extend keys = bag_keys(Properties)
+      | extend newProperties = bag_remove_keys(Properties, set_difference(keys, supported_keys))
+      | extend TargetingId = coalesce(tostring(Properties["TargetingId"]), tostring(Properties["targetingid"]), tostring(Properties["targeting_id"]), tostring(Properties["traceloop.association.properties.TargetingId"]), tostring(Properties["traceloop.association.properties.targetingid"]), tostring(Properties["traceloop.association.properties.targeting_id"]), tostring(Properties["traceloop.association.properties.targetingId"]), tostring(Properties["targetingId"]))
+      | extend OTelVersion = extract("otel([0-9.]+[0-9])", 1, SDKVersion)
+      | extend newProperties = bag_merge(newProperties, bag_pack(
+          "OTelVersion", OTelVersion,
+          "TargetingId", TargetingId,
+          "DurationMs", DurationMs,
+          "Success", Success,
+          "Name", Name,
+          "ResultCode", ResultCode,
+          "gen_ai.usage.tokens", coalesce(toint(Properties["gen_ai.usage.input_tokens"]), toint(Properties["gen_ai.usage.prompt_tokens"])) + coalesce(toint(Properties["gen_ai.usage.output_tokens"]), toint(Properties["gen_ai.usage.completion_tokens"]))))
+      | extend
+          stop = iff(Properties["gen_ai.response.finish_reasons"] has "stop", bag_pack("gen_ai.response.finish_reason.stop", 1), dynamic({})),
+          tool_calls = iff(Properties["gen_ai.response.finish_reasons"] has "tool_calls", bag_pack("gen_ai.response.finish_reason.tool_calls", 1), dynamic({})),
+          content_filter = iff(Properties["gen_ai.response.finish_reasons"] has "content_filter", bag_pack("gen_ai.response.finish_reason.content_filter", 1), dynamic({})),
+          length = iff(Properties["gen_ai.response.finish_reasons"] has "length", bag_pack("gen_ai.response.finish_reason.length", 1), dynamic({}))
+      | extend Properties = bag_merge(newProperties, stop, tool_calls, content_filter, length)
+      | extend Name = "gen_ai.otel.span"
+      | project Name, TimeGenerated, ItemCount, Properties
