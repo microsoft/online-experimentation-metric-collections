@@ -75,3 +75,4 @@ Therefore, we recommend enriching with custom event logging for key error handli
 | `ErrorLLM` | `Code` (str): the descriptive code of the error e.g. "content_filter" <br> `StatusCode` (int): the numeric code of the error e.g. 400 | 
 
 A generic error event (not specific to LLM calls) is a good alternative if adding instrumentation for all error handling.
+
