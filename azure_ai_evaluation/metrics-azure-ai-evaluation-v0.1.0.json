@@ -40,9 +40,6 @@
             }
         },
         {
-            
-        }
-        {
             "id": "genai_evaluation_protected_material",
             "displayName": "Protected material score",
             "description": "Protected material score by Azure AI content safety API. The Protected material detection APIs scan the output of large language models to identify and flag known protected material. See (https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/protected-material?tabs=text) for more details.",
@@ -210,6 +207,139 @@
                     "eventName": "gen_ai.evaluation.result",
                     "eventProperty": "gen_ai.ai.evaluation.score",
                     "filter": "['gen_ai.evaluator.name'] == 'Groundedness'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_response_completeness",
+            "displayName": "Response completeness score",
+            "description": "Response completeness score given by Azure AI evaluation. This metric measures how thoroughly a model’s response covers all necessary and relevant information found in the ground truth by checking the presence, accuracy, and relevance of key details. Scores range from 1 (Fully incomplete), 2 (Barely complete), 3 (Moderately complete), 4 (Mostly complete), to 5 (Fully complete). Use this metric to assess an AI model’s ability to deliver comprehensive, accurate, and contextually correct information in text-generation tasks. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.responsecompletenessevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'ResponseCompleteness'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_indirect_attack",
+            "displayName": "Indirect attack score",
+            "description": "Indirect attack score given by Azure AI evaluation. This evaluator analyzes a single-turn or multi-turn conversation to detect cross-domain prompt-injection attacks (also called indirect or XPIA jailbreaks) that are embedded in the supplied context. Indirect attacks are grouped into three subcategories: (1) Manipulated Content – commands that alter, fabricate, hide, or emphasize information to mislead or deceive; (2) Intrusion – commands that attempt to breach systems, gain unauthorized access, or escalate privileges (e.g., traditional jailbreaks, backdoors, vulnerability exploits); and (3) Information Gathering – actions that access, delete, or modify data without authorization, including data exfiltration and record tampering. The evaluator returns a boolean value where true indicates that the response contains an indirect attack. See https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.indirectattackevaluator?view=azure-python for details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'IndirectAttack'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_code_vulnerability",
+            "displayName": "Code vulnerability score",
+            "description": "Performs a single-turn vulnerability assessment on the assistant’s code completion. Given the original user query (or pre-completion code) and the assistant’s response, this metric scans the response for security flaws in Python, Java, C++, C#, Go, JavaScript, and SQL. It detects issues such as path, SQL, and code injection; reflected XSS; full SSRF; incomplete sanitization or hostname validation; server- or client-side open redirects; stack-trace exposure; Flask debug mode; clear-text logging or storage of sensitive data; tarslip; binding to all network interfaces; weak cryptographic algorithms; insecure randomness; hard-coded credentials; and other likely bugs. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.codevulnerabilityevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'CodeVulnerability'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_intent_resolution",
+            "displayName": "Intent resolution score",
+            "description": "The intent resolution evaluator assesses whether the user intent was correctly identified and resolved, spanning from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.intentresolutionevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'IntentResolution'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_tool_call_accuracy",
+            "displayName": "Tool call accuracy score",
+            "description": "Tool call accuracy score given by Azure AI evaluation. The Tool Call Accuracy evaluator measures whether tool calls made by the AI assistant are relevant to the conversation and use parameters exactly as defined. It returns 0 when the call is irrelevant or includes parameters not present in the conversation/definition, and 1 when the call is relevant with correctly extracted parameters. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.toolcallaccuracyevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'ToolCallAccuracy'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_openai_string_check_grader",
+            "displayName": "OpenAI string check grader score",
+            "description": "String-check grader configuration. Compares the provided \"input\" with the \"reference\" string using one of four operations — eq, ne, like, or ilike — and returns 1 for a match according to the chosen rule (case-sensitive for eq, ne, like; case-insensitive for ilike), otherwise 0. Ideal for simple pass/fail evaluations such as exact answers, yes/no responses, or answers that must contain specific text.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'OpenAIStringCheckGrader'"
+                }
+            }
+        },
+        {
+            "id": "genai_evaluation_label_grader",
+            "displayName": "Label grader score",
+            "description": "Label grader score given by Azure AI evaluation. The label-model grader receives a chat transcript (role/content pairs), restricts its output to a predefined label list, and returns 1 when the model’s answer is within the passing_labels set, otherwise 0. Use this pass/fail metric for simple categorical checks such as yes/no responses or fixed-option classifications.",
+            "lifecycle": "Active",
+            "tags": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Increase",
+            "definition": {
+                "kind": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'LabelGrader'"
                 }
             }
         }

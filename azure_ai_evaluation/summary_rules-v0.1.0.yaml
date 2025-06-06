@@ -5,11 +5,9 @@ summaryRules:
     description: "Summary rule definition for Azure AI evaluation-based GenAI metrics."
     query: |
       let runid_to_targetingid = AppDependencies
-      | where TimeGenerated > ago(30d)
       | where Properties has 'TargetingId' and Properties has 'gen_ai.thread.run.id'
       | project RunId = tostring(Properties['gen_ai.thread.run.id']), TargetingId = tostring(Properties['TargetingId']);
       AppTraces
-      | where TimeGenerated > ago(30d)
       | where Message == "gen_ai.evaluation.result"
       | extend RunId = tostring(Properties['gen_ai.thread.run.id'])
       | join kind=leftouter runid_to_targetingid on RunId
