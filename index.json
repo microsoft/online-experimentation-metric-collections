@@ -22,7 +22,7 @@
                     "max": "",
                     "versionText": "",
                     "metadata": "appinsights-webapi/metadata-v0.1.0.json",
-                    "enabled": false
+                    "enabled": true
                 }
             ]
         }
