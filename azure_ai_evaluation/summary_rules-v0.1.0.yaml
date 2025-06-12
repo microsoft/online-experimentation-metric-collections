@@ -4,13 +4,18 @@ summaryRules:
     destinationTable: AppEvents_CL
     description: "Summary rule definition for Azure AI evaluation-based GenAI metrics."
     query: |
-      let runid_to_targetingid = AppDependencies
-      | where Properties has 'TargetingId' and Properties has 'gen_ai.thread.run.id'
-      | project RunId = tostring(Properties['gen_ai.thread.run.id']), TargetingId = tostring(Properties['TargetingId']);
+      let tid_to_oid = AppEvents
+      | where Name == 'FeatureEvaluation'
+      | project TargetingId = tostring(Properties['TargetingId']), OperationId;
+      let tid_to_rid = AppTraces
+      | where Message == 'gen_ai.assistant.message' and Properties has 'gen_ai.thread.run.id'
+      | project OperationId, RunId = tostring(Properties['gen_ai.thread.run.id'])
+      | join kind=inner tid_to_oid on OperationId
+      | summarize TargetingId = min(TargetingId) by RunId;
       AppTraces
       | where Message == "gen_ai.evaluation.result"
       | extend RunId = tostring(Properties['gen_ai.thread.run.id'])
-      | join kind=leftouter runid_to_targetingid on RunId
+      | join kind=leftouter tid_to_rid on RunId
       | project Name = Message,
           TimeGenerated,
           ItemCount,
