@@ -1,0 +1,15 @@
+{
+    "title": "Azure AI Agent Metrics",
+    "metricCategory": "__MetricCollection_ai_agent__",
+    "description": "Standard Azure AI Agent Metrics",
+    "metricConfig": "azure-ai-agent/metrics-azure-ai-agent-v0.1.0.json",
+    "summaryRule": "azure-ai-agent/summaryrules-v0.1.0.yaml",
+    "prerequisites": [
+        {
+            "messageMarkdown": "This metric is supposed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview). [Tracing](https://learn.microsoft.com/en-us/azure/ai-services/agents/concepts/tracing) should also be enabled through AI foundary portal."
+        },
+        {
+            "messageMarkdown": "`TargetingId` must be associated with your GenAI spans that are being evaluated."
+        }
+    ]
+}
