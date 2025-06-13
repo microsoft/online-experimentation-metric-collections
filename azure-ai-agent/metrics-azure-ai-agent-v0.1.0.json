@@ -1,0 +1,22 @@
+{
+    "schemaVersion": "2.0",
+    "metrics": [
+        {
+            "id": "count_ai_agent_spans",
+            "displayName": "Number of AI agent spans",
+            "description": "The total number of AI agent spans captured. This metric provides a baseline measure of your AI agent activity and usage volume across your application.",
+            "lifecycle": "Active",
+            "categories": [
+                "AI_Agent",
+                "Usage"
+            ],
+            "desiredDirection": "Neutral",
+            "definition": {
+                "type": "EventCount",
+                "event": {
+                    "eventName": "gen_ai.agent.otel.span"
+                }
+            }
+        }
+    ]
+}

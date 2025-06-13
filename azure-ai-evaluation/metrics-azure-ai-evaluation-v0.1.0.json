@@ -1,0 +1,24 @@
+{
+    "schemaVersion": "2.0",
+    "metrics": [
+        {
+            "id": "evaluator_task_adherence",
+            "displayName": "Task adherence score",
+            "description": "Task adherence score given by Azure AI evaluation. The Task Adherence evaluator assesses how well an AI-generated response follows the assigned task in terms of alignment with instructions and definitions, accuracy and clarity, and proper use of provided tool definitions. Scoring is on a five-level integer scale: 0 – Fully Inadherent, 1 – Barely Adherent, 2 – Moderately Adherent, 3 – Mostly Adherent, and 4 – Fully Adherent. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.taskadherenceevaluator?view=azure-python) for more details.",
+            "lifecycle": "Active",
+            "categories": [
+                "GenAI",
+                "azure_ai_evaluation"
+            ],
+            "desiredDirection": "Decrease",
+            "definition": {
+                "type": "Average",
+                "value": {
+                    "eventName": "gen_ai.evaluation.result",
+                    "eventProperty": "gen_ai.ai.evaluation.score",
+                    "filter": "['gen_ai.evaluator.name'] == 'TaskAdherence'"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+summaryRules:
+  - name: "Online-Experimentation-Azure-AI-Agent"
+    binSize: 20
+    destinationTable: AppEvents_CL
+    description: "Summary rule definition for Azure AI Agent metrics. For use to convert metrics from Azure AI Agent spans logged following OpenTelemetry v1.31.1+ semantic conventions."
+    query: |
+      let tid_to_oid = AppEvents
+      | where Name == 'FeatureEvaluation'
+      | project TargetingId = tostring(Properties['TargetingId']), OperationId;
+      let tid_to_rid = AppTraces
+      | where Message == 'gen_ai.assistant.message' and Properties has 'gen_ai.thread.run.id'
+      | project OperationId, RunId = tostring(Properties['gen_ai.thread.run.id'])
+      | join kind=inner tid_to_oid on OperationId
+      | summarize TargetingId = min(TargetingId) by RunId;
+      AppTraces
+      | where Message == "gen_ai.evaluation.result"
+      | extend RunId = tostring(Properties['gen_ai.thread.run.id'])
+      | join kind=leftouter tid_to_rid on RunId
+      | project Name = Message,
+          TimeGenerated,
+          ItemCount,
+          Properties= pack("gen_ai.evaluation.score", todouble(Properties["gen_ai.evaluation.score"]),
+          "gen_ai.evaluator.name", tostring(Properties["gen_ai.evaluator.name"]),
+          "gen_ai.usage.input_tokens", toint(Properties["gen_ai.usage.input_tokens"]),
+          "gen_ai.usage.output_tokens", toint(Properties["gen_ai.usage.output_tokens"]),
+          "TargetingId", TargetingId)
