@@ -423,7 +423,7 @@
       ],
       "desiredDirection": "Neutral",
       "definition": {
-        "type": "EventRateDefinition",
+        "type": "EventRate",
         "event": {
           "eventName": "gen_ai.agent.otel.trace.span",
           "filter": "['gen_ai.tools.code_interpreter'] >= 1"
@@ -443,7 +443,7 @@
       ],
       "desiredDirection": "Neutral",
       "definition": {
-        "type": "EventRateDefinition",
+        "type": "EventRate",
         "event": {
           "eventName": "gen_ai.agent.otel.trace.span",
           "filter": "['gen_ai.tools.file_search'] >= 1"
@@ -463,7 +463,7 @@
       ],
       "desiredDirection": "Neutral",
       "definition": {
-        "type": "EventRateDefinition",
+        "type": "EventRate",
         "event": {
           "eventName": "gen_ai.agent.otel.trace.span",
           "filter": "['gen_ai.tools.bing_grounding'] >= 1"
