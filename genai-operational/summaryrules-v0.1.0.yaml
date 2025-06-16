@@ -12,7 +12,12 @@ summaryRules:
       AppDependencies
       | where Properties has "gen_ai.system"
       | where Properties has "targetingid" or Properties has "targeting_id"
-      | extend Properties = iff(Properties has "gen_ai.usage.completion_tokens" and Properties !has "gen_ai.usage.output_tokens", bag_merge(Properties, bag_pack("gen_ai.usage.output_tokens", toint(Properties["gen_ai.usage.completion_tokens"]), "gen_ai.usage.input_tokens", toint(Properties["gen_ai.usage.prompt_tokens"]))), Properties)
+      | mv-apply key = bag_keys(Properties) to typeof(string) on (
+        where key startswith "gen_ai.completion" and key endswith "finish_reason"
+        | extend value = Properties[key]
+        | summarize finish_reasons = make_list(value)
+        )
+      | extend Properties = iff(Properties has "gen_ai.usage.completion_tokens" and Properties !has "gen_ai.usage.output_tokens", bag_merge(Properties, bag_pack("gen_ai.usage.output_tokens", toint(Properties["gen_ai.usage.completion_tokens"]), "gen_ai.usage.input_tokens", toint(Properties["gen_ai.usage.prompt_tokens"]), "gen_ai.operation.name", Properties["llm.request.type"], "gen_ai.response.finish_reasons", finish_reasons)), Properties)
       | extend keys = bag_keys(Properties)
       | extend newProperties = bag_remove_keys(Properties, set_difference(keys, supported_keys))
       | extend TargetingId = coalesce(tostring(Properties["TargetingId"]), tostring(Properties["targetingid"]), tostring(Properties["targeting_id"]), tostring(Properties["traceloop.association.properties.TargetingId"]), tostring(Properties["traceloop.association.properties.targetingid"]), tostring(Properties["traceloop.association.properties.targeting_id"]), tostring(Properties["traceloop.association.properties.targetingId"]), tostring(Properties["targetingId"]))

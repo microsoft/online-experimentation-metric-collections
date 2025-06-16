@@ -1,0 +1,15 @@
+{
+    "title": "GenAI Operational Metrics",
+    "metricCategory": "__MetricCollection_genai_operational__",
+    "description": "Standard GenAI Operational metrics",
+    "metricConfig": "genai-operational/metrics-genai-v0.2.0.json", 
+    "summaryRule": "genai-operational/summaryrules-v0.1.0.yaml",
+    "prerequisites": [
+        {
+            "messageMarkdown": "Please ensure your application is using instrumentation libraries that adhere strictly to the [OpenTelemetry GenAI semantic conventions v1.27.0+](https://github.com/open-telemetry/semantic-conventions/blob/v1.27.0/docs/gen-ai/gen-ai-spans.md)"
+        },
+        {
+            "messageMarkdown": "\"TargetingId\" must be added to the GenAI spans. Detailed steps is present [here](https://github.com/microsoft/online-experimentation-metric-collections/tree/main/genai-operational#prerequisites)."
+        }
+    ]
+}

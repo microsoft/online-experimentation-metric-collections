@@ -11,7 +11,7 @@ The semantic conventions for GenAI are in active development and are marked as e
 
 | GenAI metric collection version | OTel semantic convention version | Creation date | Metric collection | Summary rule |
 | --------| ---------------------------------| --------------| -------- | ------- |
-| v0 | Version 1.27+ | November 2024 | [metrics-genai-v0.1.0](./metrics-genai-v0.1.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.yaml)
+| v0 | Version 1.27+ | Feb 2025 | [metrics-genai-v0.2.0](./metrics-genai-v0.2.0.json) | [summaryrules-v0.1.0](./summaryrules-v0.1.0.yaml)
 
 ## Prerequisites
 
@@ -85,7 +85,7 @@ If you have an active summary rule but need to update it, see the section [Summa
 
 The following metrics are defined in `metrics-genai-{version}.json`:
 
-| Display name | Metric kind | Description | Default lifecycle |
+| Display name | Metric type | Description | Default lifecycle |
 | ------- | ------- | ------ | ------ | 
 | Number of GenAI spans | EventCount | The number of GenAI spans. This is an approximation of the number of total GenAI requests made, as a single span _may_ incorporate multiple related GenAI calls depending on the instrumentation. | Active | 
 | Number of GenAI users | UserCount | The number of users producing at least one GenAI span. This metric measures discovery/adoption of your GenAI features.  | Active | 
