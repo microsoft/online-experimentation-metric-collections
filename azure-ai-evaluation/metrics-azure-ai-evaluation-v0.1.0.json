@@ -40,25 +40,6 @@
             }
         },
         {
-            "id": "genai_evaluation_protected_material",
-            "displayName": "Protected material score",
-            "description": "Protected material score by Azure AI content safety API. The Protected material detection APIs scan the output of large language models to identify and flag known protected material. See (https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/protected-material?tabs=text) for more details.",
-            "lifecycle": "Active",
-            "categories": [
-                "GenAI",
-                "azure_ai_evaluation"
-            ],
-            "desiredDirection": "Decrease",
-            "definition": {
-                "type": "Average",
-                "value": {
-                    "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'ProtectedMaterial'"
-                }
-            }
-        },
-        {
             "id": "genai_evaluation_hate_unfairness",
             "displayName": "Hate unfairness score",
             "description": "Hate and unfair score given by Azure AI evaluation. Hateful and unfair content refers to any language pertaining to hate toward or unfair representations of individuals and social groups along factors including but not limited to race, ethnicity, nationality, gender, sexual orientation, religion, immigration status, ability, personal appearance, and body size. Unfairness occurs when AI systems treat or represent social groups inequitably, creating or contributing to societal inequities. Safety evaluations annotate self-harm-related content using a 0-7 scale. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.hateunfairnessevaluator?view=azure-python) for more details.",
@@ -154,25 +135,6 @@
             }
         },
         {
-            "id": "genai_evaluation_coherence",
-            "displayName": "Coherence score",
-            "description": "Coherence score given by Azure AI evaluation. The coherence measure assesses the ability of the language model to generate text that reads naturally, flows smoothly, and resembles human-like language in its responses. Use it when assessing the readability and user-friendliness of a model's generated responses in real-world applications. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.coherenceevaluator?view=azure-python) for more details.",
-            "lifecycle": "Active",
-            "categories": [
-                "GenAI",
-                "azure_ai_evaluation"
-            ],
-            "desiredDirection": "Increase",
-            "definition": {
-                "type": "Average",
-                "value": {
-                    "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'Coherence'"
-                }
-            }
-        },
-        {
             "id": "genai_evaluation_retrieval",
             "displayName": "Coherence score",
             "description": "Retrieval score given by Azure AI evaluation. The retrieval evaluator measures how effectively an AI system selects and ranks the most relevant information for a query or multi-turn conversation (e.g., in RAG scenarios). Scores range from 1 (worst) to 5 (best). High scores indicate that the system surfaces the top-ranked, contextually relevant chunks without introducing bias from external knowledge, whereas low scores suggest poor ranking and/or biased, fact-insensitive retrieval. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.retrievalevaluator?view=azure-python) for more details.",
@@ -188,44 +150,6 @@
                     "eventName": "gen_ai.evaluation.result",
                     "eventProperty": "gen_ai.evaluation.score",
                     "filter": "['gen_ai.evaluator.name'] == 'Retrieval'"
-                }
-            }
-        },
-        {
-            "id": "genai_evaluation_groundedness",
-            "displayName": "Groundedness score",
-            "description": "Groundedness score given by Azure AI evaluation. This evaluator checks how well each claim in the model’s response is substantiated by the supplied context; factually correct but unsupported statements are marked ungrounded. Use this metric to verify that answers align with and are validated by the provided sources. Scores range from 1 (least grounded) to 5 (most grounded). See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.groundednessproevaluator?view=azure-python) for more details.",
-            "lifecycle": "Active",
-            "categories": [
-                "GenAI",
-                "azure_ai_evaluation"
-            ],
-            "desiredDirection": "Increase",
-            "definition": {
-                "type": "Average",
-                "value": {
-                    "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'Groundedness'"
-                }
-            }
-        },
-        {
-            "id": "genai_evaluation_response_completeness",
-            "displayName": "Response completeness score",
-            "description": "Response completeness score given by Azure AI evaluation. This metric measures how thoroughly a model’s response covers all necessary and relevant information found in the ground truth by checking the presence, accuracy, and relevance of key details. Scores range from 1 (Fully incomplete), 2 (Barely complete), 3 (Moderately complete), 4 (Mostly complete), to 5 (Fully complete). Use this metric to assess an AI model’s ability to deliver comprehensive, accurate, and contextually correct information in text-generation tasks. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.responsecompletenessevaluator?view=azure-python) for more details.",
-            "lifecycle": "Active",
-            "categories": [
-                "GenAI",
-                "azure_ai_evaluation"
-            ],
-            "desiredDirection": "Increase",
-            "definition": {
-                "type": "Average",
-                "value": {
-                    "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'ResponseCompleteness'"
                 }
             }
         },
@@ -321,25 +245,6 @@
                     "eventName": "gen_ai.evaluation.result",
                     "eventProperty": "gen_ai.evaluation.score",
                     "filter": "['gen_ai.evaluator.name'] == 'OpenAIStringCheckGrader'"
-                }
-            }
-        },
-        {
-            "id": "genai_evaluation_label_grader",
-            "displayName": "Label grader score",
-            "description": "Label grader score given by Azure AI evaluation. The label-model grader receives a chat transcript (role/content pairs), restricts its output to a predefined label list, and returns 1 when the model’s answer is within the passing_labels set, otherwise 0. Use this pass/fail metric for simple categorical checks such as yes/no responses or fixed-option classifications.",
-            "lifecycle": "Active",
-            "categories": [
-                "GenAI",
-                "azure_ai_evaluation"
-            ],
-            "desiredDirection": "Increase",
-            "definition": {
-                "type": "Average",
-                "value": {
-                    "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'LabelGrader'"
                 }
             }
         }
