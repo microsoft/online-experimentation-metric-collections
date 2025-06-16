@@ -1,8 +1,8 @@
 summaryRules:
-  - name: "Online-Experimentation-GenAI-eval"
+  - name: "Online-Experimentation-Azure-AI-Evaluation"
     binSize: 20
     destinationTable: AppEvents_CL
-    description: "Summary rule definition for Azure AI evaluation-based GenAI metrics."
+    description: "Summary rule definition for Azure AI Evaluation metrics."
     query: |
       let tid_to_oid = AppEvents
       | where Name == 'FeatureEvaluation'
