@@ -38,7 +38,7 @@
     },
     {
       "id": "count_ai_agent_create_thread_spans",
-      "displayName": "Number of calls for creating new thread with AI agent",
+      "displayName": "Number of run steps for creating new thread with AI agent",
       "description": "The total number of AI agent operations that create new threads. This metric helps track how frequently new conversation threads are being initiated in your AI agent implementation.",
       "lifecycle": "Active",
       "categories": [
@@ -56,8 +56,8 @@
     },
     {
       "id": "count_ai_agent_create_message_spans",
-      "displayName": "Number of calls for creating new message with AI agent",
-      "description": "The total number of AI agent operations that create new messages. This metric helps track how frequently new messages are being sent in your AI agent implementation. It should be roughly equal to the number of process_thread_run calls.",
+      "displayName": "Number of run steps for creating new message with AI agent",
+      "description": "The total number of AI agent operations that create new messages. This metric helps track how frequently new messages are being sent in your AI agent implementation. It should be roughly equal to the number of process_thread_run step runs.",
       "lifecycle": "Active",
       "categories": [
         "AI_Agent",
@@ -74,7 +74,7 @@
     },
     {
       "id": "count_ai_agent_process_thread_run_spans",
-      "displayName": "Number of calls for processing thread run with AI agent",
+      "displayName": "Number of run steps for processing thread run with AI agent",
       "description": "The total number of AI agent operations that process thread runs. This metric helps track how frequently thread runs are being processed in your AI agent implementation.",
       "lifecycle": "Active",
       "categories": [
@@ -93,7 +93,7 @@
     {
       "id": "sum_ai_agent_input_tokens",
       "displayName": "Total AI agent input tokens",
-      "description": "The total input tokens used for AI agent calls. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
+      "description": "The total input tokens used for AI agents. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
       "lifecycle": "Active",
       "categories": [
         "AI_Agent",
@@ -104,6 +104,7 @@
         "type": "Sum",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.input_tokens"
         }
       }
@@ -122,6 +123,7 @@
         "type": "Average",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.input_tokens"
         }
       }
@@ -140,6 +142,7 @@
         "type": "Percentile",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.input_tokens"
         },
         "percentile": 90
@@ -159,6 +162,7 @@
         "type": "Percentile",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.input_tokens"
         },
         "percentile": 50
@@ -178,6 +182,7 @@
         "type": "Sum",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.output_tokens"
         }
       }
@@ -196,6 +201,7 @@
         "type": "Average",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.output_tokens"
         }
       }
@@ -214,6 +220,7 @@
         "type": "Percentile",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.output_tokens"
         },
         "percentile": 90
@@ -233,6 +240,7 @@
         "type": "Percentile",
         "value": {
           "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
           "eventProperty": "gen_ai.usage.output_tokens"
         },
         "percentile": 50
@@ -240,8 +248,8 @@
     },
     {
       "id": "avg_ai_agent_process_thread_run_duration",
-      "displayName": "Average AI agent duration",
-      "description": "The average duration of AI agent calls. This metric helps track the performance of your AI agent implementation and identify potential bottlenecks.",
+      "displayName": "Average processing thread run duration",
+      "description": "The average duration of AI agent `process_thread_run`. This metric helps track the performance of your AI agent implementation and identify potential bottlenecks.",
       "lifecycle": "Active",
       "categories": [
         "AI_Agent",
@@ -259,8 +267,8 @@
     },
     {
       "id": "p90_ai_agent_process_thread_run_duration",
-      "displayName": "90th percentile AI agent duration",
-      "description": "The 90th percentile duration of AI agent calls. This gives an indication of the performance near the upper end of the distribution, helping identify outliers in processing time.",
+      "displayName": "90th percentile processing thread run duration",
+      "description": "The 90th percentile duration of `process_thread_run` steps. This gives an indication of the performance near the upper end of the distribution, helping identify outliers in processing time.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -280,7 +288,7 @@
     {
       "id": "median_ai_agent_process_thread_run_duration",
       "displayName": "Median AI agent duration",
-      "description": "The median (50th percentile) duration of AI agent calls. This provides the typical processing time in your application, less influenced by outliers than the average.",
+      "description": "The median (50th percentile) duration of `process_thread_run` steps. This provides the typical processing time in your application, less influenced by outliers than the average.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -299,8 +307,8 @@
     },
     {
       "id": "count_code_interpreter",
-      "displayName": "Number of code interpreter calls",
-      "description": "The total number of code interpreter calls. This metric helps track how frequently the code interpreter is being used in your AI agent implementation.",
+      "displayName": "Number of code interpreter run steps",
+      "description": "The total number of code interpreter run steps. This metric helps track how frequently the code interpreter is being used in your AI agent implementation.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -318,8 +326,8 @@
     },
     {
       "id": "count_file_search",
-      "displayName": "Number of file search calls",
-      "description": "The total number of file search calls. This metric helps track how frequently the file search is being used in your AI agent implementation.",
+      "displayName": "Number of file search run steps",
+      "description": "The total number of file search run steps. This metric helps track how frequently the file search is being used in your AI agent implementation.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -337,8 +345,8 @@
     },
     {
       "id": "count_bing_grounding",
-      "displayName": "Number of Bing grounding calls",
-      "description": "The total number of Bing grounding calls. This metric helps track how frequently the Bing grounding is being used in your AI agent implementation.",
+      "displayName": "Number of Bing grounding run steps",
+      "description": "The total number of Bing grounding run steps. This metric helps track how frequently the Bing grounding is being used in your AI agent implementation.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -413,8 +421,8 @@
     },
     {
       "id": "code_interpreter_success_rate",
-      "displayName": "Success rate of code interpreter tool calls",
-      "description": "The percentage of code interpreter tool calls that complete successfully. This metric indicates the reliability of code-interpreter executions within your AI agent workflows.",
+      "displayName": "Success rate of code interpreter run steps",
+      "description": "The percentage of code interpreter run steps that complete successfully. This metric indicates the reliability of code-interpreter executions within your AI agent workflows.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -433,8 +441,8 @@
     },
     {
       "id": "file_search_success_rate",
-      "displayName": "Success rate of file search tool calls",
-      "description": "The percentage of file search tool calls that complete successfully. This metric indicates the reliability of file search executions within your AI agent workflows.",
+      "displayName": "Success rate of file search run steps",
+      "description": "The percentage of file search run steps that complete successfully. This metric indicates the reliability of file search executions within your AI agent workflows.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
@@ -453,8 +461,8 @@
     },
     {
       "id": "bing_grounding_success_rate",
-      "displayName": "Success rate of Bing grounding tool calls",
-      "description": "The percentage of Bing grounding tool calls that complete successfully. This metric indicates the reliability of Bing grounding executions within your AI agent workflows.",
+      "displayName": "Success rate of Bing grounding run steps",
+      "description": "The percentage of Bing grounding run steps that complete successfully. This metric indicates the reliability of Bing grounding executions within your AI agent workflows.",
       "lifecycle": "Inactive",
       "categories": [
         "AI_Agent",
