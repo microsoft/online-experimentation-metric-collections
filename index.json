@@ -34,7 +34,7 @@
                     "min": "",
                     "max": "",
                     "versionText": "",
-                    "metadata": "azure-ai-evaluation/metadata-v1.27.0.json",
+                    "metadata": "azure-ai-evaluation/metadata.json",
                     "enabled": false
                 }
             ]

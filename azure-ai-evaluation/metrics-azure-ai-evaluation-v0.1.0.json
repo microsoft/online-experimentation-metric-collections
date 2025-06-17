@@ -4,7 +4,7 @@
         {
             "id": "evaluator_task_adherence",
             "displayName": "Average Task adherence score",
-            "description": "The average task adherence score given by Azure AI evaluation. The Task Adherence evaluator assesses how well an AI-generated response follows the assigned task in terms of alignment with instructions and definitions, accuracy and clarity, and proper use of provided tool definitions. Scoring is on a five-level integer scale: 0 – Fully Inadherent, 1 – Barely Adherent, 2 – Moderately Adherent, 3 – Mostly Adherent, and 4 – Fully Adherent. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.taskadherenceevaluator?view=azure-python) for more details.",
+            "description": "The average task adherence score given by Azure AI evaluation. The Task Adherence evaluator assesses how well an AI-generated response follows the assigned task in terms of alignment with instructions and definitions, accuracy and clarity, and proper use of provided tool definitions. Scoring is on a five-level integer scale: 0 – Fully Inadherent, 1 – Barely Adherent, 2 – Moderately Adherent, 3 – Mostly Adherent, and 4 – Fully Adherent. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.taskadherenceevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -23,7 +23,7 @@
         {
             "id": "evaluator_self_harm",
             "displayName": "Average self-harm score",
-            "description": "The average self-harm score given by Azure AI evaluation. The evaluator analyzes a single turn or multi-turn conversation for content related to self-injury or suicide and returns an integer score from 0 (Very Low) to 7 (High). Higher values represent increasingly explicit, encouraging, or instructional self-harm content, while lower values cover purely informational mentions. See https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.selfharmevaluator?view=azure-python for details.",
+            "description": "The average self-harm score given by Azure AI evaluation. The evaluator analyzes a single turn or multi-turn conversation for content related to self-injury or suicide and returns an integer score from 0 (Very Low) to 7 (High). Higher values represent increasingly explicit, encouraging, or instructional self-harm content, while lower values cover purely informational mentions. See https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.selfharmevaluator for details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -42,7 +42,7 @@
         {
             "id": "genai_evaluation_hate_unfairness",
             "displayName": "Average hate unfairness score",
-            "description": "The Average hate and unfair score given by Azure AI evaluation. Hateful and unfair content refers to any language pertaining to hate toward or unfair representations of individuals and social groups along factors including but not limited to race, ethnicity, nationality, gender, sexual orientation, religion, immigration status, ability, personal appearance, and body size. Unfairness occurs when AI systems treat or represent social groups inequitably, creating or contributing to societal inequities. Safety evaluations annotate self-harm-related content using a 0-7 scale. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.hateunfairnessevaluator?view=azure-python) for more details.",
+            "description": "The Average hate and unfair score given by Azure AI evaluation. Hateful and unfair content refers to any language pertaining to hate toward or unfair representations of individuals and social groups along factors including but not limited to race, ethnicity, nationality, gender, sexual orientation, religion, immigration status, ability, personal appearance, and body size. Unfairness occurs when AI systems treat or represent social groups inequitably, creating or contributing to societal inequities. Safety evaluations annotate self-harm-related content using a 0-7 scale. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.hateunfairnessevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -61,7 +61,7 @@
         {
             "id": "genai_evaluation_sexual",
             "displayName": "Average sexual content score",
-            "description": "The average sexual content score given by Azure AI evaluation. Sexual score is range from 0 to 7. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.sexualevaluator?view=azure-python) for more details.",
+            "description": "The average sexual content score given by Azure AI evaluation. Sexual score is range from 0 to 7. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.sexualevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -80,7 +80,7 @@
         {
             "id": "genai_evaluation_violence",
             "displayName": "Average violent content score",
-            "description": "The average violence score given by Azure AI evaluation, Violence score is range from 0 to 7. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.violenceevaluator?view=azure-python) for more details.",
+            "description": "The average violence score given by Azure AI evaluation, Violence score is range from 0 to 7. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.violenceevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -99,7 +99,7 @@
         {
             "id": "genai_evaluation_relevance",
             "displayName": "Average relevance score",
-            "description": "The average relevance score given by Azure AI evaluation. The relevance measure assesses the ability of answers to capture the key points of the context. High relevance scores signify the AI system's understanding of the input and its capability to produce coherent and contextually appropriate outputs. Conversely, low relevance scores indicate that generated responses might be off-topic, lacking in context, or insufficient in addressing the user's intended queries. Relevance scores range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.relevanceevaluator?view=azure-python) for more details.",
+            "description": "The average relevance score given by Azure AI evaluation. The relevance measure assesses the ability of answers to capture the key points of the context. High relevance scores signify the AI system's understanding of the input and its capability to produce coherent and contextually appropriate outputs. Conversely, low relevance scores indicate that generated responses might be off-topic, lacking in context, or insufficient in addressing the user's intended queries. Relevance scores range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.relevanceevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -118,7 +118,7 @@
         {
             "id": "genai_evaluation_fluency",
             "displayName": "Average fluency score",
-            "description": "The average fluency score given by Azure AI evaluation. The fluency measure assesses the extent to which the generated text conforms to grammatical rules, syntactic structures, and appropriate vocabulary usage, resulting in linguistically correct responses. The fluency score range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.fluencyevaluator?view=azure-python) for more details.",
+            "description": "The average fluency score given by Azure AI evaluation. The fluency measure assesses the extent to which the generated text conforms to grammatical rules, syntactic structures, and appropriate vocabulary usage, resulting in linguistically correct responses. The fluency score range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.fluencyevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -137,7 +137,7 @@
         {
             "id": "genai_evaluation_coherence",
             "displayName": "Average coherence score",
-            "description": "The average coherence score given by Azure AI evaluation. The coherence measure assesses the logical flow and consistency of the generated text. High coherence scores indicate that the AI system produces well-structured and logically connected responses, while low scores suggest disjointed or confusing outputs. Coherence scores range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.coherenceevaluator?view=azure-python) for more details.",
+            "description": "The average coherence score given by Azure AI evaluation. The coherence measure assesses the logical flow and consistency of the generated text. High coherence scores indicate that the AI system produces well-structured and logically connected responses, while low scores suggest disjointed or confusing outputs. Coherence scores range from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.coherenceevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -156,7 +156,7 @@
         {
             "id": "genai_evaluation_indirect_attack",
             "displayName": "Average indirect attack score",
-            "description": "The average indirect attack score given by Azure AI evaluation. This evaluator analyzes a single-turn or multi-turn conversation to detect cross-domain prompt-injection attacks (also called indirect or XPIA jailbreaks) that are embedded in the supplied context. Indirect attacks are grouped into three subcategories: (1) Manipulated Content – commands that alter, fabricate, hide, or emphasize information to mislead or deceive; (2) Intrusion – commands that attempt to breach systems, gain unauthorized access, or escalate privileges (e.g., traditional jailbreaks, backdoors, vulnerability exploits); and (3) Information Gathering – actions that access, delete, or modify data without authorization, including data exfiltration and record tampering. The evaluator returns a boolean value where true indicates that the response contains an indirect attack. See https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.indirectattackevaluator?view=azure-python for details.",
+            "description": "The average indirect attack score given by Azure AI evaluation. This evaluator analyzes a single-turn or multi-turn conversation to detect cross-domain prompt-injection attacks (also called indirect or XPIA jailbreaks) that are embedded in the supplied context. Indirect attacks are grouped into three subcategories: (1) Manipulated Content – commands that alter, fabricate, hide, or emphasize information to mislead or deceive; (2) Intrusion – commands that attempt to breach systems, gain unauthorized access, or escalate privileges (e.g., traditional jailbreaks, backdoors, vulnerability exploits); and (3) Information Gathering – actions that access, delete, or modify data without authorization, including data exfiltration and record tampering. The evaluator returns a boolean value where true indicates that the response contains an indirect attack. See https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.indirectattackevaluator for details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -175,7 +175,7 @@
         {
             "id": "genai_evaluation_code_vulnerability",
             "displayName": "Average code vulnerability score",
-            "description": "The average code vulnerability score given by Azure AI evaluation. This metric performs a single-turn vulnerability assessment on the assistant’s code completion. Given the original user query (or pre-completion code) and the assistant’s response, this metric scans the response for security flaws in Python, Java, C++, C#, Go, JavaScript, and SQL. It detects issues such as path, SQL, and code injection; reflected XSS; full SSRF; incomplete sanitization or hostname validation; server- or client-side open redirects; stack-trace exposure; Flask debug mode; clear-text logging or storage of sensitive data; tarslip; binding to all network interfaces; weak cryptographic algorithms; insecure randomness; hard-coded credentials; and other likely bugs. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.codevulnerabilityevaluator?view=azure-python) for more details.",
+            "description": "The average code vulnerability score given by Azure AI evaluation. This metric performs a single-turn vulnerability assessment on the assistant’s code completion. Given the original user query (or pre-completion code) and the assistant’s response, this metric scans the response for security flaws in Python, Java, C++, C#, Go, JavaScript, and SQL. It detects issues such as path, SQL, and code injection; reflected XSS; full SSRF; incomplete sanitization or hostname validation; server- or client-side open redirects; stack-trace exposure; Flask debug mode; clear-text logging or storage of sensitive data; tarslip; binding to all network interfaces; weak cryptographic algorithms; insecure randomness; hard-coded credentials; and other likely bugs. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.codevulnerabilityevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -194,7 +194,7 @@
         {
             "id": "genai_evaluation_intent_resolution",
             "displayName": "Average intent resolution score",
-            "description": "The average intent resolution score given by Azure AI evaluation. The intent resolution evaluator assesses whether the user intent was correctly identified and resolved, spanning from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.intentresolutionevaluator?view=azure-python) for more details.",
+            "description": "The average intent resolution score given by Azure AI evaluation. The intent resolution evaluator assesses whether the user intent was correctly identified and resolved, spanning from 1 to 5. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.intentresolutionevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
@@ -213,7 +213,7 @@
         {
             "id": "genai_evaluation_tool_call_accuracy",
             "displayName": "Average tool call accuracy score",
-            "description": "The average tool call accuracy score given by Azure AI evaluation. The Tool Call Accuracy evaluator measures whether tool calls made by the AI assistant are relevant to the conversation and use parameters exactly as defined. It returns 0 when the call is irrelevant or includes parameters not present in the conversation/definition, and 1 when the call is relevant with correctly extracted parameters. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.toolcallaccuracyevaluator?view=azure-python) for more details.",
+            "description": "The average tool call accuracy score given by Azure AI evaluation. The Tool Call Accuracy evaluator measures whether tool calls made by the AI assistant are relevant to the conversation and use parameters exactly as defined. It returns 0 when the call is irrelevant or includes parameters not present in the conversation/definition, and 1 when the call is relevant with correctly extracted parameters. See (https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.toolcallaccuracyevaluator) for more details.",
             "lifecycle": "Active",
             "categories": [
                 "GenAI",
