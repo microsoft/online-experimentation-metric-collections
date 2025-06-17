@@ -1,20 +1,20 @@
-# Azure AI Evaluation metric collection
+# Azure AI Evaluation Metric Collection
 
-Metrics contained in the Azure AI Evaluation [metric collection](./metric-azure-ai-evaluation.json) are quality and safety measures for large language model outputs. They are meant to be used, in combination with the [provided](./summary_rules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-box with minimal edits. They consume evaluation spans created by the [Azure AI Foundry SDK](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/online-evaluation?tabs=windows).
+Metrics contained in the Azure AI Evaluation [metric collection](./metric-azure-ai-evaluation.json) are quality and safety measures for AI agent outputs. They are meant to be used, in combination with the [provided](./summary_rules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-the-box with minimal edits. They consume evaluation spans created by the [Azure AI Foundry SDK](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/online-evaluation?tabs=windows).
 
 ## Prerequisites
 
 ### Instrumentation
 
-1. To use these metrics and summary rule, you must use the Azure AI Evaluation services which are part of the Azure AI Foundry SDK.
+1. To use these metrics and the summary rule, you must use the Azure AI Evaluation services, which are part of the Azure AI Foundry SDK.
 
-   [Azure AI Evaluation](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/online-evaluation?tabs=windows) provides automatic online evaluation of LLM responses for quality and safety measures.
+   [Azure AI Continuous Evaluation](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/online-evaluation?tabs=windows) provides automatic online evaluation of LLM responses for quality and safety measures.
 
-2. `TargetingId` must be associated with your GenAI spans that are being evaluated.
+2. `TargetingId` must be associated with the GenAI spans that are being evaluated.
    
    You can add the TargetingId to your GenAI spans the same way as described in the [GenAI documentation](../genai/README.md). The evaluation spans will be automatically associated with the TargetingId of the original GenAI call.
 
-3. Azure AI Evaluation spans must be sent to Azure Monitor, and be accessible in the Log Analytics workspace configured for use with Online Experimentation. Confirm this by running a query like the one below in your Log Analytics workspace:
+3. Azure AI Evaluation spans must be sent to Azure Monitor and be accessible in the Log Analytics workspace configured for use with online experimentation. Confirm this by running a query like the one below in your Log Analytics workspace:
 
    ```kusto
    AppTraces
@@ -31,24 +31,24 @@ Deployment of online experimentation metrics is managed by configuring the [Depl
 
 ### Log Analytics summary rule
 
-A summary rule is used to preprocess Azure AI Evaluation traces for metric computation. To confirm if your product has already configured a valid summary rule for Azure AI Evaluation, look for the `AppEvents_CL` table in your Log Analytics workspace and results with rule name `Online-Experimentation-GenAI-eval`.
+A summary rule is used to preprocess Azure AI Evaluation traces for metric computation. To confirm whether your product has already configured a valid summary rule for Azure AI Evaluation, look for the `AppEvents_CL` table in your Log Analytics workspace and verify results with the rule name `Online-Experimentation-GenAI-eval`.
 
 If you do not see the table:
 * If you provisioned the summary rule within the last 1 hour, you may need to wait for traces to be processed.
-* If you have not added targeting id to the GenAI spans that are being evaluated, the summary rule will have no outputs.
+* If you have not added a `TargetingId` to the GenAI spans that are being evaluated, the summary rule will have no outputs.
 * If you have never configured a valid summary rule for Azure AI Evaluation spans, you will need to provision this. This can be done via Log Analytics API call, or via bicep, as described in [root `README`](../README.md).
 
 ## Deploy metrics
 
-1. Add the contents of `metric-azure-ai-evaluation.json` to corresponding files in your experimentation-enabled repository.
-2. Optionally: modify metrics. Rename or update description of metrics. You can set desired Inactive metrics as Active if they apply to your scenario.
-3. If this is your first time adding summary rules for Online Experimentation, see [root `README.md`](../README.md) to overview metric and summary rule deployment, with more details in [Online Experimentation documentation](https://aka.ms/exp/public/docs).
+1. Add the contents of `metric-azure-ai-evaluation.json` to the corresponding files in your experimentation-enabled repository.
+2. Optionally, modify the metrics: rename or update metric descriptions, and set any desired inactive metrics to active if they apply to your scenario.
+3. If this is your first time adding summary rules for online experimentation, see [root `README.md`](../README.md) to overview metric and summary rule deployment, with more details in [online experimentation documentation](https://aka.ms/exp/public/docs).
 
 ## Azure AI Evaluation metrics
 
 The following metrics are defined in `metrics-azure-ai-evaluation-v0.1.0.json`:
 
-| Display name | Metric kind | Description | Default lifecycle |
+| Display Name | Metric Type | Description | Default Lifecycle |
 | ------------ | ----------- | ----------- | ---------------- |
 | Task adherence score | Average | Task adherence score given by Azure AI evaluation. The Task Adherence evaluator assesses how well an AI-generated response follows the assigned task in terms of alignment with instructions and definitions, accuracy and clarity, and proper use of provided tool definitions. Scoring is on a five-level integer scale: 0 – Fully Inadherent, 1 – Barely Adherent, 2 – Moderately Adherent, 3 – Mostly Adherent, and 4 – Fully Adherent. | Active |
 | Self-harm score | Average | Self-harm score given by Azure AI evaluation. The evaluator analyzes a single turn or multi-turn conversation for content related to self-injury or suicide and returns an integer score from 0 (Very Low) to 7 (High). Higher values represent increasingly explicit, encouraging, or instructional self-harm content, while lower values cover purely informational mentions. | Active |
