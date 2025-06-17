@@ -1,8 +1,8 @@
 {
-    "title": "Azure AI Agent Metrics",
+    "title": "Azure AI Agent Operational Metrics",
     "metricCategory": "__MetricCollection_ai_agent__",
-    "description": "Standard Azure AI Agent Metrics",
-    "metricConfig": "azure-ai-agent/metrics-azure-ai-agent-v0.1.0.json",
+    "description": "Standard Azure AI Agent Operational Metrics",
+    "metricConfig": "azure-ai-agent/metrics-azure-ai-agent-operational-v0.1.0.json",
     "summaryRule": "azure-ai-agent/summaryrules-v0.1.0.yaml",
     "prerequisites": [
         {
