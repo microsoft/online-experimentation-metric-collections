@@ -9,7 +9,7 @@
             "messageMarkdown": "This metric is supposed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview). [Tracing](https://learn.microsoft.com/en-us/azure/ai-services/agents/concepts/tracing) should also be enabled through AI foundary portal."
         },
         {
-            "messageMarkdown": "`TargetingId` must be associated with your GenAI spans that are being evaluated."
+            "messageMarkdown": "`TargetingId` must be associated with your GenAI spans that are being evaluated. See [link to MSlearn doc]() for more details."
         }
     ]
 }
