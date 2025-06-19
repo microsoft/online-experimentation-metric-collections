@@ -1,0 +1,34 @@
+summaryRules:
+  - name: "Online-Experimentation-Azure-AI-Agent-Operational"
+    binSize: 20
+    destinationTable: AppEvents_CL
+    description: "Summary rule definition for Azure AI Agent Operational Metrics."
+    query: |
+      let supported_keys = dynamic(["gen_ai.agent.id", "gen_ai.message.id", "gen_ai.operation.name", "gen_ai.system", "gen_ai.response.model", "gen_ai.thread.id", "gen_ai.thread.run.status", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "gen_ai.agent.id", "gen_ai.tool.call.id", "gen_ai.tool.name", "gen_ai.thread.run.id", "gen_ai.request.model", "error.type", "TargetingId"]);
+      let rid_to_tid = AppDependencies
+      | where DependencyType == "az.ai.agents"
+      | where Properties["TargetingId"] != ""
+      | project run_id = tostring(Properties["gen_ai.thread.run.id"]), TargetingId = tostring(Properties["TargetingId"]);
+      let traces_span = AppTraces
+      | where Message == "gen_ai.assistant.message"
+      | extend run_id = tostring(Properties["gen_ai.thread.run.id"])
+      | extend a = tostring(Properties["gen_ai.event.content"])
+      | where a has "tool_calls"
+      | extend a_dyn = parse_json(a)
+      | mv-expand tool_calls = a_dyn["tool_calls"]
+      | extend keys = bag_keys(tool_calls)
+      | extend file_search = iff(keys has "file_search", 1, 0)
+      | extend code_interpreter = iff(keys has "code_interpreter", 1, 0)
+      | extend bing_grounding = iff(keys has "bing_grounding", 1, 0)
+      | extend run_id = tostring(Properties["gen_ai.thread.run.id"])
+      | join kind=inner rid_to_tid on run_id
+      | project Name = "gen_ai.agent.otel.trace.span", TimeGenerated, ItemCount, Properties=bag_pack("gen_ai.agent.id", Properties["gen_ai.agent.id"], "gen_ai.message.status", Properties["gen_ai.message.status"], "gen_ai.system", Properties["gen_ai.system"], "gen_ai.thread.id", Properties["gen_ai.thread.id"], "gen_ai.usage.input_tokens", Properties["gen_ai.usage.input_tokens"], "gen_ai.usage.output_tokens", Properties["gen_ai.usage.output_tokens"], "file_search", file_search, "code_interpreter", code_interpreter, "bing_grounding", bing_grounding, "TargetingId", TargetingId);
+      AppDependencies
+      | where DependencyType == "az.ai.agents"
+      | extend OTelVersion = extract("otel([0-9.]+[0-9])", 1, SDKVersion)
+      | extend keys = bag_keys(Properties)
+      | extend newProperties = bag_remove_keys(Properties, set_difference(keys, supported_keys))
+      | where Properties["TargetingId"] != ""
+      | extend TargetingId = tostring(Properties["TargetingId"])
+      | project Name = "gen_ai.agent.otel.span", TimeGenerated, ItemCount, Properties=bag_merge(bag_pack("DurationMs", DurationMs, "Name", Name, "Success", tobool(Success), "ResultCode", iff(isempty(ResultCode), "0", ResultCode), "TargetingId", TargetingId, "OTelVersion", OTelVersion), newProperties)
+      | union traces_span

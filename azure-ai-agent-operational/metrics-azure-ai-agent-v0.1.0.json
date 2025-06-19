@@ -1,0 +1,483 @@
+{
+  "schemaVersion": "2.0",
+  "metrics": [
+    {
+      "id": "count_ai_agent_spans",
+      "displayName": "Number of AI agent spans",
+      "description": "The total number of AI agent spans captured. This metric provides a baseline measure of your AI agent activity and usage volume across your application.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span"
+        }
+      }
+    },
+    {
+      "id": "count_ai_users",
+      "displayName": "Number of AI users",
+      "description": "The number of users producing at least one AI agent span. This metric measures discovery/adoption of your AI agent features.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Important"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span"
+        }
+      }
+    },
+    {
+      "id": "count_ai_agent_create_thread_spans",
+      "displayName": "Number of run steps for creating new thread with AI agent",
+      "description": "The total number of AI agent operations that create new threads. This metric helps track how frequently new conversation threads are being initiated in your AI agent implementation.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"create_thread\""
+        }
+      }
+    },
+    {
+      "id": "count_ai_agent_create_message_spans",
+      "displayName": "Number of run steps for creating new message with AI agent",
+      "description": "The total number of AI agent operations that create new messages. This metric helps track how frequently new messages are being sent in your AI agent implementation. It should be roughly equal to the number of process_thread_run step runs.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"create_message\""
+        }
+      }
+    },
+    {
+      "id": "count_ai_agent_process_thread_run_spans",
+      "displayName": "Number of run steps for processing thread run with AI agent",
+      "description": "The total number of AI agent operations that process thread runs. This metric helps track how frequently thread runs are being processed in your AI agent implementation.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Usage"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\""
+        }
+      }
+    },
+    {
+      "id": "sum_ai_agent_input_tokens",
+      "displayName": "Total AI agent input tokens",
+      "description": "The total input tokens used for AI agents. This metric helps track the overall token usage in your AI agent implementation and can be used to estimate costs.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Sum",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        }
+      }
+    },
+    {
+      "id": "avg_ai_agent_input_tokens",
+      "displayName": "Average AI agent input tokens",
+      "description": "The average number of input tokens used per AI agent call. This metric helps track prompt efficiency and identify opportunities to optimize your prompts for cost reduction.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        }
+      }
+    },
+    {
+      "id": "p90_ai_agent_input_tokens",
+      "displayName": "90th percentile AI agent input tokens",
+      "description": "The 90th percentile input tokens per AI agent call. This gives an indication of the input token usage near the upper end of the distribution, helping identify outliers in prompt length.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        },
+        "percentile": 90
+      }
+    },
+    {
+      "id": "median_ai_agent_input_tokens",
+      "displayName": "Median AI agent input tokens",
+      "description": "The median (50th percentile) input tokens per AI agent call. This provides the typical prompt length used in your application, less influenced by outliers than the average.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.input_tokens"
+        },
+        "percentile": 50
+      }
+    },
+    {
+      "id": "sum_ai_agent_output_tokens",
+      "displayName": "Total AI agent usage output tokens",
+      "description": "The total number of output tokens generated across all AI agent interactions. This key cost metric directly impacts billing and helps forecast expenses. Combined with input token metrics, it provides complete visibility into token consumption patterns and can identify opportunities for optimization.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Sum",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        }
+      }
+    },
+    {
+      "id": "avg_ai_agent_output_tokens",
+      "displayName": "Average AI agent output tokens",
+      "description": "The average number of output tokens generated per AI agent call. This metric helps track response efficiency and identify opportunities to optimize your AI agent responses for cost reduction.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        }
+      }
+    },
+    {
+      "id": "p90_ai_agent_output_tokens",
+      "displayName": "90th percentile AI agent output tokens",
+      "description": "The 90th percentile output tokens per AI agent call. This gives an indication of the response length near the upper end of the distribution, helping identify particularly verbose responses.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        },
+        "percentile": 90
+      }
+    },
+    {
+      "id": "median_ai_agent_output_tokens",
+      "displayName": "Median AI agent output tokens",
+      "description": "The median (50th percentile) output tokens per AI agent call. This provides the typical response length in your application, less influenced by outliers than the average.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Cost"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\"",
+          "eventProperty": "gen_ai.usage.output_tokens"
+        },
+        "percentile": 50
+      }
+    },
+    {
+      "id": "avg_ai_agent_process_thread_run_duration",
+      "displayName": "Average processing thread run duration",
+      "description": "The average duration of AI agent `process_thread_run`. This metric helps track the performance of your AI agent implementation and identify potential bottlenecks.",
+      "lifecycle": "Active",
+      "categories": [
+        "AI_Agent",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Average",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "DurationMs",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\" and DurationMs > 0"
+        }
+      }
+    },
+    {
+      "id": "p90_ai_agent_process_thread_run_duration",
+      "displayName": "90th percentile processing thread run duration",
+      "description": "The 90th percentile duration of `process_thread_run` steps. This gives an indication of the performance near the upper end of the distribution, helping identify outliers in processing time.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "DurationMs",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\" and DurationMs > 0"
+        },
+        "percentile": 90
+      }
+    },
+    {
+      "id": "median_ai_agent_process_thread_run_duration",
+      "displayName": "Median AI agent duration",
+      "description": "The median (50th percentile) duration of `process_thread_run` steps. This provides the typical processing time in your application, less influenced by outliers than the average.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Performance"
+      ],
+      "desiredDirection": "Decrease",
+      "definition": {
+        "type": "Percentile",
+        "value": {
+          "eventName": "gen_ai.agent.otel.span",
+          "eventProperty": "DurationMs",
+          "filter": "['gen_ai.operation.name'] == \"process_thread_run\" and DurationMs > 0"
+        },
+        "percentile": 50
+      }
+    },
+    {
+      "id": "count_code_interpreter",
+      "displayName": "Number of code interpreter run steps",
+      "description": "The total number of code interpreter run steps. This metric helps track how frequently the code interpreter is being used in your AI agent implementation.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.tools.code_interpreter'] >= 1"
+        }
+      }
+    },
+    {
+      "id": "count_file_search",
+      "displayName": "Number of file search run steps",
+      "description": "The total number of file search run steps. This metric helps track how frequently the file search is being used in your AI agent implementation.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.tools.file_search'] >= 1"
+        }
+      }
+    },
+    {
+      "id": "count_bing_grounding",
+      "displayName": "Number of Bing grounding run steps",
+      "description": "The total number of Bing grounding run steps. This metric helps track how frequently the Bing grounding is being used in your AI agent implementation.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.tools.bing_grounding'] >= 1"
+        }
+      }
+    },
+    {
+      "id": "count_code_interpreter_users",
+      "displayName": "Number of users using code interpreter",
+      "description": "The number of users producing at least one code interpreter span. This metric measures discovery/adoption of your code interpreter features.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.tools.code_interpreter'] >= 1"
+        }
+      }
+    },
+    {
+      "id": "count_file_search_users",
+      "displayName": "Number of users using file search",
+      "description": "The number of users producing at least one file search span. This metric measures discovery/adoption of your file search features.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.tools.file_search'] >= 1"
+        }
+      }
+    },
+    {
+      "id": "count_bing_grounding_users",
+      "displayName": "Number of users using Bing grounding",
+      "description": "The number of users producing at least one Bing grounding span. This metric measures discovery/adoption of your Bing grounding features.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Increase",
+      "definition": {
+        "type": "UserCount",
+        "event": {
+          "eventName": "gen_ai.agent.otel.span",
+          "filter": "['gen_ai.tools.bing_grounding'] >= 1"
+        }
+      }
+    },
+    {
+      "id": "code_interpreter_success_rate",
+      "displayName": "Success rate of code interpreter run steps",
+      "description": "The percentage of code interpreter run steps that complete successfully. This metric indicates the reliability of code-interpreter executions within your AI agent workflows.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventRate",
+        "event": {
+          "eventName": "gen_ai.agent.otel.trace.span",
+          "filter": "['gen_ai.tools.code_interpreter'] >= 1"
+        },
+        "rateCondition": "['gen_ai.thread.run.status'] == 'completed'"
+      }
+    },
+    {
+      "id": "file_search_success_rate",
+      "displayName": "Success rate of file search run steps",
+      "description": "The percentage of file search run steps that complete successfully. This metric indicates the reliability of file search executions within your AI agent workflows.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventRate",
+        "event": {
+          "eventName": "gen_ai.agent.otel.trace.span",
+          "filter": "['gen_ai.tools.file_search'] >= 1"
+        },
+        "rateCondition": "['gen_ai.thread.run.status'] == 'completed'"
+      }
+    },
+    {
+      "id": "bing_grounding_success_rate",
+      "displayName": "Success rate of Bing grounding run steps",
+      "description": "The percentage of Bing grounding run steps that complete successfully. This metric indicates the reliability of Bing grounding executions within your AI agent workflows.",
+      "lifecycle": "Inactive",
+      "categories": [
+        "AI_Agent",
+        "Usage",
+        "Tool_Call"
+      ],
+      "desiredDirection": "Neutral",
+      "definition": {
+        "type": "EventRate",
+        "event": {
+          "eventName": "gen_ai.agent.otel.trace.span",
+          "filter": "['gen_ai.tools.bing_grounding'] >= 1"
+        },
+        "rateCondition": "['gen_ai.thread.run.status'] == 'completed'"
+      }
+    }
+  ]
+}
