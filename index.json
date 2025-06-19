@@ -38,6 +38,19 @@
                     "enabled": true
                 }
             ]
+        },
+        "azure-ai-evaluation": {
+            "versionType": "none",
+            "versionDetails": "N/A",
+            "versions": [
+                {
+                    "min": "",
+                    "max": "",
+                    "versionText": "",
+                    "metadata": "azure-ai-evaluation/metadata-v0.1.0.json",
+                    "enabled": false
+                }
+            ]
         }
     }
 }

@@ -87,4 +87,5 @@ This module requires two dependent files:
 - [Online Experimentation documentation](https://aka.ms/exp/public/docs)
 - [Sample Online Experimentation enabled OpenAI app](https://github.com/Azure-Samples/openai-chat-app-eval-ab)
 - [GitHub Action to deploy metrics](https://github.com/Azure/online-experimentation-deploy-metrics)
+- For continuous (online) evaluation in production environments, see [How to run evaluations online with the Azure AI Foundry SDK](./online_evaluation_doc.md).
 - Contact [exp-preview-fb@microsoft.com](mailto:exp-preview-fb@microsoft.com) for assistance during private preview.
