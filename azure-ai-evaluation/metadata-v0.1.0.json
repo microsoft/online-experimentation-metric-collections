@@ -9,10 +9,10 @@
             "messageMarkdown": "To use these metrics and summary rule, you must use the Azure AI Evaluation services which are part of the Azure AI Foundry SDK."
         },
         {
-            "messageMarkdown": "`TargetingId` must be associated with your AppTraces spans that are being evaluated."
+            "messageMarkdown": "\"TargetingId\" must be associated with your evaluation events."
         },
         {
-            "messageMarkdown": "Azure AI Evaluation spans must be sent to Azure Monitor, and be accessible in the Log Analytics workspace configured for use with Online Experimentation."
+            "messageMarkdown": "Azure AI Evaluation events must be sent to Azure Monitor, and be accessible in the Log Analytics workspace configured for use with online experimentation."
         }
     ]
 }
