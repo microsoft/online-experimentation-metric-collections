@@ -13,7 +13,7 @@
       "definition": {
         "type": "EventCount",
         "event": {
-          "eventName": "UserFeedback"
+          "eventName": "gen_ai.evaluation.user_feedback"
         }
       }
     },
@@ -29,7 +29,7 @@
       "definition": {
         "type": "UserCount",
         "event": {
-          "eventName": "UserFeedback"
+          "eventName": "gen_ai.evaluation.user_feedback"
         }
       }
     },
@@ -46,9 +46,9 @@
       "definition": {
         "type": "EventRate",
         "event": {
-          "eventName": "UserFeedback"
+          "eventName": "gen_ai.evaluation.user_feedback"
         },
-        "rateCondition": "Score > 0"
+        "rateCondition": "['gen_ai.evaluation.score'] > 0"
       }
     },
     {
@@ -63,9 +63,9 @@
       "definition": {
         "type": "EventRate",
         "event": {
-          "eventName": "UserFeedback"
+          "eventName": "gen_ai.evaluation.user_feedback"
         },
-        "rateCondition": "Score < 0"
+        "rateCondition": "['gen_ai.evaluation.score'] < 0"
       }
     }
   ]
