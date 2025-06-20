@@ -36,18 +36,18 @@ This set of metrics measures user thumbs up/down feedback button on a chat respo
 
 | Display name| Metric kind | Description | Dependent logging event(s) |
 | ----- | -----| ----------------|------|
-| Feedback event count | EventCount |  The total number of feedbacks received from users (clicked thumbs-up or thumbs-down). | `UserFeedback`|
-| Users who gave feedback | UserCount | The number of users who gave at least one feedback (clicked thumbs-up or thumbs-down).| `UserFeedback`|
-| Positive feedback rate | EventRate | The percentage of feedback which is positive (thumbs-up). | `UserFeedback`|
-| Negative feedback rate | EventRate | The percentage of feedback which is negative (thumbs-down).| `UserFeedback`|
+| Feedback event count | EventCount |  The total number of feedbacks received from users (clicked thumbs-up or thumbs-down). | `gen_ai.evaluation.user_feedback`|
+| Users who gave feedback | UserCount | The number of users who gave at least one feedback (clicked thumbs-up or thumbs-down).| `gen_ai.evaluation.user_feedback`|
+| Positive feedback rate | EventRate | The percentage of feedback which is positive (thumbs-up). | `gen_ai.evaluation.user_feedback`|
+| Negative feedback rate | EventRate | The percentage of feedback which is negative (thumbs-down).| `gen_ai.evaluation.user_feedback`|
 
 
 #### User feedback: logging 
-User feedback should be logged as a numeric score from -1(negative) to +1(positive). Common implementation is thumbs-up/thumbs-down which translate to +1/-1 scores.
+User feedback should be logged followed by the [Semantic conventions for GenAI evaluation events](https://github.com/microsoft/opentelemetry-semantic-conventions/blob/main/docs/gen-ai/gen-ai-evaluation-events.md).
 
 | Event Name | Properties |
 | -------- | -------- |
-|`UserFeedback` | `Score` (numeric): the numeric score. <br> +1 for positive feedback, -1 for negative feedback. |
+|`gen_ai.evaluation.user_feedback` | `Score` (numeric): the numeric score. <br> +1 for positive feedback, -1 for negative feedback. |
 
 
 ### Errors
