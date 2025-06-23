@@ -1,7 +1,7 @@
 # Online Experimentation Metric Collections
 
 > [!IMPORTANT]
-> This repository is under active development and is subject to the [Azure AI Public Preview Terms - Online Experimentation](private-preview-terms.md).
+> This repository is under active development and is subject to the [Azure AI Private Preview Terms - Online Experimentation](private-preview-terms.md).
 
 Online experimentation enables you to evaluate feature variations in production. Quality evaluation requires setting up metrics that measure your application's performance, reliability, usage, and quality of engagement. The goal of this repository is to provide out-of-the-box metrics and custom metric samples that make it easy for you to get started with online experimentation.
 
