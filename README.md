@@ -20,7 +20,7 @@ Sample metric collections are organized into 5 directories:
 ## Getting Started
 To generate metrics with online experimentation, you must enable the feature in your Azure App Configuration resource. See [Get Started: Run Online Experimentations (Preview) in App Configuration](https://aka.ms/exp/public/TODO) for full setup instructions.
 
-Each metric set has its own prerequisites; refer to the corresponding README under each directory for details.
+Each metric collection has its own prerequisites; refer to the corresponding README under each directory for details.
 
 You can also onboard through code using Bicep and a GitHub Action. Refer to the sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for a contextualized example of how telemetry, metrics, and summary rules fit into an application. 
 
