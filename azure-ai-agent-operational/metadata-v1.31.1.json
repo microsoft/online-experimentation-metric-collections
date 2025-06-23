@@ -6,7 +6,7 @@
     "summaryRule": "azure-ai-agent/summaryrules-v0.1.0.yaml",
     "prerequisites": [
         {
-            "messageMarkdown": "Agent metrics are supposed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview). [Tracing](https://learn.microsoft.com/en-us/azure/ai-services/agents/concepts/tracing) should also be enabled through the AI Foundry portal. \"TargetingId\" must be added to the agent spans."
+            "messageMarkdown": "AI Agent metrics are designed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview). Follow the instruction [here](https://learn.microsoft.com/en-us/azure/ai-services/agents/concepts/tracing) to enable tracing for your agent."
         }
     ]
 }
