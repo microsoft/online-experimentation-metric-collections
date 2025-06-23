@@ -18,7 +18,7 @@ Sample metric collections are organized into 5 directories:
 | [`custom`](./custom) | Sample metric definitions and code snippets to log custom events. | Any event sent to `AppEvents_CL` |
 
 ## Getting Started
-To generate metrics with online experimentation, you must enable the feature in your Azure App Configuration resource. See [Get Started: Run Online Experimentations (Preview) in App Configuration](https://aka.ms/exp/public/TODO) for full setup instructions.
+To generate metrics with online experimentation, you must enable the feature in your Azure App Configuration resource. See [Get Started: Run Online Experimentations (Preview) in App Configuration](https://aka.ms/exp3p/appconfig) for full setup instructions.
 
 Each metric collection has its own prerequisites; refer to the corresponding README under each directory for details.
 
