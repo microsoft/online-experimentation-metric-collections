@@ -6,7 +6,7 @@
     "summaryRule": "appinsights-webapi/summaryrules-v0.1.0.yaml",
     "prerequisites": [
         {
-            "messageMarkdown": "Ensure your application supports autoinstrumentation in Azure Monitor Application Insights and that it is enabled. For more details, refer to the documentation: [What is autoinstrumentation for Azure Monitor Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/codeless-overview) and [Application Insights telemetry data model](https://learn.microsoft.com/en-us/azure/azure-monitor/app/data-model-complete)"
+            "messageMarkdown": "AppInsights Web API metrics require your application supports [autoinstrumentation in Azure Monitor Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/codeless-overview) and that it is enabled."
         }
     ]
 }

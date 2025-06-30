@@ -1,6 +1,6 @@
 # Azure AI Agent Service Operational Metric Collection
 
-Metrics contained in the **Azure AI Agent Service** [metric collection](./metrics-azure-ai-agent-v0.1.0.json) provide observability over AI agent interactions, including usage volume, cost (token consumption), performance (latency), and tool-usage effectiveness. They are meant to be used, in combination with the same [provided](../summaryrules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-the-box with minimal edits. They consume spans and attributes created automatically by instrumentation libraries that adhere to the [**OpenTelemetry semantic conventions for AI agent**](https://github.com/microsoft/opentelemetry-semantic-conventions/blob/main/docs/gen-ai/azure-ai-agent-spans.md) spans—specifically, those that emit events named `gen_ai.agent.otel.span`.
+Metrics contained in the **Azure AI Agent Service** [metric collection](./metrics-ai-agent-v0.1.0.json) provide observability over AI agent interactions, including usage volume, cost (token consumption), performance (latency), and tool-usage effectiveness. They are meant to be used, in combination with the same [provided](../summaryrules-v0.1.0.yaml) Log Analytics [summary rule](https://learn.microsoft.com/azure/azure-monitor/logs/summary-rules?tabs=api), directly out-of-the-box with minimal edits. They consume spans and attributes created automatically by instrumentation libraries that adhere to the [**OpenTelemetry semantic conventions for AI agent**](https://github.com/microsoft/opentelemetry-semantic-conventions/blob/main/docs/gen-ai/ai-agent-spans.md) spans—specifically, those that emit events named `gen_ai.agent.otel.span`.
 
 > [!NOTE]
 > The AI agent semantic conventions are in active development and marked as experimental. For experimental semantic conventions, there is risk of breaking changes due to updates in either the conventions themselves or in instrumentation libraries. The online experimentation team will release updates to align to major changes in these conventions. 
@@ -10,7 +10,7 @@ Metrics contained in the **Azure AI Agent Service** [metric collection](./metric
 
 | AI Agent Metric Collection Version | OTel Semantic Convention Version | Creation Date | Metric Collection | Summary Rule |
 |---------------------------------------|----------------------------------|---------------|-------------------|--------------|
-| v0.1.0                                | Version 1.31.1 (experimental)       | June 2025      | [metrics-azure-ai-agent-v0.1.0](./metrics-azure-ai-agent-v0.1.0.json) | [summaryrules-v0.1.0](../summaryrules-v0.1.0.yaml) |
+| v0.1.0                                | Version 1.31.1 (experimental)       | June 2025      | [metrics-ai-agent-v0.1.0](./metrics-ai-agent-v0.1.0.json) | [summaryrules-v0.1.0](../summaryrules-v0.1.0.yaml) |
 
 ---
 
@@ -39,7 +39,7 @@ If you have never configured a summary rule, see [root `README.md`](../README.md
 
 ## Deploy Metrics
 
-1. Add the contents of `metrics-azure-ai-agent-v0.1.0.json` into your experimentation-enabled repository (e.g., under an `infra` or `metrics` folder).
+1. Add the contents of `metrics-ai-agent-v0.1.0.json` into your experimentation-enabled repository (e.g., under an `infra` or `metrics` folder).
 2. Optionally modify the metrics:
    - **Rename** or **update descriptions** of metrics if needed.
    - Change the lifecycle of any `Inactive` metrics to `Active` if you want them computed.
@@ -50,7 +50,7 @@ If you have never configured a summary rule, see [root `README.md`](../README.md
 
 ## Azure AI Agent Metrics
 
-The following metrics are defined in `metrics-azure-ai-agent-v0.1.0.json`:
+The following metrics are defined in `metrics-ai-agent-v0.1.0.json`:
 
 | Display Name                                         | Metric Type | Description                                                                                                                                                             | Default Lifecycle |
 |------------------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|

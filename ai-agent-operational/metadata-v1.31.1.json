@@ -1,0 +1,12 @@
+{
+    "title": "Azure AI Agent Operational Metrics",
+    "metricCategory": "__MetricCollection_ai_agent__",
+    "description": "Standard Azure AI Agent Operational Metrics",
+    "metricConfig": "ai-agent-operational/metrics-ai-agent-operational-v0.1.0.json",
+    "summaryRule": "ai-agent-operational/summaryrules-v0.1.0.yaml",
+    "prerequisites": [
+        {
+            "messageMarkdown": "AI Agent metrics are designed to be used with [Azure AI Agent service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview). Follow the instruction [here](https://learn.microsoft.com/en-us/azure/ai-services/agents/concepts/tracing) to enable tracing for your agent."
+        }
+    ]
+}
