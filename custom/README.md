@@ -6,7 +6,8 @@ Custom metric collections are organized by metric topic. It is recommended for m
 
 1. Instrumentation. See sample application [`OpenAI Chat App`](https://github.com/Azure-Samples/openai-chat-app-eval-ab) for example custom event tracking with App Configuration and Azure Monitor OpenTelemetry Distro to ensure events are sent to Log Analytics.
    
-    * If you use alternative instrumentation, it must send events to Log Analytics `AppEvents` table. And you must add App Configuration's `TargetingId` as a property for each event, as only events with this attribute are attributable to a Feature Flag variant.
+    * If you use alternative instrumentation, it must send events to Log Analytics `AppEvents`. And you must add App Configuration's `TargetingId` as a property for each event, as only events with this attribute are attributable to a Feature Flag variant.
+    * Alternatively, you can send events to other tables, such as `AppTraces`, and then use a custom summary rule to aggregate the events into `AppEvents`.
     * App Configuration's `TrackEvent` (`track_event` in Python) automatically adds the TargetingId.
       
 
@@ -48,6 +49,8 @@ User feedback should be logged followed by the [Semantic conventions for GenAI e
 | Event Name | Properties |
 | -------- | -------- |
 |`gen_ai.evaluation.user_feedback` | `Score` (numeric): the numeric score. <br> +1 for positive feedback, -1 for negative feedback. |
+
+To expose these feedback events to Online Experimentation, add a summary rule in your Log Analytics workspace that routes all `gen_ai.evaluation.user_feedback` events into the `AppEvents` table. You can use the existing [evaluation-events summary rule](../azure-ai-evaluation/summary_rules-v0.1.0.yaml) as a template.
 
 
 ### Errors
