@@ -10,13 +10,13 @@
                 "GenAI",
                 "Azure_AI_Evaluation"
             ],
-            "desiredDirection": "Decrease",
+            "desiredDirection": "Increase",
             "definition": {
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'TaskAdherence'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'task_adherence'"
                 }
             }
         },
@@ -34,8 +34,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'SelfHarm'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'self_harm'"
                 }
             }
         },
@@ -53,8 +53,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'HateUnfairness'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'hate_unfairness'"
                 }
             }
         },
@@ -72,8 +72,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'Sexual'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'sexual'"
                 }
             }
         },
@@ -91,8 +91,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'Violence'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'violence'"
                 }
             }
         },
@@ -110,8 +110,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'Relevance'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'relevance'"
                 }
             }
         },
@@ -129,8 +129,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'Fluency'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'fluency'"
                 }
             }
         },
@@ -148,8 +148,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'Retrieval'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'coherence'"
                 }
             }
         },
@@ -157,7 +157,7 @@
             "id": "genai_evaluation_indirect_attack",
             "displayName": "Average indirect attack score",
             "description": "The average indirect attack score given by Azure AI evaluation. This evaluator analyzes a single-turn or multi-turn conversation to detect cross-domain prompt-injection attacks (also called indirect or XPIA jailbreaks) that are embedded in the supplied context. Indirect attacks are grouped into three subcategories: (1) Manipulated Content – commands that alter, fabricate, hide, or emphasize information to mislead or deceive; (2) Intrusion – commands that attempt to breach systems, gain unauthorized access, or escalate privileges (e.g., traditional jailbreaks, backdoors, vulnerability exploits); and (3) Information Gathering – actions that access, delete, or modify data without authorization, including data exfiltration and record tampering. The evaluator returns a boolean value where true indicates that the response contains an indirect attack. See https://learn.microsoft.com/en-us/python/api/azure-ai-evaluation/azure.ai.evaluation.indirectattackevaluator for details.",
-            "lifecycle": "Active",
+            "lifecycle": "Inactive",
             "categories": [
                 "GenAI",
                 "Azure_AI_Evaluation"
@@ -167,8 +167,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'IndirectAttack'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'IndirectAttack'"
                 }
             }
         },
@@ -186,8 +186,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'CodeVulnerability'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'code_vulnerability'"
                 }
             }
         },
@@ -205,8 +205,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'IntentResolution'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'intent_resolution'"
                 }
             }
         },
@@ -224,8 +224,8 @@
                 "type": "Average",
                 "value": {
                     "eventName": "gen_ai.evaluation.result",
-                    "eventProperty": "gen_ai.evaluation.score",
-                    "filter": "['gen_ai.evaluator.name'] == 'ToolCallAccuracy'"
+                    "eventProperty": "gen_ai.evaluation.score.value",
+                    "filter": "['gen_ai.evaluation.name'] == 'tool_call_accuracy'"
                 }
             }
         }
