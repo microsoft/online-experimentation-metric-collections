@@ -10,7 +10,7 @@
                 "GenAI",
                 "Azure_AI_Evaluation"
             ],
-            "desiredDirection": "Decrease",
+            "desiredDirection": "Increase",
             "definition": {
                 "type": "Average",
                 "value": {
